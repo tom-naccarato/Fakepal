@@ -13,7 +13,7 @@ def register(request):
     """
     # If the request method is POST, user has submitted the form
     if request.method == 'POST':
-        # Cretes a form and adds the data from the form
+        # Declares a form and adds the data from the form
         form = UserForm(request.POST)
         # Checks if the form is valid
         if form.is_valid():
@@ -27,10 +27,10 @@ def register(request):
 
             # Redirects the user to the home page after registration
             return redirect('home')
+        # If form is not valid, return the form with the errors
         else:
-            form = UserForm()
             messages.error(request, "Invalid information")
-            return render(request, 'register/register.html', {'form': form, 'error': 'Form is not valid'})
+            return render(request, 'register/register.html', {'form': form})
     else:
         form = UserForm()  # Instantiate an empty form for GET request
     return render(request, 'register/register.html', {'form': form})
@@ -57,13 +57,12 @@ def login_view(request):
                 login(request, user)
                 return redirect('home')
             else:
-                form = LoginForm()
                 messages.error(request, "Invalid username or password")
-                return render(request, 'register/login.html', {'form': form, 'error': 'Invalid username or password'})
+                return render(request, 'register/login.html', {'form': form})
         else:
             form = LoginForm()
             messages.error(request, "Invalid information")
-            return render(request, 'register/login.html', {'form': form, 'error': 'Form is not valid'})
+            return render(request, 'register/login.html', {'form': form})
     else:
         form = LoginForm()
         return render(request, 'register/login.html', {'form': form})
