@@ -8,8 +8,10 @@ class UserForm(UserCreationForm):
     """
     Form for creating a new user and account
     """
+    # Add a currency field to the form using the currency choices from the Account model
     currency = forms.ChoiceField(choices=Account.CURRENCY_CHOICES, required=True,
-                                      label='Currency')
+                                 label='Currency')
+
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2', 'currency']
@@ -27,7 +29,7 @@ class UserForm(UserCreationForm):
         user.last_name = self.cleaned_data['last_name']
         if commit:
             user.save()
-            account = Account(user=user)
+            account = Account(user=user, currency=self.cleaned_data['currency'])
             account.save()
         return user
 
