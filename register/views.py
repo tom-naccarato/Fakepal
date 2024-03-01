@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from register.forms import UserForm
+from register.forms import UserForm, LoginForm
 
 
 def register(request):
@@ -40,12 +40,23 @@ def login_view(request):
     """
     # If the request method is POST, user has submitted the form
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        # Authenticates the user
-        user = authenticate(request, username=username, password=password)
-        # If the user is authenticated, log the user in
-        if user is not None:
-            login(request, user)
-            return redirect('home')
-    return render(request, 'register/login.html')
+        form = LoginForm(request.POST)
+        # Checks if the form is valid
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            # Authenticates the user
+            user = authenticate(request, username=username, password=password)
+            # If the user is authenticated, log the user in
+            if user is not None:
+                login(request, user)
+                return redirect('home')
+            else:
+                form = LoginForm()
+                return render(request, 'register/login.html', {'form': form, 'error': 'Invalid username or password'})
+        else:
+            form = LoginForm()
+            return render(request, 'register/login.html', {'form': form, 'error': 'Form is not valid'})
+    else:
+        form = LoginForm()
+        return render(request, 'register/login.html', {'form': form})
