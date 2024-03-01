@@ -2,7 +2,11 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from payapp.models import Account
 
+
 class UserForm(UserCreationForm):
+    """
+    Form for creating a new user and account
+    """
     class Meta:
         model = User
         fields = ['username', 'email', 'password1', 'password2', 'first_name', 'last_name']
@@ -23,4 +27,3 @@ class UserForm(UserCreationForm):
             account = Account(user=user)
             account.save()
         return user
-
