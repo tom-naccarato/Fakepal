@@ -7,7 +7,16 @@
 </head>
 <body>
 {% block content %}
-    This is the payment app homepage
+    {% if user.is_authenticated %}
+        <p>
+        Welcome, {{ user.username }} to the FakePal homepage!
+        </p>
+    {% else %}
+        <p>
+        Please <a href="{% url 'login' %}">login</a> to access the FakePal homepage.
+        </p>
+    {% endif %}
+    
 {% endblock content %}
 </body>
 </html>
