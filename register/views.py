@@ -26,11 +26,13 @@ def register(request):
             login(request, user)
 
             # Redirects the user to the home page after registration
+            messages.success(request, "You have been registered and you have been automatically logged in.")
             return redirect('home')
         # If form is not valid, return the form with the errors
         else:
             messages.error(request, "Invalid information")
             return render(request, 'register/register.html', {'form': form})
+    # Otherwise, render an empty form
     else:
         form = UserForm()  # Instantiate an empty form for GET request
     return render(request, 'register/register.html', {'form': form})
@@ -52,9 +54,10 @@ def login_view(request):
             password = form.cleaned_data['password']
             # Authenticates the user
             user = authenticate(request, username=username, password=password)
-            # If the user is authenticated, log the user in
+            # If the user is authenticated, log the user in and redirect to home page
             if user is not None:
                 login(request, user)
+                messages.success(request, "You have been logged in")
                 return redirect('home')
             else:
                 messages.error(request, "Invalid username or password")
