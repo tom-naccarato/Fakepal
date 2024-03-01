@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from register.forms import UserForm, LoginForm
@@ -26,6 +27,10 @@ def register(request):
 
             # Redirects the user to the home page after registration
             return redirect('home')
+        else:
+            form = UserForm()
+            messages.error(request, "Invalid information")
+            return render(request, 'register/register.html', {'form': form, 'error': 'Form is not valid'})
     else:
         form = UserForm()  # Instantiate an empty form for GET request
     return render(request, 'register/register.html', {'form': form})
@@ -53,9 +58,11 @@ def login_view(request):
                 return redirect('home')
             else:
                 form = LoginForm()
+                messages.error(request, "Invalid username or password")
                 return render(request, 'register/login.html', {'form': form, 'error': 'Invalid username or password'})
         else:
             form = LoginForm()
+            messages.error(request, "Invalid information")
             return render(request, 'register/login.html', {'form': form, 'error': 'Form is not valid'})
     else:
         form = LoginForm()
