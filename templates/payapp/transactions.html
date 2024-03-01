@@ -9,7 +9,12 @@
 {% block content %}
     <h1>Transactions</h1>
     {% if transactions %}
-        <p>There are {{ transactions|length }} transactions.</p>
+        <p>
+            There
+            {{ transactions|length|pluralize:"is,are" }}
+            {{ transactions|length }}
+            transaction{{ transactions|length|pluralize }}.
+        </p>
         <table>
             <tr>
                 <th>Transaction ID</th>
@@ -20,10 +25,10 @@
             {% for transaction in transactions %}
                 <tr>
                     <td>{{ transaction.id }}</td>
-                    <td>{{ transaction.sender.username }}</td>
-                    <td>{{ transaction.receiver.username }}</td>
+                    <td>{{ transaction.sender.user.username }}</td>
+                    <td>{{ transaction.receiver.user.username }}</td>
                     <td>{{ transaction.amount }}</td>
-                    <td>{{ transaction.transaction_date }}</td>
+                    <td>{{ transaction.created_at | date:"D, d M Y H:i" }}</td>
                 </tr>
             {% endfor %}
         </table>
