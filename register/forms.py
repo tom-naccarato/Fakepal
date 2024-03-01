@@ -4,15 +4,15 @@ from django.contrib.auth.models import User
 from payapp.models import Account
 
 
-
 class UserForm(UserCreationForm):
     """
     Form for creating a new user and account
     """
-
+    currency = forms.ChoiceField(choices=Account.CURRENCY_CHOICES, required=True,
+                                      label='Currency')
     class Meta:
         model = User
-        fields = ['username', 'email', 'password1', 'password2', 'first_name', 'last_name']
+        fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2', 'currency']
 
     def save(self, commit=True):
         """
@@ -38,4 +38,3 @@ class LoginForm(forms.Form):
     """
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
-
