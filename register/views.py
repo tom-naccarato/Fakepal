@@ -35,7 +35,17 @@ def login_view(request):
     """
     View function to handle the login of a user
 
-
     :param request:
     :return:
     """
+    # If the request method is POST, user has submitted the form
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        # Authenticates the user
+        user = authenticate(request, username=username, password=password)
+        # If the user is authenticated, log the user in
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+    return render(request, 'register/login.html')
