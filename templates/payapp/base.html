@@ -26,9 +26,9 @@
     {#                    <li class="nav-item">#}
     {#                        <a class="nav-link" href="{% url 'notifications' %}">Notifications</a>#}
     {#                    </li>#}
-    {#                    <li class="nav-item">#}
-    {#                        <a class="nav-link" href="{% url 'payments' %}">Payments</a>#}
-    {#                    </li>#}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'transactions' %}">Transactions</a>
+                        </li>
                     </ul>
                     <ul class="navbar-nav ms-auto"> <! -- aligns the login and register buttons to the right -->
                         {% if user.is_authenticated %}

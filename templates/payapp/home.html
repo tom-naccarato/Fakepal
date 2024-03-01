@@ -10,6 +10,7 @@
     {% if user.is_authenticated %}
         <p>
         Welcome, {{ user.username }} to the FakePal homepage!
+        You currently have {{ user.account.balance }} {{ user.account.currency | upper}} in your account.
         </p>
     {% else %}
         <p>

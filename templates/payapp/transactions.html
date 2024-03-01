@@ -1,0 +1,37 @@
+{% extends 'payapp/base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Transactions {% endblock %}</title>
+</head>
+<body>
+{% block content %}
+    <h1>Transactions</h1>
+    {% if transactions %}
+        <p>There are {{ transactions|length }} transactions.</p>
+        <table>
+            <tr>
+                <th>Transaction ID</th>
+                <th>From User</th>
+                <th>To User</th>
+                <th>Transaction Date</th>
+            </tr>
+            {% for transaction in transactions %}
+                <tr>
+                    <td>{{ transaction.id }}</td>
+                    <td>{{ transaction.sender.username }}</td>
+                    <td>{{ transaction.receiver.username }}</td>
+                    <td>{{ transaction.amount }}</td>
+                    <td>{{ transaction.transaction_date }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        
+    {% else %}
+        <p>There are no transactions.</p>
+    {% endif %}
+    
+{% endblock %}
+</body>
+</html>
