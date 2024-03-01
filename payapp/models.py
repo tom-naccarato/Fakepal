@@ -19,20 +19,21 @@ class Account(models.Model):
     - __str__: Returns the username of the user linked to the account
 
     """
+
     class Meta:
         db_table = 'account'
         verbose_name = 'Account'
         verbose_name_plural = 'Accounts'
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=False, blank=False, related_name='account')
-    balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    balance = models.DecimalField(max_digits=10, decimal_places=2, default=1000)
     CURRENCY_CHOICES = (
-        ('gdp','GBP'),
+        ('gdp', 'GBP'),
         ('usd', 'USD'),
         ('eur', 'EUR'),
     )
     currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES, default='gdp')
-    created_at = models.DateTimeField(auto_now_add=True) #
+    created_at = models.DateTimeField(auto_now_add=True)
     STATUS_CHOICES = (
         ('active', 'Active'),
         ('inactive', 'Inactive'),
@@ -78,6 +79,7 @@ class Transaction(models.Model):
     - __str__: Returns the transaction type and amount
     - transfer: Transfers the specified amount from the sender's account to the receiver's account
     """
+
     class Meta:
         db_table = 'transaction'
         verbose_name = 'Transaction'
@@ -190,5 +192,3 @@ class Request(models.Model):
         """
         self.status = 'declined'
         return None
-
-
