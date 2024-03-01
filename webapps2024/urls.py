@@ -17,8 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+import payapp.views
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('register/', include('register.urls')),
-    path('payapp/', include('payapp.urls')),
-    ]
+    path('webapps2024/', include([
+        path('admin/', admin.site.urls),
+        path('home/', payapp.views.home, name='home'),
+        path('register/', include('register.urls')),
+        path('payapp/', include('payapp.urls')),
+    ])),
+]
