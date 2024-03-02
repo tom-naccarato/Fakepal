@@ -16,7 +16,7 @@
     <!-- Navigation -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light static-top">
             <div class="container">
-                <a class="navbar-brand" href="{% url 'home' %}">Fakepal</a>
+                <a class="navbar-brand" href="{% url 'home' %}">FakePal</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                         aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -32,7 +32,7 @@
                     </ul>
                     <ul class="navbar-nav ms-auto"> <! -- aligns the login and register buttons to the right -->
                         {% if user.is_authenticated %}
-                            <form action="{% url 'logout' %}?next=/payapp/home/" method="post">
+                            <form action="{% url 'logout' %}?next=/webapps2024/home/" method="post">
                                 {% csrf_token %}
                                 <button class="" type="submit">Logout</button>
                             </form>

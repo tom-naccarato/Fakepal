@@ -39,11 +39,6 @@ def transactions(request):
     :return:
     """
     # Create a test transaction to see if the query works
-    transaction = Transaction.objects.create(
-        sender=Account.objects.get(user=request.user),
-        receiver=Account.objects.get(user=request.user),
-        amount=100
-    )
     transactions_list = Transaction.objects.filter(
         Q(sender__user=request.user) | Q(receiver__user=request.user)
     ).select_related('sender', 'receiver', 'sender__user', 'receiver__user')
