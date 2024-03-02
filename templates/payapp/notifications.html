@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Requests {% endblock title %}</title>
+</head>
+<body>
+{% block content %}
+    <h1>Requests</h1>
+    <table>
+        <tr>
+            <th>Request ID</th>
+            <th>Amount</th>
+            <th>From User</th>
+            <th>To User</th>
+            <th>Date</th>
+            <th>Status</th>
+        </tr>
+        {% for request in requests %}
+            <tr>
+                <td>{{ request.id }}</td>
+                <td>{{ request.amount }}</td>
+                <td>{{ request.sender.user.username }}</td>
+                <td>{{ request.receiver.user.username }}</td>
+                <td>{{ request.created_at }}</td>
+                <td>{{ request.status }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock content %}
+
+</body>
+</html>
