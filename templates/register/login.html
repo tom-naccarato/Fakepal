@@ -12,13 +12,13 @@
     <div class="container">
         <div class="row">
             <div class="col-md-4 offset-md-4 form-div login">
-                <form action="{% url 'login' %}" method="post">
+                <form action="{% url 'register:login' %}" method="post">
                     {% csrf_token %}
                     {{ form|crispy }}
                     <div class="form-group text-center">
                         <button type="submit" class="btn btn-primary btn-block btn-lg">Login</button>
                     </div>
-                    <p class="text-center">Not yet a member? <a href="{% url 'register' %}">Sign Up</a></p>
+                    <p class="text-center">Not yet a member? <a href="{% url 'register:register' %}">Sign Up</a></p>
                 </form>
             </div>
         </div>

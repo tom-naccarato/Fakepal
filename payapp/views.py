@@ -45,9 +45,10 @@ def transactions(request):
     print(transactions_list)
     return render(request, 'payapp/transactions.html', {'transactions': transactions_list})
 
+
 def admin_all_users(request):
     """
-    View function to display all users
+    Admin view function to display all users
     :param request:
     :return:
     """
@@ -56,6 +57,25 @@ def admin_all_users(request):
         if user.groups.filter(name="AdminGroup").exists():
             users_list = Account.objects.all()
             return render(request, 'payapp/admin_all_users.html', {'users': users_list})
+        else:
+            messages.error(request, "You need to be an admin to view this page.")
+            return redirect('home')
+    else:
+        messages.error(request, "You need to be logged in and admin to view this page.")
+        return redirect('home')
+
+
+def admin_all_transactions(request):
+    """
+    Admin view function to display all transactions
+    :param request:
+    :return:
+    """
+    user = request.user
+    if user.is_authenticated:
+        if user.groups.filter(name="AdminGroup").exists():
+            transactions_list = Transaction.objects.all()
+            return render(request, 'payapp/admin_all_transactions.html', {'transactions': transactions_list})
         else:
             messages.error(request, "You need to be an admin to view this page.")
             return redirect('home')

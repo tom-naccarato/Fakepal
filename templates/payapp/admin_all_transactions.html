@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Admin - All Transactions{% endblock title %}</title>
+</head>
+{% block content %}
+<body>
+    <h1>All Transactions</h1>
+    <table>
+        <tr>
+            <th>Transaction ID</th>
+            <th>Amount</th>
+            <th>From User</th>
+            <th>To User</th>
+            <th>Date</th>
+        </tr>
+        {% for transaction in transactions %}
+        <tr>
+            <td>{{ transaction.id }}</td>
+            <td>{{ transaction.amount }}</td>
+            <td>{{ transaction.sender.user.username }}</td>
+            <td>{{ transaction.receiver.user.username }}</td>
+            <td>{{ transaction.created_at | date:"D, d M Y H:i" }}</td>            
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock content %}
+</body>
+
+</html>

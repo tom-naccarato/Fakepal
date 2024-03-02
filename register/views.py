@@ -58,6 +58,8 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, "You have been logged in")
+                if user.groups.filter(name="AdminGroup").exists():
+                    messages.success(request, "You are an admin and can view all transaction and users")
                 return redirect('home')
             else:
                 messages.error(request, "Invalid username or password")
