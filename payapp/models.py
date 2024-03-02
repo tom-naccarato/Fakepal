@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
+
 class Account(models.Model):
     """
     Account model for storing user account information.
@@ -17,7 +18,7 @@ class Account(models.Model):
 
     Methods:
     - __str__: Returns the username of the user linked to the account
-
+    - change_balance: Modifies the account balance by a specified amount
     """
 
     class Meta:

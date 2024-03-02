@@ -1,7 +1,5 @@
-from django.contrib.auth.models import Group, Permission, User
-from django.contrib.contenttypes.models import ContentType
-
 def create_admin_group():
+    from django.contrib.auth.models import Group, Permission, User
     """Function to create a custom admin group and assign all permissions to it."""
     # Create the admin group
     admin_group, created = Group.objects.get_or_create(name='AdminGroup')
@@ -18,7 +16,9 @@ def create_admin_group():
     else:
         print('Custom admin group already exists.')
 
-def create_admin_account():
+
+def create_default_admin_account():
+    from django.contrib.auth.models import Group, User
     """Function to create an admin account as per specification."""
     # Check if the admin account already exists
     if not User.objects.filter(username='admin1').exists():
@@ -36,11 +36,8 @@ def create_admin_account():
         print('Admin account already exists.')
 
 
-def create_admin_group_and_account():
+def create_admin_group_and_account(sender, **kwargs):
     """Function to create the admin group and account."""
     create_admin_group()
-    create_admin_account()
+    create_default_admin_account()
     print('Admin group and account created successfully.')
-
-
-

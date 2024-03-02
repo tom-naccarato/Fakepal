@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Admin - All Users {% endblock title %}</title>
+</head>
+<body>
+{% block content %}
+    <h1>All Users</h1>
+    <table>
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Last Login</th>
+        </tr>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.user.username }}</td>
+                <td>{{ user.user.email }}</td>
+                <td>{{ user.user.last_login }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+</body>
+</html>

@@ -23,7 +23,7 @@ urlpatterns = [
     path('webapps2024/', include([
         path('admin/', admin.site.urls),
         path('home/', payapp.views.home, name='home'),
-        path('register/', include('register.urls')),
-        path('payapp/', include('payapp.urls')),
-    ])),
+        path('register/', include(('register.urls', 'register'), namespace='register')),
+        path('payapp/', include(('payapp.urls', 'payapp'), namespace='payapp')),
+    ]))
 ]

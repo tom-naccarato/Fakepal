@@ -44,3 +44,21 @@ def transactions(request):
     ).select_related('sender', 'receiver', 'sender__user', 'receiver__user')
     print(transactions_list)
     return render(request, 'payapp/transactions.html', {'transactions': transactions_list})
+
+def admin_all_users(request):
+    """
+    View function to display all users
+    :param request:
+    :return:
+    """
+    user = request.user
+    if user.is_authenticated:
+        if user.groups.filter(name="AdminGroup").exists():
+            users_list = Account.objects.all()
+            return render(request, 'payapp/admin_all_users.html', {'users': users_list})
+        else:
+            messages.error(request, "You need to be an admin to view this page.")
+            return redirect('home')
+    else:
+        messages.error(request, "You need to be logged in and admin to view this page.")
+        return redirect('home')
