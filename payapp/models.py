@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
-
+from django.contrib import messages
 
 
 class Account(models.Model):
@@ -170,19 +170,17 @@ class Request(models.Model):
 
         :return:
         """
-
-        # Checks that the receiver has enough balance to accept the request
+        # Checks that the receiver of the request has enough balance to accept the request
         if self.receiver.balance >= amount:
             # Creates a transaction
-            transaction = Transaction(sender=self.sender, receiver=self.receiver,
+            transaction = Transaction(sender=self.receiver, receiver=self.sender,
                                       amount=amount)
             transaction.save()
             # Executes the transaction
             transaction.transfer(amount)
             self.status = 'accepted'
-            return self.sender.balance
-
         else:
+            # If there is not enough balance, does nothing
             return None
 
     def decline_request(self):

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %} Make a Request {% endblock title %}</title>
+    </head>
+    <body>
+        {% block content %}
+        <h2>Make a Request</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{form |crispy }}
+            <input type="submit" value="Submit">
+        </form>
+        {% endblock content %}
+    </body>
+</html>

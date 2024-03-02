@@ -1,8 +1,7 @@
 from django.contrib import messages
-from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Q
 from django.shortcuts import render, redirect
-
+from payapp.forms import RequestForm
 from payapp.models import Transaction, Account, Request
 from webapps2024 import settings
 
@@ -104,4 +103,27 @@ def requests(request):
     request_list = Request.objects.filter(
         Q(sender__user=request.user) | Q(receiver__user=request.user)
     ).select_related('sender', 'receiver', 'sender__user', 'receiver__user')
-    return render(request, 'payapp/notifications.html', {'requests': request_list})
+    return render(request, 'payapp/requests.html', {'requests': request_list})
+
+@login_required_message
+def make_request(request):
+    """
+    View function to handle the request of a new user
+
+    :param request:
+    :return:
+    """
+    if request.method == 'POST':
+        form = RequestForm(request.POST)
+        form.receiver = Account.objects.get(user__username=form.receiver)
+        if form.is_valid():
+            form.instance.sender = Account.objects.get(user=request.user)
+            form.save()
+            messages.success(request, "Request has been made")
+            return redirect('home')
+        else:
+            messages.error(request, "Invalid information. Please try again.")
+            return render(request, 'payapp/make_request.html', {'form': form})
+    else:
+        form = RequestForm()
+    return render(request, 'payapp/make_request.html', {'form': form})
