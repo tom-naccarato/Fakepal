@@ -101,11 +101,24 @@ def requests(request):
     :param request:
     :return:
     """
-    user = request.user
-    request_list = Request.objects.filter(
-        Q(sender__user=request.user) | Q(receiver__user=request.user)
+    # Select outgoing requests where the status is pending
+    outgoing_request_list = Request.objects.filter(
+        Q(sender__user=request.user, status='pending')
     ).select_related('sender', 'receiver', 'sender__user', 'receiver__user')
-    return render(request, 'payapp/requests.html', {'requests': request_list})
+    # Select incoming requests where the status is pending
+    incoming_request_list = Request.objects.filter(
+        Q(receiver__user=request.user, status='pending')
+    ).select_related('sender', 'receiver', 'sender__user', 'receiver__user')
+    # Select completed requests where the status is not pending
+    completed_request_list = Request.objects.filter(
+        (Q(sender__user=request.user) & ~Q(status='pending')) |
+        (Q(receiver__user=request.user) & ~Q(status='pending'))
+    ).select_related('sender', 'receiver', 'sender__user', 'receiver__user')
+
+    # Render the requests page with the context
+    context = {'outgoing_requests': outgoing_request_list, 'incoming_requests': incoming_request_list,
+               'completed_requests': completed_request_list}
+    return render(request, 'payapp/requests.html', context)
 
 
 @login_required_message

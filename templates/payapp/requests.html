@@ -8,6 +8,11 @@
 <body>
 {% block content %}
     <h1>Requests</h1>
+    <br>
+    <h2>Pending Requests</h2>
+    <h3>Incoming Requests</h3>
+    {% if incoming_requests %}
+        <p> You currently have {{ incoming_requests.count }} incoming request{{ incoming_requests | pluralize }}:</p>
     <table>
         <tr>
             <th>Request ID</th>
@@ -16,23 +21,83 @@
             <th>Date</th>
             <th>Status</th>
         </tr>
-        {% for request in requests %}
+        {% for request in incoming_requests %}
             <tr>
                 <td>{{ request.id }}</td>
                 <td>{{ request.amount }}</td>
                 <td>{{ request.sender.user.username }}</td>
                 <td>{{ request.created_at }}</td>
                 <td>{{ request.status }}</td>
-                <td>
-                    <form action="{% url 'payapp:accept_request' request.id %}" method="post">
-                        {% csrf_token %}
-                        <input type="hidden" name="amount" value="{{ request.amount }}">
-                        <button type="submit">Accept</button>
-                    </form>
-                </td>
+                {% if request.status == 'pending' %}
+                    <td>
+                        <form action="{% url 'payapp:accept_request' request.id %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="amount" value="{{ request.amount }}">
+                            <button type="submit">Accept</button>
+                        </form>
+                    </td>
+                    <
+                {% endif %}
             </tr>
         {% endfor %}
     </table>
+    {% else %}
+        <p>You have no pending incoming requests.</p>
+    {% endif %}
+    <br>
+    <h3>Outgoing Requests</h3>
+    {% if outgoing_requests %}
+        <p> You currently have {{ outgoing_requests.count }} outgoing request{{ outgoing_requests | pluralize }}:</p>
+    <table>
+        <tr>
+            <th>Request ID</th>
+            <th>Amount</th>
+            <th>To User</th>
+            <th>Date</th>
+            <th>Status</th>
+        </tr>
+        {% for request in outgoing_requests %}
+            <tr>
+                <td>{{ request.id }}</td>
+                <td>{{ request.amount }}</td>
+                <td>{{ request.receiver.user.username }}</td>
+                <td>{{ request.created_at }}</td>
+                <td>{{ request.status }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p>You have no pending outgoing requests.</p>
+    {% endif %}
+    <br>
+    <h2>Completed Requests</h2>
+    {% if completed_requests %}
+        <p> You currently have {{ completed_requests.count }} completed request{{ completed_requests | pluralize }}:</p>
+    <table>
+        <tr>
+            <th>Request ID</th>
+            <th>Amount</th>
+            <th>From User</th>
+            <th>To User</th>
+            <th>Date</th>
+            <th>Status</th>
+        </tr>
+        {% for request in completed_requests %}
+            <tr>
+                <td>{{ request.id }}</td>
+                <td>{{ request.amount }}</td>
+                <td>{{ request.sender.user.username }}</td>
+                <td>{{ request.receiver.user.username }}</td>
+                <td>{{ request.created_at }}</td>
+                <td>{{ request.status }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p>You have no completed requests.</p>
+    {% endif %}
+    <br>
+<p>Click <a href="{% url 'payapp:make_request' %}">here</a> to make a new request. </p>
 {% endblock content %}
 
 </body>
