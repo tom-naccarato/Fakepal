@@ -13,7 +13,6 @@
             <th>Request ID</th>
             <th>Amount</th>
             <th>From User</th>
-            <th>To User</th>
             <th>Date</th>
             <th>Status</th>
         </tr>
@@ -22,9 +21,15 @@
                 <td>{{ request.id }}</td>
                 <td>{{ request.amount }}</td>
                 <td>{{ request.sender.user.username }}</td>
-                <td>{{ request.receiver.user.username }}</td>
                 <td>{{ request.created_at }}</td>
                 <td>{{ request.status }}</td>
+                <td>
+                    <form action="{% url 'payapp:accept_request' request.id %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="amount" value="{{ request.amount }}">
+                        <button type="submit">Accept</button>
+                    </form>
+                </td>
             </tr>
         {% endfor %}
     </table>

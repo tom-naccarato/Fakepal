@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.db.models import Q
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from payapp.forms import RequestForm
 from payapp.models import Transaction, Account, Request
 from webapps2024 import settings
@@ -121,7 +121,6 @@ def make_request(request):
         if form.is_valid():
             request_instance = form.save(commit=False)  # Creates an instance of the form without saving it
             request_instance.sender = Account.objects.get(user=request.user)
-            print(request.POST['receiver'])
             request_instance.receiver = Account.objects.get(id=request.POST['receiver'])
             request_instance.save()
             messages.success(request, "Request has been made")
@@ -132,3 +131,24 @@ def make_request(request):
     else:
         form = RequestForm()
     return render(request, 'payapp/make_request.html', {'form': form})
+
+
+@login_required_message
+def accept_request(request, request_id):
+    """
+    View function to accept a request from another user
+
+
+    :param request:
+    :param request_id: The id of the request object
+    :return:
+    """
+    try:
+        req = get_object_or_404(Request, id=request_id)
+        print(req)
+        req.accept_request(req.amount)
+        messages.success(request, "Request has been accepted")
+        return redirect('payapp:requests')
+    except:
+        messages.error(request, "Request could not be accepted")
+        return redirect('payapp:requests')

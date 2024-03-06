@@ -179,6 +179,7 @@ class Request(models.Model):
             # Executes the transaction
             transaction.transfer(amount)
             self.status = 'accepted'
+            self.save()
         else:
             # If there is not enough balance, does nothing
             return None
