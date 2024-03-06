@@ -191,4 +191,5 @@ class Request(models.Model):
         :return: None
         """
         self.status = 'declined'
+        self.save()
         return None

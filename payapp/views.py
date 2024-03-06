@@ -165,3 +165,21 @@ def accept_request(request, request_id):
     except:
         messages.error(request, "Request could not be accepted")
         return redirect('payapp:requests')
+
+@login_required_message
+def decline_request(request, request_id):
+    """
+    View function to decline a request from another user
+
+    :param request:
+    :param request_id: The id of the request object
+    :return:
+    """
+    try:
+        req = get_object_or_404(Request, id=request_id)
+        req.decline_request()
+        messages.success(request, "Request has been declined")
+        return redirect('payapp:requests')
+    except:
+        messages.error(request, "Request could not be declined")
+        return redirect('payapp:requests')

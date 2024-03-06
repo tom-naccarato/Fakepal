@@ -20,6 +20,7 @@
             <th>From User</th>
             <th>Date</th>
             <th>Status</th>
+            <th>Action</th>
         </tr>
         {% for request in incoming_requests %}
             <tr>
@@ -35,8 +36,11 @@
                             <input type="hidden" name="amount" value="{{ request.amount }}">
                             <button type="submit">Accept</button>
                         </form>
+                        <form action="{% url 'payapp:decline_request' request.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit">Decline</button>
+                        </form>
                     </td>
-                    <
                 {% endif %}
             </tr>
         {% endfor %}
