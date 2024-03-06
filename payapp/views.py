@@ -17,6 +17,7 @@ def login_required_message(function):
         # If the user is logged in, call the function
         if request.user.is_authenticated:
             return function(request, *args, **kwargs)
+
         # If the user is not logged in, display an error message and redirect to the login page
         else:
             messages.error(request, "You need to be logged in to view this page.")
@@ -35,6 +36,7 @@ def admin_login_required_message(function):
 
     def wrap(request, *args, **kwargs):
         user = request.user
+
         # If the user is logged in and an admin, call the function
         if user.is_authenticated:
             if user.groups.filter(name="AdminGroup").exists():
@@ -42,6 +44,7 @@ def admin_login_required_message(function):
             else:
                 messages.error(request, "You need to be an admin to view this page.")
                 return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))
+
         # If the user is not logged in, display an error message and redirect to the login page
         else:
             messages.error(request, "You need to be logged in to view this page.")
@@ -187,11 +190,17 @@ def decline_request(request, request_id):
     :param request_id: The id of the request object
     :return:
     """
+    # Try to decline the request
     try:
         req = get_object_or_404(Request, id=request_id)
         req.decline_request()
         messages.success(request, "Request has been declined")
         return redirect('payapp:requests')
+    # If the request does not exist, display an error message and redirect to the requests page
+    except Http404:
+        messages.error(request, "Request does not exist. Please try again.")
+        return redirect('payapp:requests')
+    # If an error occurs, display an error message and redirect to the requests page
     except:
-        messages.error(request, "Request could not be declined")
+        messages.error(request, "An error occurred. Please try again.")
         return redirect('payapp:requests')
