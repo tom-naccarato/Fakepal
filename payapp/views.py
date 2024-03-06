@@ -137,6 +137,9 @@ def make_request(request):
     if request.method == 'POST':
         form = RequestForm(request.POST, user=request.user)
         if form.is_valid():
+            if form.amount <= 0:
+                messages.error(request, "You cannot request a negative number. Please try again.")
+                return render(request, 'payapp/make_request.html', {'form': form})
             request_instance = form.save(commit=False)  # Creates an instance of the form without saving it
             request_instance.sender = Account.objects.get(user=request.user)
             request_instance.receiver = Account.objects.get(id=request.POST['receiver'])
