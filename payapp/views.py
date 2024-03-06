@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from payapp.custom_exceptions import InsufficientBalanceException
-from payapp.forms import RequestForm
+from payapp.forms import RequestForm, PaymentForm
 from payapp.models import Transaction, Account, Request
 from webapps2024 import settings
 
@@ -180,6 +180,9 @@ def accept_request(request, request_id):
                                 "Please add funds to your account.")
         return redirect('payapp:requests')
 
+    except ValueError as e:
+        messages.error(request, "You cannot request a negative number. Please try again.")
+
 
 @login_required_message
 def decline_request(request, request_id):
@@ -204,3 +207,36 @@ def decline_request(request, request_id):
     except:
         messages.error(request, "An error occurred. Please try again.")
         return redirect('payapp:requests')
+
+@login_required_message
+def send_payment(request):
+    """
+    View function to send payment to another user
+
+    :param request:
+    :return:
+    """
+    if request.method == 'POST':
+        form = PaymentForm(request.POST, user=request.user)
+        if form.is_valid():
+            try:
+                transaction_instance = form.save(commit=False)
+                transaction_instance.sender = Account.objects.get(user=request.user)
+                transaction_instance.receiver = Account.objects.get(id=request.POST['receiver'])
+                transaction_instance.save()
+                transaction_instance.transfer(transaction_instance.amount)
+                messages.success(request, "Payment has been made")
+                return redirect('home')
+            except InsufficientBalanceException as e:
+                messages.error(request, "You do not have enough balance to make this payment. "
+                                        "Please add funds to your account.")
+                return render(request, 'payapp/send_payment.html', {'form': form})
+            except ValueError as e:
+                messages.error(request, "You cannot transfer a negative number. Please try again.")
+                return render(request, 'payapp/send_payment.html', {'form': form})
+        else:
+            messages.error(request, "Invalid information. Please try again.")
+            return render(request, 'payapp/send_payment.html', {'form': form})
+    else:
+        form = RequestForm(user=request.user)
+    return render(request, 'payapp/send_payment.html', {'form': form})
