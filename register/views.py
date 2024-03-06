@@ -92,7 +92,7 @@ def admin_register(request):
             admin_group = Group.objects.get(name='AdminGroup')
             admin.groups.add(admin_group)
             # Redirects the user to the home page after registration
-            messages.success(request, "Admin has been registered.")
+            messages.success(request, f"Admin {admin} has been registered.")
             return redirect('home')
         else:
             messages.error(request, "Invalid information")
