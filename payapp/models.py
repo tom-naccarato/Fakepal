@@ -1,8 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
 from payapp.custom_exceptions import InsufficientBalanceException
-from django.contrib import messages
-
 
 class Account(models.Model):
     """
