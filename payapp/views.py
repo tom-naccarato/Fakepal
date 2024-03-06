@@ -223,8 +223,8 @@ def send_payment(request):
                 transaction_instance = form.save(commit=False)
                 transaction_instance.sender = Account.objects.get(user=request.user)
                 transaction_instance.receiver = Account.objects.get(id=request.POST['receiver'])
-                transaction_instance.save()
                 transaction_instance.transfer(transaction_instance.amount)
+                transaction_instance.save()
                 messages.success(request, "Payment has been made")
                 return redirect('home')
             except InsufficientBalanceException as e:
