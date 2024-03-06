@@ -71,7 +71,6 @@ def transactions(request):
     transactions_list = Transaction.objects.filter(
         Q(sender__user=request.user) | Q(receiver__user=request.user)
     ).select_related('sender', 'receiver', 'sender__user', 'receiver__user')
-    print(transactions_list)
     return render(request, 'payapp/transactions.html', {'transactions': transactions_list})
 
 
