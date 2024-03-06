@@ -3,6 +3,9 @@ from payapp.models import Request, Account
 
 
 class RequestForm(forms.ModelForm):
+    """
+    Form to request money from another user
+    """
     receiver = forms.ModelChoiceField(queryset=Account.objects.none(),  # Initialize with none, will update in __init__
                                       widget=forms.Select(attrs={'class': 'form-control'}))
 
