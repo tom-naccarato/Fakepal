@@ -8,6 +8,7 @@
 {% block content %}
 <body>
     <h1>All Transactions</h1>
+    <p> There {{ transactions.count | pluralize:'is, are'}} currently {{ transactions.count }} completed transaction{{ transactions.count | pluralize }}.</p>
     <table>
         <tr>
             <th>Transaction ID</th>
