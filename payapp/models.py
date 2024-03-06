@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from payapp.custom_exceptions import InsufficientBalanceException
 from django.contrib import messages
 
 
@@ -170,6 +171,7 @@ class Request(models.Model):
 
         :return:
         """
+
         # Checks that the receiver of the request has enough balance to accept the request
         if self.receiver.balance >= amount:
             # Creates a transaction
@@ -180,9 +182,10 @@ class Request(models.Model):
             transaction.transfer(amount)
             self.status = 'accepted'
             self.save()
-        else:
-            # If there is not enough balance, does nothing
             return None
+        # If the receiver does not have enough balance to accept the request, raise an exception
+        else:
+            raise InsufficientBalanceException
 
     def decline_request(self):
         """

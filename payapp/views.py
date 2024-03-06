@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
+from payapp.custom_exceptions import InsufficientBalanceException
 from payapp.forms import RequestForm
 from payapp.models import Transaction, Account, Request
 from webapps2024 import settings
@@ -162,8 +163,10 @@ def accept_request(request, request_id):
         req.accept_request(req.amount)
         messages.success(request, "Request has been accepted")
         return redirect('payapp:requests')
-    except:
-        messages.error(request, "Request could not be accepted")
+
+    except InsufficientBalanceException as e:
+        messages.error(request, "You do not have enough balance to accept this request. "
+                                "Please add funds to your account.")
         return redirect('payapp:requests')
 
 @login_required_message
