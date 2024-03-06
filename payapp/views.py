@@ -130,7 +130,7 @@ def make_request(request):
     :return:
     """
     if request.method == 'POST':
-        form = RequestForm(request.POST)
+        form = RequestForm(request.POST, user=request.user)
         if form.is_valid():
             request_instance = form.save(commit=False)  # Creates an instance of the form without saving it
             request_instance.sender = Account.objects.get(user=request.user)
