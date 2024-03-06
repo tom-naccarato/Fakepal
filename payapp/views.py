@@ -20,6 +20,7 @@ def login_required_message(function):
             messages.error(request, "You need to be logged in to view this page.")
             return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))
 
+    # Retains the docstring and name of the original function
     wrap.__doc__ = function.__doc__
     wrap.__name__ = function.__name__
     return wrap
@@ -44,6 +45,7 @@ def admin_login_required_message(function):
             messages.error(request, "You need to be logged in to view this page.")
             return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))
 
+    # Retains the docstring and name of the original function
     wrap.__doc__ = function.__doc__
     wrap.__name__ = function.__name__
     return wrap
@@ -105,6 +107,7 @@ def requests(request):
     ).select_related('sender', 'receiver', 'sender__user', 'receiver__user')
     return render(request, 'payapp/requests.html', {'requests': request_list})
 
+
 @login_required_message
 def make_request(request):
     """
@@ -115,10 +118,12 @@ def make_request(request):
     """
     if request.method == 'POST':
         form = RequestForm(request.POST)
-        form.receiver = Account.objects.get(user__username=form.receiver)
         if form.is_valid():
-            form.instance.sender = Account.objects.get(user=request.user)
-            form.save()
+            request_instance = form.save(commit=False)  # Creates an instance of the form without saving it
+            request_instance.sender = Account.objects.get(user=request.user)
+            print(request.POST['receiver'])
+            request_instance.receiver = Account.objects.get(id=request.POST['receiver'])
+            request_instance.save()
             messages.success(request, "Request has been made")
             return redirect('home')
         else:
