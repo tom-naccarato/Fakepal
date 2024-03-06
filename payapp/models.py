@@ -30,7 +30,7 @@ class Account(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=False, blank=False, related_name='account')
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=1000)
     CURRENCY_CHOICES = (
-        ('gdp', 'GBP'),
+        ('gbp', 'GBP'),
         ('usd', 'USD'),
         ('eur', 'EUR'),
     )
