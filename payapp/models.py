@@ -157,6 +157,7 @@ class Request(models.Model):
         ('pending', 'Pending'),
         ('accepted', 'Accepted'),
         ('declined', 'Declined'),
+        ('cancelled', 'Cancelled')
     )
     status = models.CharField(max_length=10, choices=REQUEST_STATUS_CHOICES, default='pending')
 
@@ -199,5 +200,15 @@ class Request(models.Model):
         :return: None
         """
         self.status = 'declined'
+        self.save()
+        return None
+
+    def cancel_request(self):
+        """
+        Cancels a request and sets req.
+
+        :return: None
+        """
+        self.status = 'cancelled'
         self.save()
         return None

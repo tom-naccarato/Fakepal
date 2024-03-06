@@ -97,6 +97,7 @@ def admin_all_transactions(request):
     return render(request, 'payapp/admin_all_transactions.html',
                   {'transactions': transactions_list})
 
+
 @login_required_message
 def requests(request):
     """
@@ -202,10 +203,35 @@ def decline_request(request, request_id):
     except Http404:
         messages.error(request, "Request does not exist. Please try again.")
         return redirect('payapp:requests')
-    # If an error occurs, display an error message and redirect to the requests page
+    # If any other error occurs, display an error message and redirect to the requests page
     except:
         messages.error(request, "An error occurred. Please try again.")
         return redirect('payapp:requests')
+
+
+def cancel_request(request, request_id):
+    """
+    View function to cancel a request from another user
+
+    :param request:
+    :param request_id: The id of the request object
+    :return:
+    """
+    # Try to cancel the request
+    try:
+        req = get_object_or_404(Request, id=request_id)
+        req.cancel_request()
+        messages.success(request, "Request has been cancelled")
+        return redirect('payapp:requests')
+    # If the request does not exist, display an error message and redirect to the requests page
+    except Http404:
+        messages.error(request, "Request does not exist. Please try again.")
+        return redirect('payapp:requests')
+    # If an any other error occurs, display an error message and redirect to the requests page
+    except:
+        messages.error(request, "An error occurred. Please try again.")
+        return redirect('payapp:requests')
+
 
 @login_required_message
 def send_payment(request):

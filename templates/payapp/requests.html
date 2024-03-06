@@ -61,6 +61,7 @@
             <th>To User</th>
             <th>Date</th>
             <th>Status</th>
+            <th>Cancel?</th>
         </tr>
         {% for request in outgoing_requests %}
             <tr>
@@ -69,6 +70,12 @@
                 <td>{{ request.receiver.user.username }}</td>
                 <td>{{ request.created_at }}</td>
                 <td>{{ request.status }}</td>
+                <td>
+                    <form action="{% url 'payapp:cancel_request' request.id %}" method="post" class="d-inline-block">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                    </form>
+                </td>
             </tr>
         {% endfor %}
     </table>
