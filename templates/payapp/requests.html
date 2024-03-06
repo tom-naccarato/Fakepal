@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Payment Requests {% endblock title %}</title>
+    <link href="{% static 'payapp/css/requests.css' %}" rel="stylesheet">
 </head>
 <body>
 {% block content %}
@@ -30,15 +32,15 @@
                 <td>{{ request.created_at }}</td>
                 <td>{{ request.status }}</td>
                 {% if request.status == 'pending' %}
-                    <td>
-                        <form action="{% url 'payapp:accept_request' request.id %}" method="post">
+                    <td class="text-center">
+                        <form action="{% url 'payapp:accept_request' request.id %}" method="post" class="d-inline-block">
                             {% csrf_token %}
                             <input type="hidden" name="amount" value="{{ request.amount }}">
-                            <button type="submit">Accept</button>
+                            <button type="submit" class="btn btn-success btn-sm">Accept</button>
                         </form>
-                        <form action="{% url 'payapp:decline_request' request.id %}" method="post">
+                        <form action="{% url 'payapp:decline_request' request.id %}" method="post" class="d-inline-block">
                             {% csrf_token %}
-                            <button type="submit">Decline</button>
+                            <button type="submit" class="btn btn-danger btn-sm">Decline</button>
                         </form>
                     </td>
                 {% endif %}
