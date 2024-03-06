@@ -1,4 +1,5 @@
 {% extends "payapp/../base.html" %}
+{% load currency_filters %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,7 +11,7 @@
     {% if user.is_authenticated %}
         <p>
             Welcome, <b>{{ user.username }}</b>, to the FakePal homepage!
-        You currently have {{ user.account.balance }} {{ user.account.currency | upper}} in your account.
+        You currently have {{ user.account.currency | currency_symbol}}{{ user.account.balance }}  in your account.
         </p>
     {% else %}
         <p>

@@ -97,7 +97,6 @@ def admin_all_transactions(request):
     return render(request, 'payapp/admin_all_transactions.html',
                   {'transactions': transactions_list})
 
-
 @login_required_message
 def requests(request):
     """
