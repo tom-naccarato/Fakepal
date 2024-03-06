@@ -9,23 +9,45 @@
 <body>
 {% block content %}
     <h1>All Users</h1>
-    <p>There {{ users.count | pluralize:'is, are'}} currently {{ users.count }} user{{ users.count | pluralize }}.</p> 
+    There {% if admins.count|add:users.count == 1 %}is{% else %}are{% endif %} currently {{ admins.count|add:users.count }} 
+    user{{admins.count|add:users.count|pluralize }}.
+    {{ admins.count }} of which {{ admins.count |pluralize:'is,are' }} admin{{ admins.count|pluralize }}.
+    <br>
+    <h2>Administrators</h2>
+    {% if admins %}
     <table>
         <tr>
             <th>Username</th>
             <th>Email</th>
-            <th>Admin</th>
+            <th>Last Login</th>
+        </tr>
+        {% for admin in admins %}
+            <tr>
+                <td>{{ admin.user.username }}</td>
+                <td>{{ admin.user.email }}</td>
+                <td>{{ admin.user.last_login }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+    <br>
+    {% if users %}
+    <h2>Users</h2>
+    <table>
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
             <th>Last Login</th>
         </tr>
         {% for user in users %}
             <tr>
                 <td>{{ user.user.username }}</td>
                 <td>{{ user.user.email }}</td>
-                <td>{{ user.user | is_admin  }}</td>
                 <td>{{ user.user.last_login }}</td>
             </tr>
         {% endfor %}
     </table>
+    {% endif %}
     <br>
     <p> To register a new admin, click <a href="{% url 'register:admin_register' %}">here</a>.</p>
 {% endblock %}

@@ -82,8 +82,10 @@ def admin_all_users(request):
     :param request:
     :return:
     """
-    users_list = Account.objects.all()
-    return render(request, 'payapp/admin_all_users.html', {'users': users_list})
+    users_list = Account.objects.filter(Q(user__groups=None)).select_related('user')
+    admin_list = Account.objects.filter(Q(user__groups__name="AdminGroup")).select_related('user')
+    context = {'users': users_list, 'admins': admin_list}
+    return render(request, 'payapp/admin_all_users.html', context)
 
 
 @admin_login_required_message
@@ -214,7 +216,7 @@ def decline_request(request, request_id):
 
 def cancel_request(request, request_id):
     """
-    View function to cancel a request from another user
+    View function to cancel a request to another user
 
     :param request:
     :param request_id: The id of the request object
