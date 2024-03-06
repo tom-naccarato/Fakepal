@@ -32,7 +32,7 @@ class Account(models.Model):
         ('usd', 'USD'),
         ('eur', 'EUR'),
     )
-    currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES, default='gdp')
+    currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES, default='gbp')
     created_at = models.DateTimeField(auto_now_add=True)
     STATUS_CHOICES = (
         ('active', 'Active'),
