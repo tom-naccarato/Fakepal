@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Requests {% endblock title %}</title>
+    <title>{% block title %}Payment Requests {% endblock title %}</title>
 </head>
 <body>
 {% block content %}
@@ -12,7 +12,7 @@
     <h2>Pending Requests</h2>
     <h3>Incoming Requests</h3>
     {% if incoming_requests %}
-        <p> You currently have {{ incoming_requests.count }} incoming request{{ incoming_requests | pluralize }}:</p>
+        <p> You currently have {{ incoming_requests.count }} incoming payment request{{ incoming_requests | pluralize }}:</p>
     <table>
         <tr>
             <th>Request ID</th>
@@ -46,12 +46,12 @@
         {% endfor %}
     </table>
     {% else %}
-        <p>You have no pending incoming requests.</p>
+        <p>You have no pending incoming payment requests.</p>
     {% endif %}
     <br>
     <h3>Outgoing Requests</h3>
     {% if outgoing_requests %}
-        <p> You currently have {{ outgoing_requests.count }} outgoing request{{ outgoing_requests | pluralize }}:</p>
+        <p> You currently have {{ outgoing_requests.count }} outgoing payment request{{ outgoing_requests | pluralize }}:</p>
     <table>
         <tr>
             <th>Request ID</th>
@@ -71,12 +71,12 @@
         {% endfor %}
     </table>
     {% else %}
-        <p>You have no pending outgoing requests.</p>
+        <p>You have no pending outgoing payment requests.</p>
     {% endif %}
     <br>
     <h2>Completed Requests</h2>
     {% if completed_requests %}
-        <p> You currently have {{ completed_requests.count }} completed request{{ completed_requests | pluralize }}:</p>
+        <p> You currently have {{ completed_requests.count }} completed  payment request{{ completed_requests | pluralize }}:</p>
     <table>
         <tr>
             <th>Request ID</th>
@@ -98,7 +98,7 @@
         {% endfor %}
     </table>
     {% else %}
-        <p>You have no completed requests.</p>
+        <p>You have no completed payment requests.</p>
     {% endif %}
     <br>
 <p>Click <a href="{% url 'payapp:make_request' %}">here</a> to make a new request. </p>

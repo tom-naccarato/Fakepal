@@ -5,11 +5,11 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %} Make a Request {% endblock title %}</title>
+        <title>{% block title %} Request a Payment{% endblock title %}</title>
     </head>
     <body>
         {% block content %}
-        <h2>Make a Request</h2>
+        <h2>Make a Payment Request</h2>
         <form method="post">
             {% csrf_token %}
             {{form |crispy }}
