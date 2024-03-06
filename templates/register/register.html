@@ -1,6 +1,7 @@
 {% extends "payapp/../base.html" %}
 {% load static %}
 {% load crispy_forms_filters %}
+{% load group_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +12,13 @@
 </head>
 <body>
 {% block content %}
-    <h2>Register an Account</h2>
+    {% if admin %}
+        <h2>Admin Registration</h2>
+        <p>Please fill out the form to register a new admin.</p>
+    {% else %}
+        <h2>User Registration</h2>
+        <p>Please fill out the form to create a new account.</p>
+    {% endif %}
     <form method="post">
         {% csrf_token %}
         {{ form | crispy }}

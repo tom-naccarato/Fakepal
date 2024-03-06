@@ -1,7 +1,10 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
+
+from payapp.views import admin_login_required_message
 from register.forms import UserForm, LoginForm
+from django.contrib.auth.models import Group, User
 
 
 def register(request):
@@ -31,11 +34,13 @@ def register(request):
         # If form is not valid, return the form with the errors
         else:
             messages.error(request, "Invalid information")
-            return render(request, 'register/register.html', {'form': form})
+            context = {'form': form, 'admin': False}
+            return render(request, 'register/register.html', context)
     # Otherwise, render an empty form
     else:
         form = UserForm()  # Instantiate an empty form for GET request
-    return render(request, 'register/register.html', {'form': form})
+        context = {'form': form, 'admin': False}
+        return render(request, 'register/register.html', context)
 
 
 def login_view(request):
@@ -71,3 +76,28 @@ def login_view(request):
     else:
         form = LoginForm()
         return render(request, 'register/login.html', {'form': form})
+
+
+@admin_login_required_message
+def admin_register(request):
+    if request.method == 'POST':
+        # Declares a form and adds the data from the form
+        form = UserForm(request.POST)
+        # Checks if the form is valid
+        if form.is_valid():
+            form.save()  # This will save the User and create an Account
+            # Add the admin to the admin group
+            admin = User.objects.get(username=form.cleaned_data.get('username'))
+            admin_group = Group.objects.get(name='AdminGroup')
+            admin.groups.add(admin_group)
+            # Redirects the user to the home page after registration
+            messages.success(request, "Admin has been registered.")
+            return redirect('home')
+        else:
+            messages.error(request, "Invalid information")
+            context = {'form': form, 'admin': True}
+            return render(request, 'register/register.html', context)
+    else:
+        form = UserForm()
+        context = {'form': form, 'admin': True}
+    return render(request, 'register/register.html', context)
