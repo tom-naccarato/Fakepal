@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.db.models import Q
+from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from payapp.custom_exceptions import InsufficientBalanceException
 from payapp.forms import RequestForm
@@ -157,17 +158,25 @@ def accept_request(request, request_id):
     :param request_id: The id of the request object
     :return:
     """
+    # Try to accept the request
     try:
         req = get_object_or_404(Request, id=request_id)
-        print(req)
         req.accept_request(req.amount)
         messages.success(request, "Request has been accepted")
         return redirect('payapp:requests')
 
+    # If the request does not exist, display an error message and redirect to the requests page
+    except Http404:
+        messages.error(request, "The requested item does not exist.")
+        return redirect('payapp:requests')
+
+    # If the user does not have enough balance to accept the request, display an error message and
+    # redirect to the requests page
     except InsufficientBalanceException as e:
         messages.error(request, "You do not have enough balance to accept this request. "
                                 "Please add funds to your account.")
         return redirect('payapp:requests')
+
 
 @login_required_message
 def decline_request(request, request_id):
