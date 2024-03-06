@@ -142,7 +142,7 @@ def make_request(request):
             messages.error(request, "Invalid information. Please try again.")
             return render(request, 'payapp/make_request.html', {'form': form})
     else:
-        form = RequestForm()
+        form = RequestForm(user=request.user)
     return render(request, 'payapp/make_request.html', {'form': form})
 
 
