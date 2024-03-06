@@ -111,6 +111,11 @@ class Transaction(models.Model):
 
         :return: None
         """
+        if self.sender.balance < amount:
+            raise InsufficientBalanceException
+        # Ensures that the amount to transfer is positive so users cannot transfer negative amounts
+        if self.amount <= 0:
+            raise ValueError
         self.sender.balance -= amount
         self.receiver.balance += amount
         self.sender.save()
