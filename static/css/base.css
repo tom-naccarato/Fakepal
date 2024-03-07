@@ -13,12 +13,31 @@
     color: white !important;
 }
 
+.nav,
 .nav-link:hover{
+    color: #cbcbcb !important;
+}
+
+.nav-item.dropdown:hover{
     color: #cbcbcb !important;
 }
 
 .navbar-brand{
     color: white !important;
+}
+
+
+.dropdown-menu {
+    background-color: rgba(62, 134, 255, 0.84)
+}
+
+.dropdown-item {
+    color: #ffffff;
+}
+
+.dropdown-item:hover {
+    background-color: #e9ecef;
+    color: #212529;
 }
 
 .brand-image{
@@ -68,3 +87,4 @@ body {
     color: white !important;
     text-decoration: none !important;
 }
+
