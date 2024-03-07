@@ -33,7 +33,7 @@
                 {% for request in incoming_requests %}
                     <tr class="text-center">
                         <td>{{ request.id }}</td>
-                        <td>{{ request.amount }} (in {{ user_currency |upper }}) </td>
+                        <td>{{ request.amount }} </td>
                         <td>{{ request.sender.user.username }}</td>
                         <td>{{ request.created_at }}</td>
                         <td>{{ request.status|capfirst }}</td>

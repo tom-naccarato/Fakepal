@@ -1,13 +1,13 @@
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.db.models import Q
-from django.http import Http404
+from django.http import Http404, HttpResponseBadRequest
 from django.shortcuts import render, redirect, get_object_or_404
 from payapp.custom_exceptions import InsufficientBalanceException
 from payapp.forms import RequestForm, PaymentForm
 from payapp.models import Transaction, Account, Request
 from webapps2024 import settings
-
+import requests
 
 def login_required_message(function):
     """
@@ -29,6 +29,22 @@ def login_required_message(function):
     wrap.__name__ = function.__name__
     return wrap
 
+
+def convert_currency(currency1, currency2, amount_of_currency1):
+    try:
+        response = requests.get(f'http://localhost:8000/webapps2024/conversion/{currency1.upper()}/{currency2.upper()}/'
+                                f'{amount_of_currency1}')
+    except Exception:
+        raise Exception('Error in currency conversion, please try again')
+    print(response.status_code)
+    print(response.content)
+    # If the request is unsuccessful, raise an exception
+    if response.status_code != 200:
+        raise Exception('Error in currency conversion, please try again')
+
+    # If the request is successful, returns the result, which is the amount of currency1 converted to currency2
+    converted_amount = float(response.content)
+    return converted_amount
 
 def home(request):
     """
@@ -54,7 +70,7 @@ def transactions(request):
 
 
 @login_required_message
-def requests(request):
+def payment_requests(request):
     """
     View function to display the requests of the logged-in user
 
@@ -102,9 +118,17 @@ def make_request(request):
                 request_instance = form.save(commit=False)  # Creates an instance of the form without saving it
                 request_instance.sender = Account.objects.get(user=request.user)
                 request_instance.receiver = Account.objects.get(user__username=request.POST['receiver'])
+                converted_amount = convert_currency(request_instance.sender.currency,
+                                                    request_instance.receiver.currency,
+                                                    request_instance.amount)
+                request_instance.amount = converted_amount
+
+                # If the receiver is not the sender, save the request
                 if request_instance.receiver != request_instance.sender:
                     request_instance.save()
                     messages.success(request, "Request has been made")
+
+                # If the receiver is the sender, display an error message and return the form
                 else:
                     messages.error(request, "You cannot request money from yourself! Please try again.")
                     return render(request, 'payapp/make_request.html', {'form': form})
