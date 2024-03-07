@@ -24,7 +24,9 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
-                
+
+
+                {% if user.is_authenticated %}
                 <!-- Requests dropdown -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="requestsDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -67,8 +69,7 @@
                 
                 <!-- User controls -->
                 <ul class="navbar-nav ms-auto">
-                    {% if user.is_authenticated %}
-                        <form action="{% url 'register:logout' %}?next=/webapps2024/home/" method="post" class="form-inline">
+                        <form action="{% url 'register:logout' %}?next=/webapps2024/" method="post" class="form-inline">
                             {% csrf_token %}
                             <button class="btn btn-link link-like-button" type="submit">Logout</button>
                         </form>
