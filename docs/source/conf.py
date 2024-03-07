@@ -1,6 +1,7 @@
 import os
 import sys
 import django
+django_version = django.get_version()
 sys.path.insert(0, os.path.abspath('../../'))
 os.environ['DJANGO_SETTINGS_MODULE'] = 'webapps2024.settings'
 django.setup()
@@ -16,6 +17,7 @@ django.setup()
 project = 'webapps2024'
 copyright = '2024, Candidate 276187'
 author = 'Candidate 276187'
+python_version = f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -32,3 +34,7 @@ exclude_patterns = []
 
 html_theme = 'alabaster'
 html_static_path = ['_static']
+
+rst_epilog = f"""
+.. |python_version| replace:: {python_version}
+"""

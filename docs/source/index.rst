@@ -5,6 +5,7 @@
 
 Welcome to webapps2024's documentation!
 =======================================
+This documentation and project is built with (and requires) Python version |python_version| or higher to run.
 
 .. toctree::
    :maxdepth: 2
