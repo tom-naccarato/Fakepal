@@ -19,9 +19,9 @@
                     <thead  class="text-center">
                         <tr>
                             <th>Transaction ID</th>
+                            <th>Amount (in {{ user_currency |upper }})</th>
                             <th>From User</th>
                             <th>To User</th>
-                            <th>Amount (in {{ user_currency |upper }})</th>
                             <th>Transaction Date</th>
                         </tr>
                     </thead>
@@ -29,9 +29,9 @@
                         {% for transaction in transactions %}
                             <tr>
                                 <td>{{ transaction.id }}</td>
+                                <td>{{ transaction.amount }}</td>
                                 <td>{{ transaction.sender.user.username }}</td>
                                 <td>{{ transaction.receiver.user.username }}</td>
-                                <td>{{ transaction.amount }}</td>
                                 <td>{{ transaction.created_at | date:"D, d M Y H:i" }}</td>
                             </tr>
                         {% endfor %}
