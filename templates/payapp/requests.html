@@ -15,70 +15,86 @@
     <h3>Incoming Requests</h3>
     {% if incoming_requests %}
         <p> You currently have {{ incoming_requests.count }} incoming payment request{{ incoming_requests | pluralize }}:</p>
-    <table>
-        <tr>
-            <th>Request ID</th>
-            <th>Amount</th>
-            <th>From User</th>
-            <th>Date</th>
-            <th>Status</th>
-            <th>Action</th>
-        </tr>
-        {% for request in incoming_requests %}
-            <tr>
-                <td>{{ request.id }}</td>
-                <td>{{ request.amount }}</td>
-                <td>{{ request.sender.user.username }}</td>
-                <td>{{ request.created_at }}</td>
-                <td>{{ request.status }}</td>
-                {% if request.status == 'pending' %}
-                    <td class="text-center">
-                        <form action="{% url 'payapp:accept_request' request.id %}" method="post" class="d-inline-block">
-                            {% csrf_token %}
-                            <input type="hidden" name="amount" value="{{ request.amount }}">
-                            <button type="submit" class="btn btn-success btn-sm">Accept</button>
-                        </form>
-                        <form action="{% url 'payapp:decline_request' request.id %}" method="post" class="d-inline-block">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-danger btn-sm">Decline</button>
-                        </form>
-                    </td>
-                {% endif %}
-            </tr>
-        {% endfor %}
-    </table>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover table-sm">
+                <thead>
+                <tr>
+                    <th>Request ID</th>
+                    <th>Amount</th>
+                    <th>From User</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for request in incoming_requests %}
+                    <tr>
+                        <td>{{ request.id }}</td>
+                        <td>{{ request.amount }}</td>
+                        <td>{{ request.sender.user.username }}</td>
+                        <td>{{ request.created_at }}</td>
+                        <td>{{ request.status }}</td>
+                        {% if request.status == 'pending' %}
+                            <td class="text-center">
+                                <form action="{% url 'payapp:accept_request' request.id %}" method="post" 
+                                      class="d-inline-block">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="amount" value="{{ request.amount }}">
+                                    <button type="submit" class="btn btn-success btn-sm">Accept</button>
+                                </form>
+                                <form action="{% url 'payapp:decline_request' request.id %}" method="post" 
+                                      class="d-inline-block">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm">Decline</button>
+                                </form>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+        </table>
+    </div>
     {% else %}
         <p>You have no pending incoming payment requests.</p>
     {% endif %}
     <br>
     <h3>Outgoing Requests</h3>
     {% if outgoing_requests %}
-        <p> You currently have {{ outgoing_requests.count }} outgoing payment request{{ outgoing_requests | pluralize }}:</p>
-    <table>
-        <tr>
-            <th>Request ID</th>
-            <th>Amount</th>
-            <th>To User</th>
-            <th>Date</th>
-            <th>Status</th>
-            <th>Cancel?</th>
-        </tr>
-        {% for request in outgoing_requests %}
-            <tr>
-                <td>{{ request.id }}</td>
-                <td>{{ request.amount }}</td>
-                <td>{{ request.receiver.user.username }}</td>
-                <td>{{ request.created_at }}</td>
-                <td>{{ request.status }}</td>
-                <td>
-                    <form action="{% url 'payapp:cancel_request' request.id %}" method="post" class="d-inline-block">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
-                    </form>
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
+        <p> You currently have {{ outgoing_requests.count }} outgoing payment request
+            {{ outgoing_requests | pluralize }}:</p>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover table-sm">
+                <thead>
+                    <tr>
+                        <th>Request ID</th>
+                        <th>Amount</th>
+                        <th>To User</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Cancel?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request in outgoing_requests %}
+                        <tr>
+                            <td>{{ request.id }}</td>
+                            <td>{{ request.amount }}</td>
+                            <td>{{ request.receiver.user.username }}</td>
+                            <td>{{ request.created_at }}</td>
+                            <td>{{ request.status }}</td>
+                            <td>
+                                <form action="{% url 'payapp:cancel_request' request.id %}" method="post" 
+                                      class="d-inline-block">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                                </form>
+                            </td>
+                        </tr>
+            {% endfor %}
+                </tbody>
+            </table>
+        </div>
     {% else %}
         <p>You have no pending outgoing payment requests.</p>
     {% endif %}
@@ -86,26 +102,32 @@
     <h2>Completed Requests</h2>
     {% if completed_requests %}
         <p> You currently have {{ completed_requests.count }} completed  payment request{{ completed_requests | pluralize }}:</p>
-    <table>
-        <tr>
-            <th>Request ID</th>
-            <th>Amount</th>
-            <th>From User</th>
-            <th>To User</th>
-            <th>Date</th>
-            <th>Status</th>
-        </tr>
-        {% for request in completed_requests %}
-            <tr>
-                <td>{{ request.id }}</td>
-                <td>{{ request.amount }}</td>
-                <td>{{ request.sender.user.username }}</td>
-                <td>{{ request.receiver.user.username }}</td>
-                <td>{{ request.created_at }}</td>
-                <td>{{ request.status }}</td>
-            </tr>
-        {% endfor %}
-    </table>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover table-sm">
+                <thead>
+                    <tr>
+                        <th>Request ID</th>
+                        <th>Amount</th>
+                        <th>From User</th>
+                        <th>To User</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request in completed_requests %}
+                        <tr>
+                            <td>{{ request.id }}</td>
+                            <td>{{ request.amount }}</td>
+                            <td>{{ request.sender.user.username }}</td>
+                            <td>{{ request.receiver.user.username }}</td>
+                            <td>{{ request.created_at }}</td>
+                            <td>{{ request.status }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     {% else %}
         <p>You have no completed payment requests.</p>
     {% endif %}

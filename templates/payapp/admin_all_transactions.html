@@ -9,24 +9,30 @@
 <body>
     <h1>All Transactions</h1>
     <p> There {{ transactions.count | pluralize:'is, are'}} currently {{ transactions.count }} completed transaction{{ transactions.count | pluralize }}.</p>
-    <table>
-        <tr>
-            <th>Transaction ID</th>
-            <th>Amount</th>
-            <th>From User</th>
-            <th>To User</th>
-            <th>Date</th>
-        </tr>
-        {% for transaction in transactions %}
-        <tr>
-            <td>{{ transaction.id }}</td>
-            <td>{{ transaction.amount }}</td>
-            <td>{{ transaction.sender.user.username }}</td>
-            <td>{{ transaction.receiver.user.username }}</td>
-            <td>{{ transaction.created_at | date:"D, d M Y H:i" }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover table-sm">
+            <thead>
+                <tr>
+                    <th>Transaction ID</th>
+                    <th>Amount</th>
+                    <th>From User</th>
+                    <th>To User</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in transactions %}
+                <tr>
+                    <td>{{ transaction.id }}</td>
+                    <td>{{ transaction.amount }}</td>
+                    <td>{{ transaction.sender.user.username }}</td>
+                    <td>{{ transaction.receiver.user.username }}</td>
+                    <td>{{ transaction.created_at | date:"D, d M Y H:i" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock content %}
 </body>
 

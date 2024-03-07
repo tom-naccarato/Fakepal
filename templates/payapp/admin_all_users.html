@@ -15,20 +15,26 @@
     <br>
     <h2>Administrators</h2>
     {% if admins %}
-    <table>
-        <tr>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Last Login</th>
-        </tr>
-        {% for admin in admins %}
-            <tr>
-                <td>{{ admin.user.username }}</td>
-                <td>{{ admin.user.email }}</td>
-                <td>{{ admin.user.last_login }}</td>
-            </tr>
-        {% endfor %}
-    </table>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover table-sm">
+                <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Last Login</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for admin in admins %}
+                    <tr>
+                        <td>{{ admin.user.username }}</td>
+                        <td>{{ admin.user.email }}</td>
+                        <td>{{ admin.user.last_login }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+        </table>
+    </div>
     {% endif %}
     <br>
     {% if users %}
