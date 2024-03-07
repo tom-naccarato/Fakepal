@@ -10,7 +10,7 @@
 }
 
 .nav-link{
-    color: #fff !important;
+    color: white !important;
 }
 
 .nav-link:hover{
@@ -18,7 +18,7 @@
 }
 
 .navbar-brand{
-    color: #fff !important;
+    color: white !important;
 }
 
 .brand-image{
@@ -47,17 +47,24 @@ body {
     flex-direction: column;
 }
 
-.link-like-button {
-    background: none;
-    color: white;
-    border: none;
-    padding: 0;
-    font: inherit;
-    cursor: pointer;
+.btn.link-like-button {
+    background: none !important;
+    color: white !important;
+    border: none !important;
+    padding: 0 !important;
+    font: inherit !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
 }
 
-.link-like-button:hover,
-.link-like-button:focus {
-    color: #cbcbcb;
-    text-decoration: none;
+.btn.link-like-button:hover,
+.btn.link-like-button:focus {
+    color: #cbcbcb !important;
+    text-decoration: none !important;
+}
+
+.btn.link-like-button:active,
+.btn.link-like-button:visited {
+    color: white !important;
+    text-decoration: none !important;
 }
