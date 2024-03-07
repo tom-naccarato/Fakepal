@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.db.models import Q
@@ -8,6 +10,7 @@ from payapp.forms import RequestForm, PaymentForm
 from payapp.models import Transaction, Account, Request
 from webapps2024 import settings
 import requests
+
 
 def login_required_message(function):
     """
@@ -45,6 +48,7 @@ def convert_currency(currency1, currency2, amount_of_currency1):
     # If the request is successful, returns the result, which is the amount of currency1 converted to currency2
     converted_amount = float(response.content)
     return converted_amount
+
 
 def home(request):
     """
@@ -252,7 +256,11 @@ def send_payment(request):
                 transaction_instance.sender = Account.objects.get(user=request.user)
                 transaction_instance.receiver = Account.objects.get(user__username=request.POST['receiver'])
                 if transaction_instance.receiver != transaction_instance.sender:
-                    transaction_instance.transfer(transaction_instance.amount)
+                    converted_amount = convert_currency(transaction_instance.sender.currency,
+                                                        transaction_instance.receiver.currency,
+                                                        transaction_instance.amount)
+                    transaction_instance.amount = converted_amount
+                    transaction_instance.transfer(Decimal(str(transaction_instance.amount)))
                     transaction_instance.save()
                     messages.success(request, "Payment has been made")
                     return redirect('home')

@@ -18,7 +18,8 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light static-top" id="customNavbar">
         <div class="container">
             <!-- logo from https://www.flaticon.com/free-icons/business-and-finance" -->
-            <a class="navbar-brand" href="{% url 'home' %}"><img class="brand-image" src="{% static 'images/brand.png' %}" alt="brand"> FakePal</a>
+            <a class="navbar-brand" href="{% url 'home' %}"><img class="brand-image" src="{% static 'images/brand.png' %}" 
+                                                                 alt="brand"> FakePal</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
                     aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -26,12 +27,14 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto align-items-center">
                     {% if user.is_authenticated %}
-                        <li style="color: white; margin-right: 2vh"> Welcome, <b>{{ user.username }}</b>.<br>
+                        <li style="color: white; margin-right: 2vh"> Welcome, {% if user|is_admin %} 
+                            Administrator {% endif %}<b>{{ user.username }}</b>.<br>
                         Your balance is:<b> {{ user_currency|upper | currency_symbol}}{{ user_balance }}</b></li>
                         
                 <!-- Requests dropdown -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="requestsDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" id="requestsDropdown" role="button" 
+                           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Requests
                             {% if incoming_requests_count %}
                             <span class="badge bg-primary rounded-circle">{{ incoming_requests_count }}</span>
@@ -45,7 +48,8 @@
 
                 <!-- Transactions dropdown -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="transactionsDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" id="transactionsDropdown" role="button" 
+                           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Transactions
                         </a>
                         <div class="dropdown-menu" aria-labelledby="transactionsDropdown">
@@ -57,12 +61,14 @@
                     <!-- Admin features dropdown -->
                     {% if user|is_admin %}
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" 
+                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Admin Tools
                             </a>
                             <div class="dropdown-menu" aria-labelledby="adminDropdown">
                                 <a class="dropdown-item" href="{% url 'custom_admin:all_users' %}">See All Users</a>
-                                <a class="dropdown-item" href="{% url 'custom_admin:all_transactions' %}">See All Transactions</a>
+                                <a class="dropdown-item" href="{% url 'custom_admin:all_transactions' %}">
+                                    See All Transactions</a>
                                 <a class="dropdown-item" href="{% url 'custom_admin:register' %}">Register New Admin</a>
                             </div>
                         </li>
