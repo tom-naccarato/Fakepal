@@ -21,3 +21,23 @@
     width: 40px;
     height: 40px;
 }
+
+.content {
+    flex: 1 0 auto;
+}
+
+footer {
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+body {
+    display: flex;
+    flex-direction: column;
+}
