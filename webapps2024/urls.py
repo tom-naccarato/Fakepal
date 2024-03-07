@@ -24,6 +24,7 @@ urlpatterns = [
         path('admin/', admin.site.urls),
         path('home/', payapp.views.home, name='home'),
         path('register/', include(('register.urls', 'register'), namespace='register')),
-        path('payapp/', include(('payapp.urls', 'payapp'), namespace='payapp')),
+        path('', include(('payapp.urls', 'payapp'), namespace='payapp')),
+        path('conversion/', include(('conversion.urls', 'conversion'), namespace='conversion')),
     ]))
 ]
