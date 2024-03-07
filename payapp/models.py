@@ -86,9 +86,9 @@ class Transaction(models.Model):
         verbose_name_plural = 'Transactions'
 
     sender = models.ForeignKey(Account, on_delete=models.CASCADE,
-                               related_name='sent_transactions')
+                               related_name='transaction_sender')
     receiver = models.ForeignKey(Account, on_delete=models.CASCADE,
-                                 related_name='received_transactions')
+                                 related_name='transaction_receiver')
     amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -145,9 +145,9 @@ class Request(models.Model):
         verbose_name_plural = 'Requests'
 
     sender = models.ForeignKey(Account, on_delete=models.CASCADE,
-                               related_name='sent_requests')
+                               related_name='request_sender')
     receiver = models.ForeignKey(Account, on_delete=models.CASCADE,
-                                 related_name='received_requests')
+                                 related_name='request_receiver')
     amount = models.DecimalField(max_digits=10, decimal_places=2,
                                  default=0.00)
     created_at = models.DateTimeField(auto_now_add=True)
