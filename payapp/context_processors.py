@@ -28,7 +28,6 @@ def user_currency(request):
     if request.user.is_authenticated:
         user_account = get_object_or_404(Account, user=request.user)
         currency = user_account.currency
-        print(currency)
         return {'user_currency': currency}
     else:
         return {'user_currency': None}
