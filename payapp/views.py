@@ -70,7 +70,7 @@ def transactions(request):
     """
     transactions_list = Transaction.objects.filter(
         Q(sender__user=request.user) | Q(receiver__user=request.user)
-    ).select_related('sender', 'receiver', 'sender__user', 'receiver__user')
+    ).select_related('sender', 'receiver', 'sender__user', 'receiver__user').order_by('-created_at')
     return render(request, 'payapp/transactions.html', {'transactions': transactions_list})
 
 
@@ -94,7 +94,7 @@ def admin_all_transactions(request):
     :param request:
     :return:
     """
-    transactions_list = Transaction.objects.all()
+    transactions_list = Transaction.objects.all().order_by('-created_at')
     return render(request, 'payapp/admin_all_transactions.html',
                   {'transactions': transactions_list})
 
