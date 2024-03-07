@@ -71,6 +71,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'payapp.context_processors.incoming_requests_count',
                 'payapp.context_processors.user_currency',
+                'payapp.context_processors.user_balance',
             ],
         },
     },

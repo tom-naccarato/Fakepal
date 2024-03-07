@@ -31,3 +31,16 @@ def user_currency(request):
         return {'user_currency': currency}
     else:
         return {'user_currency': None}
+
+def user_balance(request):
+    """
+    This function returns the balance of the logged-in user
+    :param request:
+    :return:
+    """
+    if request.user.is_authenticated:
+        user_account = get_object_or_404(Account, user=request.user)
+        balance = user_account.balance
+        return {'user_balance': balance}
+    else:
+        return {'user_balance': None}
