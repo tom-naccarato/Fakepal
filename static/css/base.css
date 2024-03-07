@@ -1,12 +1,13 @@
+/*Navbar*/
 #customNavbar{
     background-color: #3e86ff !important;
     border-bottom: 1px solid #e5e5e5;
     border-radius: 0;
     margin-bottom: 0;
-    min-height: 50px;
-    padding-bottom: 5px;
+    min-height: 50px; /* Set to ensure the navbar is always at least 50px tall */
+    padding-bottom: 1vh;
     position: relative;
-    z-index: 1000;
+    z-index: 1000; /* Sets z-index to 1000 to make sure it's on top of everything */
 }
 
 .nav-link{
@@ -30,8 +31,23 @@
 }
 
 
+/*Dropdown*/
 .dropdown-menu {
-    background-color: rgb(79, 142, 255);
+    background-color: rgba(79, 142, 255, 0.73);
+    animation: slide-down 0.5s ease forwards;
+    display: none;
+}
+
+/*Add sliding animation to dropdown menus*/
+@keyframes slide-down {
+    0% {
+        transform: translateY(-10px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 .dropdown-item {
@@ -69,6 +85,7 @@ body {
     flex-direction: column;
 }
 
+/*Logout Button - Mimic other items*/
 .btn.link-like-button {
     background: none !important;
     color: white !important;
