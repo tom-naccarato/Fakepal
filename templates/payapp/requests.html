@@ -15,8 +15,8 @@
     <h2>Pending Requests</h2>
     <h3>Incoming Requests</h3>
     {% if incoming_requests %}
-        <p> You currently have {{ incoming_requests.count }} incoming payment request
-            {{ incoming_requests | pluralize }}:</p>
+        <p> You currently have {{ incoming_requests.count }} incoming payment 
+            request{{ incoming_requests | pluralize }}:</p>
         <div class="table-responsive">
             <table class="table table-striped table-bordered table-hover table-sm">
                 <thead  class="text-center">
@@ -73,8 +73,8 @@
     <br>
     <h3>Outgoing Requests</h3>
     {% if outgoing_requests %}
-        <p> You currently have {{ outgoing_requests.count }} outgoing payment request
-            {{ outgoing_requests | pluralize }}:</p>
+        <p> You currently have {{ outgoing_requests.count }} outgoing payment 
+            request{{ outgoing_requests | pluralize }}:</p>
         <div class="table-responsive">
             <table class="table table-striped table-bordered table-hover table-sm">
                 <thead class="text-center">
