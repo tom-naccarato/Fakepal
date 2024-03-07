@@ -57,6 +57,11 @@ def admin_login_required_message(function):
 
 
 def home(request):
+    """
+    View function to display the home page
+    :param request:
+    :return:
+    """
     return render(request, 'payapp/home.html')
 
 
@@ -135,9 +140,12 @@ def make_request(request):
     :param request:
     :return:
     """
+    # If the form is submitted, validate the form and save the request
     if request.method == 'POST':
         form = RequestForm(request.POST, user=request.user)
+        # If the form is valid, save the request
         if form.is_valid():
+            # Checks if the amount is positive, if not, display an error message and return the form
             if form.cleaned_data.get('amount') <= 0:
                 messages.error(request, "You must request a positive sum. Please try again.")
                 return render(request, 'payapp/make_request.html', {'form': form})
@@ -147,12 +155,14 @@ def make_request(request):
             request_instance.save()
             messages.success(request, "Request has been made")
             return redirect('home')
+        # If the form is invalid, display an error message and return the form
         else:
             messages.error(request, "Invalid information. Please try again.")
             return render(request, 'payapp/make_request.html', {'form': form})
+    # If the form is not submitted, display the form
     else:
         form = RequestForm(user=request.user)
-    return render(request, 'payapp/make_request.html', {'form': form})
+        return render(request, 'payapp/make_request.html', {'form': form})
 
 
 @login_required_message
@@ -184,8 +194,10 @@ def accept_request(request, request_id):
                                 "Please add funds to your account.")
         return redirect('payapp:requests')
 
+    # If the user tries to accept a negative number, display an error message and redirect to the requests page
     except ValueError as e:
         messages.error(request, "You cannot request a negative number. Please try again.")
+        return redirect('payapp:requests')
 
 
 @login_required_message
@@ -245,9 +257,12 @@ def send_payment(request):
     :param request:
     :return:
     """
+    # If the form is submitted, validate the form and save the payment
     if request.method == 'POST':
         form = PaymentForm(request.POST, user=request.user)
+        # If the form is valid, save the payment
         if form.is_valid():
+            # Try to save the payment
             try:
                 transaction_instance = form.save(commit=False)
                 transaction_instance.sender = Account.objects.get(user=request.user)
@@ -256,16 +271,20 @@ def send_payment(request):
                 transaction_instance.save()
                 messages.success(request, "Payment has been made")
                 return redirect('home')
+            # If the user does not have enough balance to make the payment, display an error message and return the form
             except InsufficientBalanceException as e:
                 messages.error(request, "You do not have enough balance to make this payment. "
                                         "Please add funds to your account.")
                 return render(request, 'payapp/send_payment.html', {'form': form})
+            # If the user tries to transfer a negative number, display an error message and return the form
             except ValueError as e:
                 messages.error(request, "You cannot transfer a negative number. Please try again.")
                 return render(request, 'payapp/send_payment.html', {'form': form})
+        # If the form is invalid, display an error message and return the form
         else:
             messages.error(request, "Invalid information. Please try again.")
             return render(request, 'payapp/send_payment.html', {'form': form})
+    # If the form is not submitted, display the form
     else:
         form = RequestForm(user=request.user)
-    return render(request, 'payapp/send_payment.html', {'form': form})
+        return render(request, 'payapp/send_payment.html', {'form': form})
