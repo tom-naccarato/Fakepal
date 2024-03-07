@@ -10,3 +10,4 @@ Overview of the PayApp application.
    payapp_views
    payapp_forms
    payapp_exceptions
+   payapp_context_processors
