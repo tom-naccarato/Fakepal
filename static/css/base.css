@@ -18,6 +18,9 @@
     color: #cbcbcb !important;
 }
 
+.badge.bg-primary{
+    background-color: #ff3e3e !important;
+}
 .nav-item.dropdown:hover{
     color: #cbcbcb !important;
 }
