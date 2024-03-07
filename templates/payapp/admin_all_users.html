@@ -17,7 +17,7 @@
     {% if admins %}
         <div class="table-responsive">
             <table class="table table-striped table-bordered table-hover table-sm">
-                <thead>
+                <thead  class="text-center">
                 <tr>
                     <th>Username</th>
                     <th>Email</th>
@@ -39,20 +39,26 @@
     <br>
     {% if users %}
     <h2>Users</h2>
-    <table>
-        <tr>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Last Login</th>
-        </tr>
-        {% for user in users %}
-            <tr>
-                <td>{{ user.user.username }}</td>
-                <td>{{ user.user.email }}</td>
-                <td>{{ user.user.last_login }}</td>
-            </tr>
-        {% endfor %}
-    </table>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover table-sm">
+                <thead  class="text-center">
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Last Login</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user.user.username }}</td>
+                        <td>{{ user.user.email }}</td>
+                        <td>{{ user.user.last_login }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
     {% endif %}
     <br>
     <p> To register a new admin, click <a href="{% url 'register:admin_register' %}">here</a>.</p>
