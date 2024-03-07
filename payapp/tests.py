@@ -54,6 +54,20 @@ class PayAppViewTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(req.status, 'accepted')
 
+    def test_accept_request_insufficient_funds(self):
+        # Create a request to be accepted
+        request_receiver = User.objects.create_user(username='receiver', password='receiverpassword')
+        Account.objects.create(user=request_receiver, balance=5)
+        req = Request.objects.create(sender=Account.objects.get(user=self.user),
+                                     receiver=Account.objects.get(user=request_receiver), amount=10, status='pending')
+
+        # Test accepting the request
+        self.client.login(username='receiver', password='receiverpassword')
+        response = self.client.get(reverse('payapp:accept_request', kwargs={'request_id': req.id}))
+        req.refresh_from_db()
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(req.status, 'pending')
+
     def test_decline_request_view(self):
         # Create a request to be declined
         receiver = User.objects.create_user(username='declinereceiver', password='receiverpassword')
@@ -67,6 +81,7 @@ class PayAppViewTests(TestCase):
         req.refresh_from_db()
         self.assertEqual(response.status_code, 302)
         self.assertEqual(req.status, 'declined')
+
 
     def test_cancel_request_view(self):
         # Create a request to be canceled
