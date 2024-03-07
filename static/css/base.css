@@ -1,0 +1,23 @@
+#customNavbar{
+    background-color: #3e86ff !important;
+    border-bottom: 1px solid #e5e5e5;
+    border-radius: 0;
+    margin-bottom: 0;
+    min-height: 50px;
+    padding: 0;
+    position: relative;
+    z-index: 1000;
+}
+
+.nav-link{
+    color: #fff !important;
+}
+
+.navbar-brand{
+    color: #fff !important;
+}
+
+.brand-image{
+    width: 40px;
+    height: 40px;
+}

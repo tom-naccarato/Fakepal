@@ -17,6 +17,8 @@
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="jdk" jdkName="Python 3.10 (webapps2024)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="jquery-3.5.1" level="application" />
+    <orderEntry type="library" name="bootstrap" level="application" />
     <orderEntry type="library" name="bootstrap" level="application" />
   </component>
   <component name="TemplatesService">
