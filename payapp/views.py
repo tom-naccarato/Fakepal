@@ -110,16 +110,16 @@ def requests(request):
     # Select outgoing requests where the status is pending
     outgoing_request_list = Request.objects.filter(
         Q(sender__user=request.user, status='pending')
-    ).select_related('sender', 'receiver', 'sender__user', 'receiver__user')
+    ).select_related('sender', 'receiver', 'sender__user', 'receiver__user').order_by('-created_at')
     # Select incoming requests where the status is pending
     incoming_request_list = Request.objects.filter(
         Q(receiver__user=request.user, status='pending')
-    ).select_related('sender', 'receiver', 'sender__user', 'receiver__user')
+    ).select_related('sender', 'receiver', 'sender__user', 'receiver__user').order_by('-created_at')
     # Select completed requests where the status is not pending
     completed_request_list = Request.objects.filter(
         (Q(sender__user=request.user) & ~Q(status='pending')) |
         (Q(receiver__user=request.user) & ~Q(status='pending'))
-    ).select_related('sender', 'receiver', 'sender__user', 'receiver__user')
+    ).select_related('sender', 'receiver', 'sender__user', 'receiver__user').order_by('-created_at')
 
     # Render the requests page with the context
     context = {'outgoing_requests': outgoing_request_list, 'incoming_requests': incoming_request_list,
