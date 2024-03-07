@@ -13,6 +13,10 @@
     color: #fff !important;
 }
 
+.nav-link:hover{
+    color: #cbcbcb !important;
+}
+
 .navbar-brand{
     color: #fff !important;
 }
@@ -41,4 +45,19 @@ html, body {
 body {
     display: flex;
     flex-direction: column;
+}
+
+.link-like-button {
+    background: none;
+    color: white;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+}
+
+.link-like-button:hover,
+.link-like-button:focus {
+    color: #cbcbcb;
+    text-decoration: none;
 }

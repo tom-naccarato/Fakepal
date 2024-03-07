@@ -59,7 +59,7 @@
                     {% if user.is_authenticated %}
                         <form action="{% url 'register:logout' %}?next=/webapps2024/home/" method="post">
                             {% csrf_token %}
-                            <button class="" type="submit">Logout</button>
+                            <button class="link-like-button" type="submit">Logout</button>
                         </form>
                     {% else %}
                         <li class="nav-item">
