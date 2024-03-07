@@ -28,13 +28,16 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="requestsDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Requests
+                            {% if incoming_requests_count %}
+                            <span class="badge bg-primary">{{ incoming_requests_count }}</span>
+                            {% endif %}
                         </a>
                         <div class="dropdown-menu" aria-labelledby="requestsDropdown">
                             <a class="dropdown-item" href="{% url 'payapp:make_request' %}">Make a Payment Request</a>
                             <a class="dropdown-item" href="{% url 'payapp:requests' %}">Existing Payment Requests</a>
                         </div>
                     </li>
-                
+
                 <!-- Transactions dropdown -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="transactionsDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

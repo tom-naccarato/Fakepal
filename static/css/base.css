@@ -4,7 +4,7 @@
     border-radius: 0;
     margin-bottom: 0;
     min-height: 50px;
-    padding: 0;
+    padding-bottom: 5px;
     position: relative;
     z-index: 1000;
 }
@@ -28,7 +28,7 @@
 
 
 .dropdown-menu {
-    background-color: rgba(62, 134, 255, 0.84)
+    background-color: rgb(79, 142, 255);
 }
 
 .dropdown-item {
