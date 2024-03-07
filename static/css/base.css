@@ -72,7 +72,7 @@
 /*Footer*/
 footer {
     position: sticky;
-    bottom: -5vh; /* Negative value to pull it up */
+    bottom: -10vh; /* Negative value to pull it up */
     width: 100%;
     text-align: center;
 }
