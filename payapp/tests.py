@@ -39,6 +39,15 @@ class PayAppViewTests(TestCase):
         })
         # Check if the request is created
         self.assertTrue(Request.objects.filter(sender__user=self.user, receiver__user=receiver).exists())
+        self.assertEqual(response.status_code, 302)  # Redirect to home indicates success
+
+    def test_make_request_invalid_receiver(self):
+        # Test for attempting to make a request to a non-existent user
+        response = self.client.post(reverse('payapp:make_request'), {
+            'amount': 10,
+            'receiver': 'nonexistentuser',
+        })
+        self.assertEqual(response.status_code, 200)
 
     def test_accept_request_view(self):
         # Create a request to be accepted
@@ -82,7 +91,6 @@ class PayAppViewTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(req.status, 'declined')
 
-
     def test_cancel_request_view(self):
         # Create a request to be canceled
         sender = User.objects.create_user(username='canceluser', password='userpassword')
@@ -116,3 +124,31 @@ class PayAppViewTests(TestCase):
         self.assertEqual(response.status_code, 302)  # Redirect to home indicates success
         self.assertEqual(sender_account.balance, 90)  # 100 - 10
         self.assertEqual(receiver_account.balance, 60)  # 50 + 10
+
+    def test_send_payment_insufficient_funds(self):
+        # Test for attempting to send a payment with insufficient funds
+        receiver = User.objects.create_user(username='paymentreceiver', password='receiverpassword')
+        receiver_account = Account.objects.create(user=receiver, balance=50)
+        sender_account = Account.objects.get(user=self.user)
+
+        # Test sending the payment
+        self.client.login(username='user', password='userpassword')
+        response = self.client.post(reverse('payapp:send_payment'), {
+            'amount': 110,  # More than the sender's balance
+            'receiver': receiver.username,
+            'message': 'Test payment',
+        })
+        sender_account.refresh_from_db()
+        receiver_account.refresh_from_db()
+
+        self.assertEqual(response.status_code, 200)  # No redirect indicates failure
+        self.assertEqual(sender_account.balance, 100)  # No change
+        self.assertEqual(receiver_account.balance, 50)  # No change
+
+    def test_send_payment_invalid_receiver(self):
+        # Test for attempting to send a payment to a non-existent user
+        response = self.client.post(reverse('payapp:send_payment'), {
+            'amount': 10,
+            'receiver': 'nonexistentuser',
+        })
+        self.assertEqual(response.status_code, 200)
