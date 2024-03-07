@@ -155,8 +155,12 @@ def make_request(request):
                 request_instance = form.save(commit=False)  # Creates an instance of the form without saving it
                 request_instance.sender = Account.objects.get(user=request.user)
                 request_instance.receiver = Account.objects.get(user__username=request.POST['receiver'])
-                request_instance.save()
-                messages.success(request, "Request has been made")
+                if request_instance.receiver != request_instance.sender:
+                    request_instance.save()
+                    messages.success(request, "Request has been made")
+                else:
+                    messages.error(request, "You cannot request money from yourself! Please try again.")
+                    return render(request, 'payapp/make_request.html', {'form': form})
                 return redirect('home')
             # If the user does not exist, display an error message and return the form
             except User.DoesNotExist as e:
@@ -276,10 +280,14 @@ def send_payment(request):
                 transaction_instance = form.save(commit=False)
                 transaction_instance.sender = Account.objects.get(user=request.user)
                 transaction_instance.receiver = Account.objects.get(user__username=request.POST['receiver'])
-                transaction_instance.transfer(transaction_instance.amount)
-                transaction_instance.save()
-                messages.success(request, "Payment has been made")
-                return redirect('home')
+                if transaction_instance.receiver != transaction_instance.sender:
+                    transaction_instance.transfer(transaction_instance.amount)
+                    transaction_instance.save()
+                    messages.success(request, "Payment has been made")
+                    return redirect('home')
+                else:
+                    messages.error(request, "You cannot send money to yourself! Please try again.")
+                    return render(request, 'payapp/send_payment.html', {'form': form})
             # If the user does not have enough balance to make the payment, display an error message and return the form
             except InsufficientBalanceException as e:
                 messages.error(request, "You do not have enough balance to make this payment. "
