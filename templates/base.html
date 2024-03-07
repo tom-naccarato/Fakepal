@@ -57,9 +57,9 @@
                                 Admin Tools
                             </a>
                             <div class="dropdown-menu" aria-labelledby="adminDropdown">
-                                <a class="dropdown-item" href="{% url 'payapp:admin_all_users' %}">See All Users</a>
-                                <a class="dropdown-item" href="{% url 'payapp:admin_all_transactions' %}">See All Transactions</a>
-                                <a class="dropdown-item" href="{% url 'register:admin_register' %}">Register New Admin</a>
+                                <a class="dropdown-item" href="{% url 'custom_admin:all_users' %}">See All Users</a>
+                                <a class="dropdown-item" href="{% url 'custom_admin:all_transactions' %}">See All Transactions</a>
+                                <a class="dropdown-item" href="{% url 'custom_admin:register' %}">Register New Admin</a>
                             </div>
                         </li>
                     {% endif %}

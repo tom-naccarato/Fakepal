@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'register',
     'crispy_bootstrap5',
     'crispy_forms',
+    "custom_admin.apps.AdminConfig"
 ]
 
 MIDDLEWARE = [
