@@ -8,13 +8,14 @@
 {% block content %}
 <body>
     <h1>All Transactions</h1>
-    <p> There {{ transactions.count | pluralize:'is, are'}} currently {{ transactions.count }} completed transaction{{ transactions.count | pluralize }}.</p>
+    <p> There {{ transactions.count | pluralize:'is, are'}} currently {{ transactions.count }} completed 
+        transaction{{ transactions.count | pluralize }}.</p>
     <div class="table-responsive">
         <table class="table table-striped table-bordered table-hover table-sm">
             <thead  class="text-center">
                 <tr>
                     <th>Transaction ID</th>
-                    <th>Amount</th>
+                    <th>Amount (in {{ user_currency | upper}})</th> <!-- uses currency context processor to get user currency -->
                     <th>From User</th>
                     <th>To User</th>
                     <th>Date</th>

@@ -18,3 +18,17 @@ def incoming_requests_count(request):
         return {'incoming_requests_count': incoming_count}
     else:
         return {'incoming_requests_count': None}
+
+def user_currency(request):
+    """
+    This function returns the currency of the logged-in user
+    :param request:
+    :return:
+    """
+    if request.user.is_authenticated:
+        user_account = get_object_or_404(Account, user=request.user)
+        currency = user_account.currency
+        print(currency)
+        return {'user_currency': currency}
+    else:
+        return {'user_currency': None}

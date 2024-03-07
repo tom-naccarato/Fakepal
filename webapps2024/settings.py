@@ -68,6 +68,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'payapp.context_processors.incoming_requests_count',
+                'payapp.context_processors.user_currency',
             ],
         },
     },

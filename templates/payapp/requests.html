@@ -22,7 +22,7 @@
                 <thead  class="text-center">
                 <tr>
                     <th>Request ID</th>
-                    <th>Amount</th>
+                    <th>Amount (in {{ user_currency |upper }})</th>
                     <th>From User</th>
                     <th>Date</th>
                     <th>Status</th>
@@ -33,7 +33,7 @@
                 {% for request in incoming_requests %}
                     <tr class="text-center">
                         <td>{{ request.id }}</td>
-                        <td>{{ request.amount }}</td>
+                        <td>{{ request.amount }} (in {{ user_currency |upper }}) </td>
                         <td>{{ request.sender.user.username }}</td>
                         <td>{{ request.created_at }}</td>
                         <td>{{ request.status|capfirst }}</td>
@@ -80,7 +80,7 @@
                 <thead class="text-center">
                     <tr>
                         <th>Request ID</th>
-                        <th>Amount</th>
+                        <th>Amount (in {{ user_currency |upper}})</th>
                         <th>To User</th>
                         <th>Date</th>
                         <th>Status</th>
@@ -127,7 +127,7 @@
                 <thead  class="text-center">
                     <tr>
                         <th>Request ID</th>
-                        <th>Amount</th>
+                        <th>Amount (in {{ user_currency |upper}})</th>
                         <th>From User</th>
                         <th>To User</th>
                         <th>Date</th>
