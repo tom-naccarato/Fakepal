@@ -1,5 +1,5 @@
 Register App Documentation
-========================
+==========================
 
 Overview of the Register application.
 
