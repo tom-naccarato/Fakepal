@@ -47,7 +47,7 @@ class PayAppViewTests(TestCase):
             'amount': 10,
             'receiver': 'nonexistentuser',
         })
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)  # No redirect indicates failure
 
     def test_accept_request_view(self):
         # Create a request to be accepted
@@ -61,7 +61,7 @@ class PayAppViewTests(TestCase):
         response = self.client.get(reverse('payapp:accept_request', kwargs={'request_id': req.id}))
         req.refresh_from_db()
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(req.status, 'accepted')
+        self.assertEqual(req.status, 'accepted')  # The request is accepted successfully
 
     def test_accept_request_insufficient_funds(self):
         # Create a request to be accepted
@@ -75,7 +75,7 @@ class PayAppViewTests(TestCase):
         response = self.client.get(reverse('payapp:accept_request', kwargs={'request_id': req.id}))
         req.refresh_from_db()
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(req.status, 'pending')
+        self.assertEqual(req.status, 'pending')  # The request is not accepted due to insufficient funds
 
     def test_decline_request_view(self):
         # Create a request to be declined
@@ -89,7 +89,7 @@ class PayAppViewTests(TestCase):
         response = self.client.get(reverse('payapp:decline_request', kwargs={'request_id': req.id}))
         req.refresh_from_db()
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(req.status, 'declined')
+        self.assertEqual(req.status, 'declined')  # The request is declined successfully
 
     def test_cancel_request_view(self):
         # Create a request to be canceled
@@ -102,8 +102,8 @@ class PayAppViewTests(TestCase):
         self.client.login(username='canceluser', password='userpassword')
         response = self.client.get(reverse('payapp:cancel_request', kwargs={'request_id': req.id}))
         req.refresh_from_db()
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(req.status, 'cancelled')
+        self.assertEqual(response.status_code, 302)  # Redirect to home indicates success
+        self.assertEqual(req.status, 'cancelled')  # The request is cancelled successfully
 
     def test_send_payment_view(self):
         # Test sending a payment
