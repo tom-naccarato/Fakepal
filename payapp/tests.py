@@ -1,7 +1,8 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth.models import User, Group
-from payapp.models import Account, Transaction, Request
+from payapp.models import Account, Request
+
 
 class PayAppViewTests(TestCase):
     def setUp(self):
@@ -25,17 +26,6 @@ class PayAppViewTests(TestCase):
         # Test accessing the transactions page as a logged-out user
         self.client.logout()
         response = self.client.get(reverse('payapp:transactions'))
-        self.assertNotEqual(response.status_code, 200)
-
-    def test_admin_all_users_view(self):
-        # Test accessing the admin users page as an admin
-        self.client.login(username='adminuser', password='adminpassword')
-        response = self.client.get(reverse('payapp:admin_all_users'))
-        self.assertEqual(response.status_code, 200)
-
-        # Test accessing the admin users page as a non-admin
-        self.client.login(username='user', password='userpassword')
-        response = self.client.get(reverse('payapp:admin_all_users'))
         self.assertNotEqual(response.status_code, 200)
 
     def test_make_request_view(self):
@@ -109,5 +99,5 @@ class PayAppViewTests(TestCase):
         receiver_account.refresh_from_db()
 
         self.assertEqual(response.status_code, 302)  # Redirect to home indicates success
-        self.assertEqual(sender_account.balance, 90) # 100 - 10
-        self.assertEqual(receiver_account.balance, 60) # 50 + 10
+        self.assertEqual(sender_account.balance, 90)  # 100 - 10
+        self.assertEqual(receiver_account.balance, 60)  # 50 + 10

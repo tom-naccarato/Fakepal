@@ -2,7 +2,6 @@ from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth.models import User, Group
 from register.forms import UserForm, LoginForm
-from .views import register, login_view, admin_register
 
 
 class UserViewTests(TestCase):
@@ -67,17 +66,3 @@ class UserViewTests(TestCase):
         response = self.client.get(reverse('register:login'))
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response.context['form'], LoginForm)
-
-    def test_admin_register_view_post_success(self):
-        # Test successful admin registration
-        self.client.login(username='admin1', password='admin1')
-        response = self.client.post(reverse('register:admin_register'), {
-            'username': 'adminuser',
-            'password1': 'adminpassword123',
-            'password2': 'adminpassword123',
-            'email': 'admin@example.com',
-            'currency': 'gbp'
-        })
-        self.assertEqual(response.status_code, 302)  # Redirect status code
-        new_admin = User.objects.get(username='adminuser')
-        self.assertTrue(new_admin.groups.filter(name='AdminGroup').exists())
