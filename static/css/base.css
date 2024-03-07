@@ -69,9 +69,10 @@
         padding-bottom: 60px;
 }
 
+/*Footer*/
 footer {
     position: sticky;
-    bottom: -5vh;
+    bottom: -5vh; /* Negative value to pull it up */
     width: 100%;
     text-align: center;
 }

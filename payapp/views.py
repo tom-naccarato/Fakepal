@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.models import User
 from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
@@ -6,6 +7,7 @@ from payapp.custom_exceptions import InsufficientBalanceException
 from payapp.forms import RequestForm, PaymentForm
 from payapp.models import Transaction, Account, Request
 from webapps2024 import settings
+from django.core.exceptions import ObjectDoesNotExist
 
 
 def login_required_message(function):
@@ -142,26 +144,33 @@ def make_request(request):
     """
     # If the form is submitted, validate the form and save the request
     if request.method == 'POST':
-        form = RequestForm(request.POST, user=request.user)
+        form = RequestForm(request.POST)
         # If the form is valid, save the request
         if form.is_valid():
-            # Checks if the amount is positive, if not, display an error message and return the form
-            if form.cleaned_data.get('amount') <= 0:
-                messages.error(request, "You must request a positive sum. Please try again.")
+            try:
+                # Checks if the amount is positive, if not, display an error message and return the form
+                if form.cleaned_data.get('amount') <= 0:
+                    messages.error(request, "You must request a positive sum. Please try again.")
+                    return render(request, 'payapp/make_request.html', {'form': form})
+                request_instance = form.save(commit=False)  # Creates an instance of the form without saving it
+                request_instance.sender = Account.objects.get(user=request.user)
+                request_instance.receiver = Account.objects.get(user__username=request.POST['receiver'])
+                request_instance.save()
+                messages.success(request, "Request has been made")
+                return redirect('home')
+            # If the user does not exist, display an error message and return the form
+            except User.DoesNotExist as e:
+                messages.error(request, "The user does not exist. Please make sure you spelled their username"
+                                        " correctly and try again.")
                 return render(request, 'payapp/make_request.html', {'form': form})
-            request_instance = form.save(commit=False)  # Creates an instance of the form without saving it
-            request_instance.sender = Account.objects.get(user=request.user)
-            request_instance.receiver = Account.objects.get(id=request.POST['receiver'])
-            request_instance.save()
-            messages.success(request, "Request has been made")
-            return redirect('home')
+
         # If the form is invalid, display an error message and return the form
         else:
             messages.error(request, "Invalid information. Please try again.")
             return render(request, 'payapp/make_request.html', {'form': form})
     # If the form is not submitted, display the form
     else:
-        form = RequestForm(user=request.user)
+        form = RequestForm()
         return render(request, 'payapp/make_request.html', {'form': form})
 
 
@@ -213,7 +222,7 @@ def decline_request(request, request_id):
     try:
         req = get_object_or_404(Request, id=request_id)
         req.decline_request()
-        messages.success(request, "Request has been declined")
+        messages.success(request, "Request has been declined.")
         return redirect('payapp:requests')
     # If the request does not exist, display an error message and redirect to the requests page
     except Http404:
@@ -259,14 +268,14 @@ def send_payment(request):
     """
     # If the form is submitted, validate the form and save the payment
     if request.method == 'POST':
-        form = PaymentForm(request.POST, user=request.user)
+        form = PaymentForm(request.POST)
         # If the form is valid, save the payment
         if form.is_valid():
             # Try to save the payment
             try:
                 transaction_instance = form.save(commit=False)
                 transaction_instance.sender = Account.objects.get(user=request.user)
-                transaction_instance.receiver = Account.objects.get(id=request.POST['receiver'])
+                transaction_instance.receiver = Account.objects.get(user__username=request.POST['receiver'])
                 transaction_instance.transfer(transaction_instance.amount)
                 transaction_instance.save()
                 messages.success(request, "Payment has been made")
@@ -280,11 +289,18 @@ def send_payment(request):
             except ValueError as e:
                 messages.error(request, "You cannot transfer a negative number. Please try again.")
                 return render(request, 'payapp/send_payment.html', {'form': form})
+            # If the user does not exist, display an error message and return the form
+            except User.DoesNotExist as e:
+                messages.error(request, "The user does not exist. Please make sure you spelled their username"
+                                        " correctly and try again.")
+                return render(request, 'payapp/send_payment.html', {'form': form})
+
         # If the form is invalid, display an error message and return the form
         else:
             messages.error(request, "Invalid information. Please try again.")
             return render(request, 'payapp/send_payment.html', {'form': form})
+
     # If the form is not submitted, display the form
     else:
-        form = RequestForm(user=request.user)
+        form = PaymentForm()
         return render(request, 'payapp/send_payment.html', {'form': form})

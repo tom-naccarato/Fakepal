@@ -1,4 +1,6 @@
 from django import forms
+from django.contrib.auth.models import User
+
 from payapp.models import Request, Account, Transaction
 
 
@@ -6,41 +8,45 @@ class RequestForm(forms.ModelForm):
     """
     Form to request money from another user
     """
-    receiver = forms.ModelChoiceField(queryset=Account.objects.none(),  # Initialize with none, will update in __init__
-                                      widget=forms.Select(attrs={'class': 'form-control'}))
+    receiver = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
 
     class Meta:
         model = Request
         fields = ['receiver', 'amount']
         widgets = {
+            'receiver': forms.TextInput(attrs={'class': 'form-control'}),
             'amount': forms.NumberInput(attrs={'class': 'form-control'}),
         }
 
-    def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user', None)  # Extract user from kwargs
-        super().__init__(*args, **kwargs)
-        if user:
-            # Exclude the current user's account from the queryset
-            self.fields['receiver'].queryset = Account.objects.exclude(user=user)
+    def clean_receiver(self):
+        username = self.cleaned_data.get('receiver')
+        try:
+            user = User.objects.get(username=username)
+            account = Account.objects.get(user=user)
+            return account
+        except User.DoesNotExist:
+            raise forms.ValidationError("User does not exist.")
 
 
 class PaymentForm(forms.ModelForm):
     """
     Form to make a payment to another user
     """
-    receiver = forms.ModelChoiceField(queryset=Account.objects.none(),  # Initialize with none, will update in __init__
-                                      widget=forms.Select(attrs={'class': 'form-control'}))
+    receiver = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
 
     class Meta:
         model = Transaction
         fields = ['receiver', 'amount']
         widgets = {
+            'receiver': forms.TextInput(attrs={'class': 'form-control'}),
             'amount': forms.NumberInput(attrs={'class': 'form-control'}),
         }
 
-    def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user', None)  # Extract user from kwargs
-        super().__init__(*args, **kwargs)
-        if user:
-            # Exclude the current user's account from the queryset
-            self.fields['receiver'].queryset = Account.objects.exclude(user=user)
+    def clean_receiver(self):
+        username = self.cleaned_data.get('receiver')
+        try:
+            user = User.objects.get(username=username)
+            account = Account.objects.get(user=user)
+            return account
+        except User.DoesNotExist:
+            raise forms.ValidationError("User does not exist.")
