@@ -24,11 +24,12 @@
 
 .content {
     flex: 1 0 auto;
+        padding-bottom: 60px;
 }
 
 footer {
     position: sticky;
-    bottom: 0;
+    bottom: -5vh;
     width: 100%;
     text-align: center;
 }
