@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load currency_filters %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +16,8 @@
             <thead  class="text-center">
                 <tr>
                     <th>Transaction ID</th>
-                    <th>Amount (in {{ user_currency | upper}})</th> <!-- uses currency context processor to get user currency -->
+                    <th>Type</th>
+                    <th>Amount</th>
                     <th>From User</th>
                     <th>To User</th>
                     <th>Date</th>
@@ -25,7 +27,13 @@
                 {% for transaction in transactions %}
                 <tr>
                     <td>{{ transaction.id }}</td>
-                    <td>{{ transaction.amount }}</td>
+                    <td>{{ transaction.type |capfirst}}</td>
+                    {% if transaction.type == 'request' %}
+                    <td>{{ transaction.sender.currency|currency_symbol }}
+                        {% else %}
+                    <td>{{ transaction.receiver.currency|currency_symbol }}
+                    {% endif %}
+                        {{ transaction.amount }}</td> <! -- currency filter -->
                     <td>{{ transaction.sender.user.username }}</td>
                     <td>{{ transaction.receiver.user.username }}</td>
                     <td>{{ transaction.created_at | date:"D, d M Y H:i" }}</td>

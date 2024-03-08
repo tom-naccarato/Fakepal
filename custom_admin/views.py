@@ -43,7 +43,7 @@ def all_users(request):
     users_list = Account.objects.filter(Q(user__groups=None)).select_related('user')
     admin_list = Account.objects.filter(Q(user__groups__name="AdminGroup")).select_related('user')
     context = {'users': users_list, 'admins': admin_list}
-    return render(request, 'payapp/admin_all_users.html', context)
+    return render(request, 'custom_admin/all_users.html', context)
 
 
 @admin_login_required_message
@@ -54,7 +54,7 @@ def all_transactions(request):
     :return:
     """
     transactions_list = Transaction.objects.all().order_by('-created_at')
-    return render(request, 'payapp/admin_all_transactions.html',
+    return render(request, 'custom_admin/all_transactions.html',
                   {'transactions': transactions_list})
 
 
