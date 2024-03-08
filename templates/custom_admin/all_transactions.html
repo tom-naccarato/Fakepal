@@ -28,11 +28,7 @@
                 <tr>
                     <td>{{ transaction.id }}</td>
                     <td>{{ transaction.type |capfirst}}</td>
-                    {% if transaction.type == 'request' %}
                     <td>{{ transaction.sender.currency|currency_symbol }}
-                        {% else %}
-                    <td>{{ transaction.receiver.currency|currency_symbol }}
-                    {% endif %}
                         {{ transaction.amount }}</td> <! -- currency filter -->
                     <td>{{ transaction.sender.user.username }}</td>
                     <td>{{ transaction.receiver.user.username }}</td>

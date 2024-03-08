@@ -33,26 +33,6 @@ def login_required_message(function):
     return wrap
 
 
-def convert_currency(currency1, currency2, amount_of_currency1):
-    # If the currencies are the same, return the amount of currency1
-    if currency1 == currency2:
-        return amount_of_currency1
-    try:
-        response = requests.get(f'http://localhost:8000/webapps2024/conversion/{currency1.upper()}/{currency2.upper()}/'
-                                f'{amount_of_currency1}')
-    except Exception:
-        raise Exception('Error in currency conversion, please try again')
-    print(response.status_code)
-    print(response.content)
-    # If the request is unsuccessful, raise an exception
-    if response.status_code != 200:
-        raise Exception('Error in currency conversion, please try again')
-
-    # If the request is successful, returns the result, which is the amount of currency1 converted to currency2
-    converted_amount = float(response.content)
-    return converted_amount
-
-
 def home(request):
     """
     View function to display the home page
@@ -74,7 +54,8 @@ def transactions(request):
         Q(sender__user=request.user) | Q(receiver__user=request.user)
     ))
     if transactions_list.exists():
-        transactions_list = transactions_list.select_related('sender', 'receiver', 'sender__user', 'receiver__user').order_by('-created_at')
+        transactions_list = transactions_list.select_related('sender', 'receiver', 'sender__user',
+                                                             'receiver__user').order_by('-created_at')
     return render(request, 'payapp/transactions.html', {'transactions': transactions_list})
 
 
@@ -90,6 +71,7 @@ def payment_requests(request):
     outgoing_request_list = (Request.objects.filter(
         Q(sender__user=request.user, status='pending')
     ))
+    # Checks that the outgoing request list is not empty as cannot select_related on an empty queryset
     if outgoing_request_list.exists():
         outgoing_request_list = (outgoing_request_list.select_related('sender', 'receiver', 'sender__user',
                                                                       'receiver__user')
@@ -99,7 +81,8 @@ def payment_requests(request):
         Q(receiver__user=request.user, status='pending')
     )
     if incoming_request_list.exists():
-        incoming_request_list.select_related('sender', 'receiver', 'sender__user', 'receiver__user').order_by('-created_at')
+        (incoming_request_list.select_related('sender', 'receiver', 'sender__user', 'receiver__user')
+         .order_by('-created_at'))
     # Select completed requests from transaction table where the sender or receiver is the logged-in user
 
     completed_request_list = (Request.objects.filter(
@@ -107,7 +90,8 @@ def payment_requests(request):
         (Q(receiver__user=request.user) & ~Q(status='pending'))
     ))
     if completed_request_list.exists():
-        completed_request_list = completed_request_list.select_related('sender', 'receiver', 'sender__user', 'receiver__user').order_by('-created_at')
+        completed_request_list = completed_request_list.select_related('sender', 'receiver', 'sender__user',
+                                                                       'receiver__user').order_by('-created_at')
 
     # Render the requests page with the context
     context = {'outgoing_requests': outgoing_request_list, 'incoming_requests': incoming_request_list,
@@ -136,10 +120,6 @@ def make_request(request):
                 request_instance = form.save(commit=False)  # Creates an instance of the form without saving it
                 request_instance.sender = Account.objects.get(user=request.user)
                 request_instance.receiver = Account.objects.get(user__username=request.POST['receiver'])
-                converted_amount = convert_currency(request_instance.sender.currency,
-                                                    request_instance.receiver.currency,
-                                                    request_instance.amount)
-                request_instance.amount = converted_amount
 
                 # If the receiver is not the sender, save the request
                 if request_instance.receiver != request_instance.sender:
@@ -270,11 +250,7 @@ def send_payment(request):
                 transaction_instance.sender = Account.objects.get(user=request.user)
                 transaction_instance.receiver = Account.objects.get(user__username=request.POST['receiver'])
                 if transaction_instance.receiver != transaction_instance.sender:
-                    converted_amount = convert_currency(transaction_instance.sender.currency,
-                                                        transaction_instance.receiver.currency,
-                                                        transaction_instance.amount)
-                    transaction_instance.amount = converted_amount
-                    transaction_instance.transfer(Decimal(str(transaction_instance.amount)))
+                    transaction_instance.transfer(transaction_instance.amount)
                     transaction_instance.save()
                     messages.success(request, "Payment has been made")
                     return redirect('home')

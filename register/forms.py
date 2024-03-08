@@ -2,7 +2,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.contrib.auth.models import User
 from payapp.models import Account
-from payapp.views import convert_currency
+from payapp.models import convert_currency
 
 
 class UserForm(UserCreationForm):
