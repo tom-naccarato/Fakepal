@@ -31,7 +31,22 @@ def login_required_message(function):
     wrap.__doc__ = function.__doc__
     wrap.__name__ = function.__name__
     return wrap
+def convert_currency(currency1, currency2, amount_of_currency1):
+    # If the currencies are the same, return the amount of currency1
+    if currency1 == currency2:
+        return amount_of_currency1
+    try:
+        response = requests.get(f'http://localhost:8000/webapps2024/conversion/{currency1.upper()}/{currency2.upper()}/'
+                                f'{amount_of_currency1}')
+    except Exception:
+        raise Exception('Error in currency conversion, please try again')
+    # If the request is unsuccessful, raise an exception
+    if response.status_code != 200:
+        raise Exception('Error in currency conversion, please try again')
 
+    # If the request is successful, returns the result, which is the amount of currency1 converted to currency2
+    converted_amount = Decimal(response.content)
+    return converted_amount
 
 def home(request):
     """

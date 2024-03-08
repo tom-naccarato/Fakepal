@@ -1,28 +1,9 @@
 from decimal import Decimal
-
 from django.contrib.auth.models import User
 from django.db import models
 from payapp.custom_exceptions import InsufficientBalanceException
+from payapp.utils import convert_currency
 import requests
-
-
-def convert_currency(currency1, currency2, amount_of_currency1):
-    # If the currencies are the same, return the amount of currency1
-    if currency1 == currency2:
-        return amount_of_currency1
-    try:
-        response = requests.get(f'http://localhost:8000/webapps2024/conversion/{currency1.upper()}/{currency2.upper()}/'
-                                f'{amount_of_currency1}')
-    except Exception:
-        raise Exception('Error in currency conversion, please try again')
-    # If the request is unsuccessful, raise an exception
-    if response.status_code != 200:
-        raise Exception('Error in currency conversion, please try again')
-
-    # If the request is successful, returns the result, which is the amount of currency1 converted to currency2
-    converted_amount = float(response.content)
-    return converted_amount
-
 
 class Account(models.Model):
     """
@@ -118,7 +99,6 @@ class Transaction(models.Model):
         Transfers the specified amount from the sender's account to the receiver's account.
 
         :param amount: The amount to transfer from the sender's account to the receiver's account
-        :type amount: Decimal
 
         :return: None
         """
@@ -128,15 +108,17 @@ class Transaction(models.Model):
         # Ensures that the amount to transfer is positive so users cannot transfer negative/zero amounts
         if self.amount <= 0:
             raise ValueError
+
         # If the transaction type is a transfer, the amount is subtracted from the sender's balance, convert
         # and add to the receiver's balance
         if self.type == 'transfer':
             self.sender.balance -= amount
-            converted_amount = Decimal(convert_currency(self.sender.currency, self.receiver.currency, amount))
+            converted_amount = convert_currency(self.sender.currency, self.receiver.currency, amount)
             self.receiver.balance += converted_amount
+
         # If the transaction type is a request, the amount is converted first and then transferred
         else:
-            converted_amount = Decimal(convert_currency(self.receiver.currency, self.sender.currency, amount))
+            converted_amount = convert_currency(self.receiver.currency, self.sender.currency, amount)
             self.sender.balance -= converted_amount
             self.receiver.balance += amount
             self.amount = converted_amount
