@@ -11,7 +11,11 @@ def conversion(request, currency1, currency2, amount_of_currency1):
 
     # Check if the request method is GET
     if request.method == 'GET':
+        if amount_of_currency1 == '0':
+            return HttpResponse(amount_of_currency1)
         try:
+            if float(amount_of_currency1) < 0:
+                return HttpResponse('Cannot use negative amount of currency1', status=400)
             currency1 = currency1.upper()
             currency2 = currency2.upper()
             amount_of_currency1 = float(amount_of_currency1)
@@ -20,15 +24,18 @@ def conversion(request, currency1, currency2, amount_of_currency1):
             if currency1 in exchange_rates and currency2 in exchange_rates[currency1]:
                 # Calculate the conversion rate
                 rate = exchange_rates[currency1][currency2]
-                converted_currency1 = float(amount_of_currency1 * rate)
+                converted_currency1 = round(float(amount_of_currency1 * rate), 2)
                 # Return the conversion rate as an HTTP response
                 return HttpResponse(converted_currency1)
             else:
                 # Return an error if one or both of the currencies are not supported
-                return HttpResponseBadRequest('One or both of the provided currencies are not supported')
+                return HttpResponse('One or both of the provided currencies are not supported', status=400)
         except KeyError:
             # Return an error if the request does not contain the required parameters
-            return HttpResponseBadRequest('Invalid request parameters')
+            return HttpResponse('Invalid request parameters', status=400)
+        except ValueError:
+            # Return an error if the amount of currency1 is not a valid number
+            return HttpResponse('Invalid amount of currency1', status=400)
     else:
         # Return an error if the request method is not GET
-        return HttpResponseBadRequest('Invalid request method')
+        return HttpResponse('Invalid request method', status=400)
