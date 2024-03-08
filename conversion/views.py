@@ -2,7 +2,6 @@ from django.http import HttpResponse, HttpResponseBadRequest
 
 
 def conversion(request, currency1, currency2, amount_of_currency1):
-    print("test")
     # Dictionary of exchange rates
     exchange_rates = {
         'USD': {'EUR': 0.85, 'GBP': 0.75},
