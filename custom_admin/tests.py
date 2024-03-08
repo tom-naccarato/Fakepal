@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 from django.contrib.auth.models import User, Group
 from django.test import TestCase, Client
 from django.urls import reverse
@@ -35,7 +37,9 @@ class CustomAdminViewTests(TestCase):
         response = self.client.get(reverse('custom_admin:all_users'))
         self.assertNotEqual(response.status_code, 200)
 
-    def test_admin_register_view_post_success(self):
+    @patch('register.forms.convert_currency')
+    def test_admin_register_view_post_success(self, mock_convert):
+        mock_convert.return_value = 1000
         """
         Test the admin register view with a successful POST request
         :param self:
@@ -54,7 +58,9 @@ class CustomAdminViewTests(TestCase):
         new_admin = User.objects.get(username='adminuser')
         self.assertTrue(new_admin.groups.filter(name='AdminGroup').exists())
 
-    def test_admin_register_view_post_invalid(self):
+    @patch('register.forms.convert_currency')
+    def test_admin_register_view_post_invalid(self, mock_convert):
+        mock_convert.return_value = 1000
         """
         Test the admin register view with an invalid POST request
         :param self:
