@@ -30,7 +30,9 @@ class UserViewTests(TestCase):
         self.assertTrue(User.objects.filter(username='newuser').exists())
         self.assertTrue(self.client.login(username='newuser', password='newpassword123'))
 
-    def test_register_view_post_invalid(self):
+    @patch('register.forms.convert_currency')
+    def test_register_view_post_invalid(self, mock_convert):
+        mock_convert.return_value = 1000
         # Test registration with invalid data
         response = self.client.post(reverse('register:register'), {
             'username': 'user',
