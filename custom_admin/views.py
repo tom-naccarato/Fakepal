@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.conf import settings
-from payapp.models import Account, Transaction
+from payapp.models import Account, Transfer, Request
 from register.forms import UserForm
 
 
@@ -53,9 +53,11 @@ def all_transactions(request):
     :param request:
     :return:
     """
-    transactions_list = Transaction.objects.all().order_by('-created_at')
+    transfer_list = Transfer.objects.all().order_by('-created_at')
+    request_list = Request.objects.all().order_by('-created_at')
+
     return render(request, 'custom_admin/all_transactions.html',
-                  {'transactions': transactions_list})
+                  {'transfers': transfer_list, 'requests': request_list})
 
 
 @admin_login_required_message

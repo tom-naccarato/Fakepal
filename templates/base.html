@@ -48,13 +48,13 @@
 
                 <!-- Transactions dropdown -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="transactionsDropdown" role="button" 
+                        <a class="nav-link dropdown-toggle" href="#" id="transfersDropdown" role="button"
                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Transactions
+                            Transfers
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="transactionsDropdown">
+                        <div class="dropdown-menu" aria-labelledby="transfersDropdown">
                             <a class="dropdown-item" href="{% url 'payapp:send_payment' %}">Send a Payment</a>
-                            <a class="dropdown-item" href="{% url 'payapp:transactions' %}">Transaction History</a>
+                            <a class="dropdown-item" href="{% url 'payapp:transfers' %}">Transfer History</a>
                         </div>
                     </li>
                 

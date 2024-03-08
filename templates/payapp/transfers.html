@@ -4,22 +4,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Transactions {% endblock %}</title>
+    <title>{% block title %}Transfers {% endblock %}</title>
 </head>
 <body>
 {% block content %}
-    <h1>Transactions</h1>
-    {% if transactions %}
+    <h1>Transfers</h1>
+    {% if transfers %}
         <p>
             You have
-            {{ transactions|length }} completed 
-            transaction{{ transactions|length|pluralize }}.
+            {{ transfers|length }} completed
+            transfer{{ transfers|length|pluralize }}.
         </p>
         <div class="table-responsive">
                 <table class="table table-striped table-bordered table-hover table-sm">
                     <thead  class="text-center">
                         <tr>
-                            <th>Transaction ID</th>
+                            <th>Transfer ID</th>
                             <th>Type</th>
                             <th>Amount</th>
                             <th>From User</th>
@@ -28,19 +28,19 @@
                         </tr>
                     </thead>
                     <tbody class="text-center">
-                        {% for transaction in transactions %}
+                        {% for transfer in transfers %}
                             <tr>
-                                <td>{{ transaction.id }}</td>
-                                <td>{{ transaction.type |capfirst }}</td>
-                                {% if transaction.type == 'request' %}
-                                <td>{{ transaction.sender.currency|currency_symbol }}
+                                <td>{{ transfer.id }}</td>
+                                <td>{{ transfer.type |capfirst }}</td>
+                                {% if transfer.type == 'request' %}
+                                <td>{{ transfer.sender.currency|currency_symbol }}
                                 {% else %}
-                                <td>{{ transaction.receiver.currency|currency_symbol }}
+                                <td>{{ transfer.receiver.currency|currency_symbol }}
                                 {% endif %}
-                                {{ transaction.amount }}</td> <! -- currency filter -->
-                                <td>{{ transaction.sender.user.username }}</td>
-                                <td>{{ transaction.receiver.user.username }}</td>
-                                <td>{{ transaction.created_at | date:"D, d M Y H:i" }}</td>
+                                {{ transfer.amount }}</td> <! -- currency filter -->
+                                <td>{{ transfer.sender.user.username }}</td>
+                                <td>{{ transfer.receiver.user.username }}</td>
+                                <td>{{ transfer.created_at | date:"D, d M Y H:i" }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>

@@ -1,15 +1,13 @@
-from decimal import Decimal
 
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.db.models import Q
-from django.http import Http404, HttpResponseBadRequest
+from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from payapp.custom_exceptions import InsufficientBalanceException
 from payapp.forms import RequestForm, PaymentForm
-from payapp.models import Transaction, Account, Request
+from payapp.models import Transfer, Account, Request
 from webapps2024 import settings
-import requests
 
 
 def login_required_message(function):
@@ -31,22 +29,6 @@ def login_required_message(function):
     wrap.__doc__ = function.__doc__
     wrap.__name__ = function.__name__
     return wrap
-def convert_currency(currency1, currency2, amount_of_currency1):
-    # If the currencies are the same, return the amount of currency1
-    if currency1 == currency2:
-        return amount_of_currency1
-    try:
-        response = requests.get(f'http://localhost:8000/webapps2024/conversion/{currency1.upper()}/{currency2.upper()}/'
-                                f'{amount_of_currency1}')
-    except Exception:
-        raise Exception('Error in currency conversion, please try again')
-    # If the request is unsuccessful, raise an exception
-    if response.status_code != 200:
-        raise Exception('Error in currency conversion, please try again')
-
-    # If the request is successful, returns the result, which is the amount of currency1 converted to currency2
-    converted_amount = Decimal(response.content)
-    return converted_amount
 
 def home(request):
     """
@@ -58,20 +40,20 @@ def home(request):
 
 
 @login_required_message
-def transactions(request):
+def transfers(request):
     """
-    View function to display the transactions of the logged-in user with login required decorator
+    View function to display the transfers of the logged-in user with login required decorator
 
     :param request:
     :return:
     """
-    transactions_list = (Transaction.objects.filter(
+    transfer_list = (Transfer.objects.filter(
         Q(sender__user=request.user) | Q(receiver__user=request.user)
     ))
-    if transactions_list.exists():
-        transactions_list = transactions_list.select_related('sender', 'receiver', 'sender__user',
+    if transfer_list.exists():
+        transfer_list = transfer_list.select_related('sender', 'receiver', 'sender__user',
                                                              'receiver__user').order_by('-created_at')
-    return render(request, 'payapp/transactions.html', {'transactions': transactions_list})
+    return render(request, 'payapp/transfers.html', {'transfers': transfer_list})
 
 
 @login_required_message
@@ -265,7 +247,7 @@ def send_payment(request):
                 transaction_instance.sender = Account.objects.get(user=request.user)
                 transaction_instance.receiver = Account.objects.get(user__username=request.POST['receiver'])
                 if transaction_instance.receiver != transaction_instance.sender:
-                    transaction_instance.transfer(transaction_instance.amount)
+                    transaction_instance.execute(transaction_instance.amount)
                     transaction_instance.save()
                     messages.success(request, "Payment has been made")
                     return redirect('home')

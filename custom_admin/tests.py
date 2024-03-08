@@ -3,7 +3,7 @@ from unittest.mock import patch
 from django.contrib.auth.models import User, Group
 from django.test import TestCase, Client
 from django.urls import reverse
-from payapp.models import Account, Transaction, Request
+from payapp.models import Account, Transfer, Request
 from register.forms import UserForm
 
 

@@ -9,8 +9,9 @@
 {% block content %}
 <body>
     <h1>All Transactions</h1>
-    <p> There {{ transactions.count | pluralize:'is, are'}} currently {{ transactions.count }} completed 
-        transaction{{ transactions.count | pluralize }}.</p>
+    <h2>Transfers</h2>
+    <p> There {{ transfers.count | pluralize:'is, are'}} currently {{ transfers.count }} completed
+        transaction{{ transfers.count | pluralize }}.</p>
     <div class="table-responsive">
         <table class="table table-striped table-bordered table-hover table-sm">
             <thead  class="text-center">
@@ -24,19 +25,50 @@
                 </tr>
             </thead>
             <tbody class="text-center">
-                {% for transaction in transactions %}
+                {% for transfer in transfers %}
                 <tr>
-                    <td>{{ transaction.id }}</td>
-                    <td>{{ transaction.type |capfirst}}</td>
-                    <td>{{ transaction.sender.currency|currency_symbol }}
-                        {{ transaction.amount }}</td> <! -- currency filter -->
-                    <td>{{ transaction.sender.user.username }}</td>
-                    <td>{{ transaction.receiver.user.username }}</td>
-                    <td>{{ transaction.created_at | date:"D, d M Y H:i" }}</td>
+                    <td>{{ transfer.id }}</td>
+                    <td>{{ transfer.type |capfirst}}</td>
+                    <td>{{ transfer.sender.currency|currency_symbol }}
+                        {{ transfer.amount }}</td> <! -- currency filter -->
+                    <td>{{ transfer.sender.user.username }}</td>
+                    <td>{{ transfer.receiver.user.username }}</td>
+                    <td>{{ transfer.created_at | date:"D, d M Y H:i" }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+    </div>
+    
+    <h2>Requests</h2>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover table-sm">
+            <thead  class="text-center">
+                <tr>
+                    <th>Request ID</th>
+                    <th>Status</th>
+                    <th>Amount</th>
+                    <th>From User</th>
+                    <th>To User</th>
+                    <th>Date</th>
+                    
+                </tr>
+            </thead>
+            <tbody class="text-center">
+            
+                {% for request in requests %}
+                <tr>
+                    <td>{{ request.id }}</td>
+                    <td>{{ request.status | capfirst }}</td>
+                    <td>{{ request.sender.currency|currency_symbol }}{{ request.amount }}</td> 
+                    <td>{{ request.sender.user.username }}</td>
+                    <td>{{ request.receiver.user.username }}</td>
+                    <td>{{ request.created_at | date:"D, d M Y H:i" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
     </div>
 {% endblock content %}
 </body>

@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from payapp.custom_exceptions import InsufficientBalanceException
 from payapp.utils import convert_currency
-import requests
+
 
 class Account(models.Model):
     """
@@ -53,7 +53,7 @@ class Account(models.Model):
         return self.user.username
 
 
-class Transaction(models.Model):
+class Transfer(models.Model):
     """
     Transaction model for storing transaction information.
 
@@ -94,7 +94,7 @@ class Transaction(models.Model):
         """
         return f'{self.sender.user.username} sent {self.amount} to {self.receiver.user.username}'
 
-    def transfer(self, amount):
+    def execute(self, amount):
         """
         Transfers the specified amount from the sender's account to the receiver's account.
 
@@ -122,7 +122,6 @@ class Transaction(models.Model):
             self.sender.balance -= converted_amount
             self.receiver.balance += amount
             self.amount = converted_amount
-
 
         self.sender.save()
         self.receiver.save()
@@ -188,11 +187,11 @@ class Request(models.Model):
         # Checks that the receiver of the request has enough balance to accept the request
         if self.receiver.balance >= amount:
             # Creates a transaction
-            transaction = Transaction(sender=self.receiver, receiver=self.sender,
-                                      amount=amount, type='request')
+            transaction = Transfer(sender=self.receiver, receiver=self.sender,
+                                   amount=amount, type='request')
             transaction.save()
             # Executes the transaction
-            transaction.transfer(amount)
+            transaction.execute(amount)
             self.status = 'accepted'
             self.save()
             return None

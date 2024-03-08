@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 
-from payapp.models import Request, Account, Transaction
+from payapp.models import Request, Account, Transfer
 
 
 class RequestForm(forms.ModelForm):
@@ -35,7 +35,7 @@ class PaymentForm(forms.ModelForm):
     receiver = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
 
     class Meta:
-        model = Transaction
+        model = Transfer
         fields = ['receiver', 'amount']
         widgets = {
             'receiver': forms.TextInput(attrs={'class': 'form-control'}),
