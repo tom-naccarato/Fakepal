@@ -1,7 +1,6 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from payapp.views import convert_currency
 from register.forms import UserForm, LoginForm
 from django.contrib.auth.models import Group, User
 
@@ -19,14 +18,7 @@ def register(request):
         form = UserForm(request.POST)
         # Checks if the form is valid
         if form.is_valid():
-            form.save()  # This will save the User and create an Account
-
-            # Converts the user's currency to equivalent of 1000 GBP
-            user = User.objects.get(username=form.cleaned_data['username'])
-            user.account.currency = form.cleaned_data['currency']
-            if user.account.currency != 'GBP':
-                user.account.balance = convert_currency('GBP', user.account.currency, 1000)
-            user.account.save()
+            form.save()  # Save the User and create an Account
 
             # Log the user in
             username = form.cleaned_data.get('username')

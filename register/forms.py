@@ -2,6 +2,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.contrib.auth.models import User
 from payapp.models import Account
+from payapp.views import convert_currency
 
 
 class UserForm(UserCreationForm):
@@ -30,6 +31,7 @@ class UserForm(UserCreationForm):
         if commit:
             user.save()
             account = Account(user=user, currency=self.cleaned_data['currency'])
+            account.balance = convert_currency("GBP", account.currency, 1000)
             account.save()
         return user
 
