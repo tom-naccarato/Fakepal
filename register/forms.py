@@ -3,6 +3,7 @@ from django import forms
 from django.contrib.auth.models import User
 from payapp.models import Account
 from payapp.utils import convert_currency
+from django_password_eye.fields import PasswordEye
 
 
 class UserForm(UserCreationForm):
@@ -13,9 +14,14 @@ class UserForm(UserCreationForm):
     currency = forms.ChoiceField(choices=Account.CURRENCY_CHOICES, required=True,
                                  label='Currency')
 
+    # Add a password field to the form using the PasswordEye widget from django_password_eye
+    password1 = PasswordEye()
+    password2 = PasswordEye()
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2', 'currency']
+
+
 
     def save(self, commit=True):
         """
@@ -42,4 +48,5 @@ class LoginForm(forms.Form):
     Form for logging in a user
     """
     username = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput)
+    password = PasswordEye()
+
