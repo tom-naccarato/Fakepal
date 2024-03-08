@@ -14,7 +14,7 @@ This documentation and project is built with (and requires) Python version |pyth
    register
    payapp
    custom_admin
-
+   conversion
 
 
 Indices and tables
