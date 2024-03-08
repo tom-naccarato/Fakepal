@@ -18,14 +18,14 @@ class PayAppViewTests(TestCase):
         # Log in the regular user by default
         self.client.login(username='user', password='userpassword')
 
-    def test_transactions_view(self):
+    def test_transfers_view(self):
         # Test accessing the transactions page as a logged-in user
-        response = self.client.get(reverse('payapp:transactions'))
+        response = self.client.get(reverse('payapp:transfers'))
         self.assertEqual(response.status_code, 200)
 
         # Test accessing the transactions page as a logged-out user
         self.client.logout()
-        response = self.client.get(reverse('payapp:transactions'))
+        response = self.client.get(reverse('payapp:transfers'))
         self.assertNotEqual(response.status_code, 200)
 
     def test_make_request_view(self):
