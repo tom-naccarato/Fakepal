@@ -2,6 +2,13 @@ from django.http import HttpResponse, HttpResponseBadRequest
 
 
 def conversion(request, currency1, currency2, amount_of_currency1):
+    """
+    RESTful Service for currency conversion.
+    :param request: HTTP request
+    :param currency1: The currency to convert from
+    :param currency2: The currency to convert to
+    :param amount_of_currency1: The amount of currency1 to convert
+    :return: The amount of currency2 after conversion"""
     # Dictionary of exchange rates
     exchange_rates = {
         'USD': {'EUR': 0.85, 'GBP': 0.75},
