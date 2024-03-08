@@ -74,6 +74,7 @@ class Transaction(models.Model):
     - receiver: ForeignKey to Account model for the receiver account
     - amount: DecimalField to store transaction amount
     - created_at: DateTimeField to store transaction creation date
+    - type: CharField to store transaction type (transfer or request)
 
     Methods:
     - __str__: Returns the transaction type and amount
@@ -90,6 +91,11 @@ class Transaction(models.Model):
     receiver = models.ForeignKey(Account, on_delete=models.CASCADE,
                                  related_name='transaction_receiver')
     amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    TRANSACTION_TYPE_CHOICES = (
+        ('request', 'Request'),
+        ('transfer', 'Transfer'),
+    )
+    type = models.CharField(max_length=10, choices=TRANSACTION_TYPE_CHOICES, default='transfer')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -180,7 +186,7 @@ class Request(models.Model):
         if self.receiver.balance >= amount:
             # Creates a transaction
             transaction = Transaction(sender=self.receiver, receiver=self.sender,
-                                      amount=amount)
+                                      amount=amount, type='request')
             transaction.save()
             # Executes the transaction
             transaction.transfer(amount)

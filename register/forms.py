@@ -29,9 +29,10 @@ class UserForm(UserCreationForm):
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']
         if commit:
-            user.save()
             account = Account(user=user, currency=self.cleaned_data['currency'])
-            account.balance = convert_currency("GBP", account.currency, 1000)
+            if account.currency != "gbp":
+                account.balance = convert_currency("GBP", account.currency, 1000)
+            user.save()
             account.save()
         return user
 

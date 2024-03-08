@@ -70,9 +70,11 @@ def transactions(request):
     :param request:
     :return:
     """
-    transactions_list = Transaction.objects.filter(
+    transactions_list = (Transaction.objects.filter(
         Q(sender__user=request.user) | Q(receiver__user=request.user)
-    ).select_related('sender', 'receiver', 'sender__user', 'receiver__user').order_by('-created_at')
+    ))
+    if transactions_list.exists():
+        transactions_list = transactions_list.select_related('sender', 'receiver', 'sender__user', 'receiver__user').order_by('-created_at')
     return render(request, 'payapp/transactions.html', {'transactions': transactions_list})
 
 
@@ -85,18 +87,27 @@ def payment_requests(request):
     :return:
     """
     # Select outgoing requests where the status is pending
-    outgoing_request_list = Request.objects.filter(
+    outgoing_request_list = (Request.objects.filter(
         Q(sender__user=request.user, status='pending')
-    ).select_related('sender', 'receiver', 'sender__user', 'receiver__user').order_by('-created_at')
+    ))
+    if outgoing_request_list.exists():
+        outgoing_request_list = (outgoing_request_list.select_related('sender', 'receiver', 'sender__user',
+                                                                      'receiver__user')
+                                 .order_by('-created_at'))
     # Select incoming requests where the status is pending
     incoming_request_list = Request.objects.filter(
         Q(receiver__user=request.user, status='pending')
-    ).select_related('sender', 'receiver', 'sender__user', 'receiver__user').order_by('-created_at')
-    # Select completed requests where the status is not pending
-    completed_request_list = Request.objects.filter(
+    )
+    if incoming_request_list.exists():
+        incoming_request_list.select_related('sender', 'receiver', 'sender__user', 'receiver__user').order_by('-created_at')
+    # Select completed requests from transaction table where the sender or receiver is the logged-in user
+
+    completed_request_list = (Request.objects.filter(
         (Q(sender__user=request.user) & ~Q(status='pending')) |
         (Q(receiver__user=request.user) & ~Q(status='pending'))
-    ).select_related('sender', 'receiver', 'sender__user', 'receiver__user').order_by('-created_at')
+    ))
+    if completed_request_list.exists():
+        completed_request_list = completed_request_list.select_related('sender', 'receiver', 'sender__user', 'receiver__user').order_by('-created_at')
 
     # Render the requests page with the context
     context = {'outgoing_requests': outgoing_request_list, 'incoming_requests': incoming_request_list,

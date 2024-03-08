@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load currency_filters %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -127,7 +128,7 @@
                 <thead  class="text-center">
                     <tr>
                         <th>Request ID</th>
-                        <th>Amount (in {{ user_currency |upper}})</th>
+                        <th>Amount</th>
                         <th>From User</th>
                         <th>To User</th>
                         <th>Date</th>
@@ -138,7 +139,7 @@
                     {% for request in completed_requests %}
                         <tr>
                             <td>{{ request.id }}</td>
-                            <td>{{ request.amount }}</td>
+                            <td>{{ request.receiver.currency|currency_symbol }}{{ request.amount }}</td> <! -- currency filter -->
                             <td>{{ request.sender.user.username }}</td>
                             <td>{{ request.receiver.user.username }}</td>
                             <td>{{ request.created_at }}</td>
