@@ -20,7 +20,6 @@
                     <thead  class="text-center">
                         <tr>
                             <th>Transfer ID</th>
-                            <th>Type</th>
                             <th>Amount</th>
                             <th>From User</th>
                             <th>To User</th>
@@ -31,13 +30,8 @@
                         {% for transfer in transfers %}
                             <tr>
                                 <td>{{ transfer.id }}</td>
-                                <td>{{ transfer.type |capfirst }}</td>
-                                {% if transfer.type == 'request' %}
                                 <td>{{ transfer.sender.currency|currency_symbol }}
-                                {% else %}
-                                <td>{{ transfer.receiver.currency|currency_symbol }}
-                                {% endif %}
-                                {{ transfer.amount }}</td> <! -- currency filter -->
+                                    {{ transfer.amount }}</td> <! -- currency filter -->
                                 <td>{{ transfer.sender.user.username }}</td>
                                 <td>{{ transfer.receiver.user.username }}</td>
                                 <td>{{ transfer.created_at | date:"D, d M Y H:i" }}</td>

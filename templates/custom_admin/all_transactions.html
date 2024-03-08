@@ -28,7 +28,7 @@
                 <tr>
                     <td>{{ transfer.id }}</td>
                     <td>{{ transfer.sender.currency|currency_symbol }}
-                        {{ transfer.amount }}</td> <! -- currency filter -->
+                        {{ transfer.amount }}</td>
                     <td>{{ transfer.sender.user.username }}</td>
                     <td>{{ transfer.receiver.user.username }}</td>
                     <td>{{ transfer.created_at | date:"D, d M Y H:i" }}</td>
