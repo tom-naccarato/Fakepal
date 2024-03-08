@@ -4,7 +4,7 @@ from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth.models import User, Group
 from register.forms import UserForm, LoginForm
-from payapp.views import convert_currency
+from payapp.utils import convert_currency
 
 
 class UserViewTests(TestCase):
