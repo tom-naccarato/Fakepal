@@ -3,6 +3,8 @@ from django.db.models import Q
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.conf import settings
+
+from payapp.custom_exceptions import CurrencyConversionError
 from payapp.models import Account, Transfer, Request
 from register.forms import UserForm
 
@@ -72,7 +74,13 @@ def register(request):
         form = UserForm(request.POST)
         # Checks if the form is valid
         if form.is_valid():
-            form.save()  # This will save the User and create an Account
+            # Tries to save the form, if it fails, an error message is displayed
+            try:
+                form.save()  # This will save the User and create an Account
+            except CurrencyConversionError as e:
+                messages.error(request, "A currency conversion error occurred. Please try again.")
+                context = {'form': form, 'admin': True}
+                return render(request, 'register/register.html', context)
             # Add the admin to the admin group
             admin = User.objects.get(username=form.cleaned_data.get('username'))
             admin_group = Group.objects.get(name='AdminGroup')
