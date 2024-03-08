@@ -1,7 +1,10 @@
+from unittest.mock import patch
+
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth.models import User, Group
 from register.forms import UserForm, LoginForm
+from payapp.views import convert_currency
 
 
 class UserViewTests(TestCase):
@@ -11,7 +14,9 @@ class UserViewTests(TestCase):
         # self.admin_group = Group.objects.create(name='AdminGroup')
         User.objects.create_user(username='testuser1', password='testpassword123', email='test@example.com')
 
-    def test_register_view_post_success(self):
+    @patch('register.forms.convert_currency')
+    def test_register_view_post_success(self, mock_convert):
+        mock_convert.return_value = 1000
         # Test successful registration
         response = self.client.post(reverse('register:register'), {
             'username': 'newuser',
@@ -20,6 +25,7 @@ class UserViewTests(TestCase):
             'email': 'new@example.com',
             'currency': 'gbp'
         })
+        mock_convert.return_value = 1000
         self.assertEqual(response.status_code, 302)  # Redirect status code
         self.assertTrue(User.objects.filter(username='newuser').exists())
         self.assertTrue(self.client.login(username='newuser', password='newpassword123'))
