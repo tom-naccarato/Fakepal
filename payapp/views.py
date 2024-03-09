@@ -104,9 +104,11 @@ def make_request(request):
     :param request:
     :return:
     """
+    user = request.user
+    account = Account.objects.get(user=user)
     # If the form is submitted, validate the form and save the request
     if request.method == 'POST':
-        form = RequestForm(request.POST)
+        form = RequestForm(request.POST, user_currency=account.currency)  # Passes currency for constructor
         # If the form is valid, save the request
         if form.is_valid():
             try:
@@ -140,7 +142,7 @@ def make_request(request):
             return render(request, 'payapp/make_request.html', {'form': form})
     # If the form is not submitted, display the form
     else:
-        form = RequestForm()
+        form = RequestForm(user_currency=account.currency)
         return render(request, 'payapp/make_request.html', {'form': form})
 
 
@@ -236,9 +238,11 @@ def send_payment(request):
     :param request:
     :return:
     """
+    user = request.user
+    account = Account.objects.get(user=user)
     # If the form is submitted, validate the form and save the payment
     if request.method == 'POST':
-        form = PaymentForm(request.POST)
+        form = PaymentForm(request.POST, user_currency=account.currency)
         # If the form is valid, save the payment
         if form.is_valid():
             # Try to save the payment
@@ -276,5 +280,5 @@ def send_payment(request):
 
     # If the form is not submitted, display the form
     else:
-        form = PaymentForm()
+        form = PaymentForm( user_currency=account.currency)
         return render(request, 'payapp/send_payment.html', {'form': form})
