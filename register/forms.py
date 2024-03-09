@@ -1,6 +1,8 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.contrib.auth.models import User
+from django.forms import PasswordInput
+
 from payapp.models import Account
 from payapp.utils import convert_currency
 from django_password_eye.fields import PasswordEye
@@ -14,12 +16,25 @@ class UserForm(UserCreationForm):
     currency = forms.ChoiceField(choices=Account.CURRENCY_CHOICES, required=True,
                                  label='Currency')
 
-    # Add a password field to the form using the PasswordEye widget from django_password_eye
-    password1 = PasswordEye()
-    password2 = PasswordEye()
     class Meta:
+        """
+        Meta class to specify the model and fields to be used in the form
+        """
         model = User
         fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2', 'currency']
+
+    def __init__(self, *args, **kwargs):
+        """
+        Constructor method to set the required fields
+        :param args:
+        :param kwargs:
+        """
+        super(UserForm, self).__init__(*args, **kwargs)
+        self.fields['username'].required = True
+        self.fields['email'].required = True
+        self.fields['password1'].required = True
+        self.fields['password2'].required = True
+        self.fields['currency'].required = True
 
 
 
@@ -48,5 +63,5 @@ class LoginForm(forms.Form):
     Form for logging in a user
     """
     username = forms.CharField()
-    password = PasswordEye()
+    password = forms.CharField(widget=PasswordInput)
 
