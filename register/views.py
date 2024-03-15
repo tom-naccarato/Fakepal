@@ -1,11 +1,8 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-
 from payapp.custom_exceptions import CurrencyConversionError
 from register.forms import UserForm, LoginForm
-from django.contrib.auth.models import Group, User
-
 
 def register(request):
     """
@@ -18,6 +15,7 @@ def register(request):
     if request.method == 'POST':
         # Declares a form and adds the data from the form
         form = UserForm(request.POST)
+        print(form)
         # Checks if the form is valid
         if form.is_valid():
             # Tries to save the form, if an error occurs, an error message is displayed
@@ -25,7 +23,7 @@ def register(request):
                 form.save()  # This will save the User and create an Account
             except CurrencyConversionError as e:
                 messages.error(request, "A currency conversion error occurred. Please try again.")
-                context = {'form': form, 'admin': True}
+                context = {'form': form, 'admin': False}
                 return render(request, 'register/register.html', context)  # Save the User and create an Account
 
             # Log the user in
