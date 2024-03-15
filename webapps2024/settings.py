@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'crispy_forms',
     "custom_admin.apps.AdminConfig",
     "conversion",
-    "django_password_eye",
 ]
 
 MIDDLEWARE = [
