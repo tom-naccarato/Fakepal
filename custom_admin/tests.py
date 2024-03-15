@@ -49,6 +49,8 @@ class CustomAdminViewTests(TestCase):
         self.client.login(username='admin1', password='admin1')
         response = self.client.post(reverse('custom_admin:register'), {
             'username': 'adminuser1',
+            'first_name': 'Admin',
+            'last_name': 'User',
             'password1': 'adminpassword123',
             'password2': 'adminpassword123',
             'email': 'admin@example.com',

@@ -12,7 +12,7 @@ class UserViewTests(TestCase):
     def setUp(self):
         # Setup code for the tests, like creating a user or a group if needed
         # self.admin_group = Group.objects.create(name='AdminGroup')
-        User.objects.create_user(username='testuser1', password='testpassword123', email='test@example.com')
+        User.objects.create_user(username='testuser1',first_name='Test',last_name='User' ,password='testpassword123', email='test@example.com')
 
     @patch('register.forms.convert_currency')
     def test_register_view_post_success(self, mock_convert):
@@ -20,6 +20,8 @@ class UserViewTests(TestCase):
         # Test successful registration
         response = self.client.post(reverse('register:register'), {
             'username': 'newuser',
+            'first_name': 'New',
+            'last_name': 'User',
             'password1': 'newpassword123',
             'password2': 'newpassword123',
             'email': 'new@example.com',
