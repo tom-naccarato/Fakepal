@@ -2,10 +2,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.contrib.auth.models import User
 from django.forms import PasswordInput
-
 from payapp.models import Account
 from payapp.utils import convert_currency
-from django_password_eye.fields import PasswordEye
 
 
 class UserForm(UserCreationForm):
@@ -31,12 +29,12 @@ class UserForm(UserCreationForm):
         """
         super(UserForm, self).__init__(*args, **kwargs)
         self.fields['username'].required = True
+        self.fields['first_name'].required = True
+        self.fields['last_name'].required = True
         self.fields['email'].required = True
         self.fields['password1'].required = True
         self.fields['password2'].required = True
         self.fields['currency'].required = True
-
-
 
     def save(self, commit=True):
         """
@@ -64,4 +62,3 @@ class LoginForm(forms.Form):
     """
     username = forms.CharField()
     password = forms.CharField(widget=PasswordInput)
-
