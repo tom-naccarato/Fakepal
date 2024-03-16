@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from payapp.custom_exceptions import InsufficientBalanceException
 from payapp.utils import convert_currency
+from django.db import transaction
 
 
 class Account(models.Model):
@@ -94,6 +95,7 @@ class Transfer(models.Model):
         """
         return f'{self.sender.user.username} sent {self.amount} to {self.receiver.user.username}'
 
+    @transaction.atomic
     def execute(self, amount):
         """
         Transfers the specified amount from the sender's account to the receiver's account.
@@ -186,19 +188,21 @@ class Request(models.Model):
 
         # Checks that the receiver of the request has enough balance to accept the request
         if self.receiver.balance >= amount:
-            # Creates a transaction
-            transaction = Transfer(sender=self.receiver, receiver=self.sender,
-                                   amount=amount, type='request')
-            transaction.save()
-            # Executes the transaction
-            transaction.execute(amount)
-            self.status = 'accepted'
-            self.save()
-            return None
+            with transaction.atomic():
+                # Creates a transaction
+                transfer = Transfer(sender=self.receiver, receiver=self.sender,
+                                       amount=amount, type='request')
+                transfer.save()
+                # Executes the transaction
+                transfer.execute(amount)
+                self.status = 'accepted'
+                self.save()
+                return None
         # If the receiver does not have enough balance to accept the request, raise an exception
         else:
             raise InsufficientBalanceException
 
+    @transaction.atomic
     def decline_request(self):
         """
         Declines a request and sets req.
@@ -209,6 +213,7 @@ class Request(models.Model):
         self.save()
         return None
 
+    @transaction.atomic
     def cancel_request(self):
         """
         Cancels a request and sets req.

@@ -3,10 +3,14 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from payapp.custom_exceptions import CurrencyConversionError
 from register.forms import UserForm, LoginForm
+from django.db import transaction
 
+
+@transaction.atomic
 def register(request):
     """
-    View function to handle the registration of a new user
+    View function to handle the registration of a new user with a form, annotated with a transaction to ensure that the
+    user is saved and an account is created in the same transaction, maintaining atomicity.
 
     :param request:
     :return:
