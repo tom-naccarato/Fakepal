@@ -133,7 +133,8 @@ def make_request(request):
                     # If the receiver is not the sender, save the request
                     if request_instance.receiver != request_instance.sender:
                         request_instance.save()
-                        notification = Notification.objects.create(
+                        # Adds a notification to the receiver's account
+                        Notification.objects.create(
                             to_user=request_instance.receiver,
                             from_user=request_instance.sender,
                             message=f"{request_instance.sender.user.username} has requested "
@@ -182,7 +183,7 @@ def accept_request(request, request_id):
             req = get_object_or_404(Request, id=request_id)
             req.accept_request(req.amount)
             # Adds a notification to the sender's account
-            notification = Notification.objects.create(
+            Notification.objects.create(
                 to_user=req.sender,
                 from_user=req.receiver,
                 message=f"Your request for {currency_symbols.get(req.sender.currency.upper())}{req.amount} from "
@@ -191,11 +192,9 @@ def accept_request(request, request_id):
                 created_at=req.created_at,
                 request=req
             )
-            notification.save()
             # Marks the request sent notification as read
             request_notification = Notification.objects.get(request=req, notification_type='request_sent')
-            request_notification.read = True
-            request_notification.save()
+            request_notification.mark_as_read()
             messages.success(request, "Request has been accepted")
             return redirect('payapp:requests')
 
@@ -232,7 +231,7 @@ def decline_request(request, request_id):
             req = get_object_or_404(Request, id=request_id)
             req.decline_request()
             # Adds a notification to the sender's account
-            notification = Notification.objects.create(
+            Notification.objects.create(
                 to_user=req.sender,
                 from_user=req.receiver,
                 message=f"Your request for {currency_symbols.get(req.sender.currency.upper())}{req.amount} from "
@@ -241,12 +240,10 @@ def decline_request(request, request_id):
                 created_at=req.created_at,
                 request=req
             )
-            notification.save()
             messages.success(request, "Request has been declined.")
             # Marks the request sent notification as read
             request_notification = Notification.objects.get(request=req, notification_type='request_sent')
-            request_notification.read = True
-            request_notification.save()
+            request_notification.mark_as_read()
             return redirect('payapp:requests')
         # If the request does not exist, display an error message and redirect to the requests page
         except Http404:
@@ -272,7 +269,7 @@ def cancel_request(request, request_id):
         req = get_object_or_404(Request, id=request_id)
         req.cancel_request()
         # Adds a notification to the receiver's account
-        notification = Notification.objects.create(
+        Notification.objects.create(
             to_user=req.receiver,
             from_user=req.sender,
             message=f"{req.sender.user.username} has cancelled their request for "
@@ -281,7 +278,6 @@ def cancel_request(request, request_id):
             created_at=req.created_at,
             request=req,
         )
-        notification.save()
         messages.success(request, "Request has been cancelled")
         return redirect('payapp:requests')
     # If the request does not exist, display an error message and redirect to the requests page
@@ -320,7 +316,7 @@ def send_payment(request):
                         transaction_instance.execute(transaction_instance.amount)
                         transaction_instance.save()
                         # Adds a notification to the receiver's account
-                        notification = Notification.objects.create(
+                        Notification.objects.create(
                             to_user=transaction_instance.receiver,
                             from_user=transaction_instance.sender,
                             message=f"You have received {currency_symbols.get(account.currency.upper())}"
@@ -329,8 +325,6 @@ def send_payment(request):
                             notification_type='payment_sent',
                             created_at=transaction_instance.created_at
                         )
-                        notification.save()
-
                         messages.success(request, "Payment has been made")
                         return redirect('home')
                     else:
@@ -388,8 +382,7 @@ def mark_notification_as_read(request, notification_id):
         notification = Notification.objects.get(id=notification_id, to_user=request.user.account)
         # Mark the notification as read if it is not a request sent notification
         if notification.notification_type != 'request_sent':
-            notification.read = True
-            notification.save()
+            notification.mark_as_read()
         # Redirect to the appropriate page based on the notification type
         if notification.notification_type == 'payment_sent':
             return redirect('payapp:transfers')
