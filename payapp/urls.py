@@ -10,4 +10,5 @@ urlpatterns = [
     path('cancel_request/<int:request_id>/', views.cancel_request, name='cancel_request'),
     path('send_payment/', views.send_payment, name='send_payment'),
     path('notifications/', views.notifications, name='notifications'),
+    path('notifications/read/<int:notification_id>/', views.mark_notification_as_read, name='mark_as_read'),
 ]

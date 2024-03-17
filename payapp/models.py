@@ -256,7 +256,9 @@ class Notification(models.Model):
         ('request_sent', 'Request Sent'),
         ('request_accepted', 'Request Accepted'),
         ('request_declined', 'Request Declined'),
+        ('request_cancelled', 'Request Cancelled'),
     )
+    request = models.ForeignKey(Request, on_delete=models.CASCADE, null=True, blank=True, default=None)
 
     notification_type = models.CharField(max_length=20, choices=NOTIFICATION_TYPE_CHOICES, default='payment_sent')
     message = models.CharField(max_length=255)

@@ -19,7 +19,6 @@ def register(request):
     if request.method == 'POST':
         # Declares a form and adds the data from the form
         form = UserForm(request.POST)
-        print(form)
         # Checks if the form is valid
         if form.is_valid():
             # Tries to save the form, if an error occurs, an error message is displayed

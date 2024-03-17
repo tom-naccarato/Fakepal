@@ -26,11 +26,9 @@
                         {% for notification in notifications %}
                         <tr class="text-center">
 
-                            <td><a class="notification_link" {% if notification.notification_type == 'payment_sent' %}
-                                href="{% url "payapp:transfers" %}"
-                            {% else  %}
-                                href="{% url "payapp:requests" %}"
-                            {% endif %}>{{ notification.message }} </a>
+                            <td><a class=" notification_link"  
+                                   href="{% url 'payapp:mark_as_read' notification.id %}">
+                                {{ notification.message }}</a>
                             </td>
                             <td>{{ notification.created_at }}</td>
                         </tr>

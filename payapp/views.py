@@ -15,6 +15,7 @@ currency_symbols = {
     'EUR': '€'
 }
 
+
 def login_required_message(function):
     """
     Decorator to display a message if the user is not logged in
@@ -139,7 +140,8 @@ def make_request(request):
                                     f"{currency_symbols.get(request_instance.sender.currency.upper())}"
                                     f"{request_instance.amount}",
                             notification_type='request_sent',
-                            created_at=request_instance.created_at
+                            created_at=request_instance.created_at,
+                            request=request_instance
                         )
                         messages.success(request, "Request has been made")
 
@@ -186,9 +188,14 @@ def accept_request(request, request_id):
                 message=f"Your request for {currency_symbols.get(req.sender.currency.upper())}{req.amount} from "
                         f"{req.receiver.user.username} has been accepted.",
                 notification_type='request_accepted',
-                created_at=req.created_at
+                created_at=req.created_at,
+                request=req
             )
             notification.save()
+            # Marks the request sent notification as read
+            request_notification = Notification.objects.get(request=req, notification_type='request_sent')
+            request_notification.read = True
+            request_notification.save()
             messages.success(request, "Request has been accepted")
             return redirect('payapp:requests')
 
@@ -231,10 +238,15 @@ def decline_request(request, request_id):
                 message=f"Your request for {currency_symbols.get(req.sender.currency.upper())}{req.amount} from "
                         f"{req.receiver.user.username} has been declined.",
                 notification_type='request_declined',
-                created_at=req.created_at
+                created_at=req.created_at,
+                request=req
             )
             notification.save()
             messages.success(request, "Request has been declined.")
+            # Marks the request sent notification as read
+            request_notification = Notification.objects.get(request=req, notification_type='request_sent')
+            request_notification.read = True
+            request_notification.save()
             return redirect('payapp:requests')
         # If the request does not exist, display an error message and redirect to the requests page
         except Http404:
@@ -259,6 +271,18 @@ def cancel_request(request, request_id):
     try:
         req = get_object_or_404(Request, id=request_id)
         req.cancel_request()
+        # Adds a notification to the receiver's account
+        notification = Notification.objects.create(
+            to_user=req.receiver,
+            from_user=req.sender,
+            message=f"{req.sender.user.username} has cancelled their request for "
+                    f"{currency_symbols.get(req.sender.currency.upper())}{req.amount}",
+            notification_type='request_cancelled',
+            created_at=req.created_at,
+            request=req,
+        )
+        notification.save()
+        print(notification)
         messages.success(request, "Request has been cancelled")
         return redirect('payapp:requests')
     # If the request does not exist, display an error message and redirect to the requests page
@@ -306,7 +330,6 @@ def send_payment(request):
                             notification_type='payment_sent',
                             created_at=transaction_instance.created_at
                         )
-                        print(notification.message)
                         notification.save()
 
                         messages.success(request, "Payment has been made")
@@ -356,8 +379,21 @@ def notifications(request):
     notifications_list = (Notification.objects.filter(to_user=account, read=False))
     if notifications_list.exists():
         notifications_list = notifications_list.order_by('-created_at')
-        # Mark the notifications as read if the user views the notifications page
-        for notification in notifications_list:
-            notification.mark_as_read()
+    # Render the notifications page with the context
     return render(request, 'payapp/notifications.html', {'notifications': notifications_list})
 
+@login_required_message
+def mark_notification_as_read(request, notification_id):
+    try:
+        notification = Notification.objects.get(id=notification_id, to_user=request.user.account)
+        notification.read = True
+        notification.save()
+        # Redirect to the appropriate page based on the notification type
+        if notification.notification_type == 'payment_sent':
+            return redirect('payapp:transfers')
+        else:
+            return redirect('payapp:requests')
+    except Notification.DoesNotExist:
+        # Handle the case where the notification doesn't exist
+        messages.error(request, "Notification not found.")
+        return redirect('home')  # Redirect to a safe page
