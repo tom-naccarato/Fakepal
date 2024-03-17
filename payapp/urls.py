@@ -9,4 +9,5 @@ urlpatterns = [
     path('decline_request/<int:request_id>/', views.decline_request, name='decline_request'),
     path('cancel_request/<int:request_id>/', views.cancel_request, name='cancel_request'),
     path('send_payment/', views.send_payment, name='send_payment'),
+    path('notifications/', views.notifications, name='notifications'),
 ]

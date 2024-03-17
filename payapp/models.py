@@ -125,6 +125,7 @@ class Transfer(models.Model):
             self.receiver.balance += amount
             self.amount = converted_amount
 
+        # Save the sender, receiver and transfer
         self.sender.save()
         self.receiver.save()
         self.save()
@@ -191,7 +192,7 @@ class Request(models.Model):
             with transaction.atomic():
                 # Creates a transaction
                 transfer = Transfer(sender=self.receiver, receiver=self.sender,
-                                       amount=amount, type='request')
+                                    amount=amount, type='request')
                 transfer.save()
                 # Executes the transaction
                 transfer.execute(amount)
@@ -221,5 +222,62 @@ class Request(models.Model):
         :return: None
         """
         self.status = 'cancelled'
+        self.save()
+        return None
+
+
+class Notification(models.Model):
+    """
+    Notification model for storing notification information.
+
+    Attributes:
+    - from_user: ForeignKey to User model for the user
+    - to_user: ForeignKey to User model for the user
+    - NOTIFICATION_TYPE_CHOICES: Tuple of tuples to store notification type choices
+    - notification_type: IntegerField to store notification type
+    - message: CharField to store notification message
+    - created_at: DateTimeField to store notification creation date
+    - read: BooleanField to store whether the notification has been read
+
+    Methods:
+    - __str__: Returns the notification message
+    - mark_as_read: Marks the notification as read
+    """
+
+    class Meta:
+        db_table = 'notification'
+        verbose_name = 'Notification'
+        verbose_name_plural = 'Notifications'
+
+    from_user = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='sent_notification')
+    to_user = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='received_notification')
+    NOTIFICATION_TYPE_CHOICES = (
+        ('payment_sent', 'Payment Sent'),
+        ('request_sent', 'Request Sent'),
+        ('request_accepted', 'Request Accepted'),
+        ('request_declined', 'Request Declined'),
+    )
+
+    notification_type = models.CharField(max_length=20, choices=NOTIFICATION_TYPE_CHOICES, default='payment_sent')
+    message = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    read = models.BooleanField(default=False)
+
+    def __str__(self):
+        """
+        Returns the notification message.
+
+        :return: str: The notification message
+        """
+        return self.message
+
+    @transaction.atomic
+    def mark_as_read(self):
+        """
+        Marks the notification as read.
+
+        :return: None
+        """
+        self.read = True
         self.save()
         return None

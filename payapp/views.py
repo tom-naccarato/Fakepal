@@ -5,10 +5,15 @@ from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from payapp.custom_exceptions import InsufficientBalanceException
 from payapp.forms import RequestForm, PaymentForm
-from payapp.models import Transfer, Account, Request
+from payapp.models import Transfer, Account, Request, Notification
 from webapps2024 import settings
 from django.db import transaction
 
+currency_symbols = {
+    'USD': '$',
+    'GBP': '£',
+    'EUR': '€'
+}
 
 def login_required_message(function):
     """
@@ -127,6 +132,15 @@ def make_request(request):
                     # If the receiver is not the sender, save the request
                     if request_instance.receiver != request_instance.sender:
                         request_instance.save()
+                        notification = Notification.objects.create(
+                            to_user=request_instance.receiver,
+                            from_user=request_instance.sender,
+                            message=f"{request_instance.sender.user.username} has requested "
+                                    f"{currency_symbols.get(request_instance.sender.currency.upper())}"
+                                    f"{request_instance.amount}",
+                            notification_type='request_sent',
+                            created_at=request_instance.created_at
+                        )
                         messages.success(request, "Request has been made")
 
                     # If the receiver is the sender, display an error message and return the form
@@ -165,6 +179,16 @@ def accept_request(request, request_id):
         try:
             req = get_object_or_404(Request, id=request_id)
             req.accept_request(req.amount)
+            # Adds a notification to the sender's account
+            notification = Notification.objects.create(
+                to_user=req.sender,
+                from_user=req.receiver,
+                message=f"Your request for {currency_symbols.get(req.sender.currency.upper())}{req.amount} from "
+                        f"{req.receiver.user.username} has been accepted.",
+                notification_type='request_accepted',
+                created_at=req.created_at
+            )
+            notification.save()
             messages.success(request, "Request has been accepted")
             return redirect('payapp:requests')
 
@@ -200,6 +224,16 @@ def decline_request(request, request_id):
         try:
             req = get_object_or_404(Request, id=request_id)
             req.decline_request()
+            # Adds a notification to the sender's account
+            notification = Notification.objects.create(
+                to_user=req.sender,
+                from_user=req.receiver,
+                message=f"Your request for {currency_symbols.get(req.sender.currency.upper())}{req.amount} from "
+                        f"{req.receiver.user.username} has been declined.",
+                notification_type='request_declined',
+                created_at=req.created_at
+            )
+            notification.save()
             messages.success(request, "Request has been declined.")
             return redirect('payapp:requests')
         # If the request does not exist, display an error message and redirect to the requests page
@@ -258,9 +292,23 @@ def send_payment(request):
                     transaction_instance = form.save(commit=False)
                     transaction_instance.sender = Account.objects.get(user=request.user)
                     transaction_instance.receiver = Account.objects.get(user__username=request.POST['receiver'])
+                    # Makes sure the sender is not the receiver
                     if transaction_instance.receiver != transaction_instance.sender:
                         transaction_instance.execute(transaction_instance.amount)
                         transaction_instance.save()
+                        # Adds a notification to the receiver's account
+                        notification = Notification.objects.create(
+                            to_user=transaction_instance.receiver,
+                            from_user=transaction_instance.sender,
+                            message=f"You have received {currency_symbols.get(account.currency.upper())}"
+                                    f"{transaction_instance.amount} from "
+                                    f"{transaction_instance.sender.user.username}",
+                            notification_type='payment_sent',
+                            created_at=transaction_instance.created_at
+                        )
+                        print(notification.message)
+                        notification.save()
+
                         messages.success(request, "Payment has been made")
                         return redirect('home')
                     else:
@@ -292,3 +340,24 @@ def send_payment(request):
     else:
         form = PaymentForm(user_currency=account.currency)
         return render(request, 'payapp/send_payment.html', {'form': form})
+
+
+@login_required_message
+def notifications(request):
+    """
+    View function to display the notifications of the logged-in user
+
+    :param request:
+    :return:
+    """
+    user = request.user
+    account = Account.objects.get(user=user)
+    # Select notifications where the receiver is the logged-in user
+    notifications_list = (Notification.objects.filter(to_user=account, read=False))
+    if notifications_list.exists():
+        notifications_list = notifications_list.order_by('-created_at')
+        # Mark the notifications as read if the user views the notifications page
+        for notification in notifications_list:
+            notification.mark_as_read()
+    return render(request, 'payapp/notifications.html', {'notifications': notifications_list})
+
