@@ -69,7 +69,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'payapp.context_processors.incoming_requests_count',
+                'payapp.context_processors.get_unread_notifications',
                 'payapp.context_processors.user_currency',
                 'payapp.context_processors.user_balance',
             ],

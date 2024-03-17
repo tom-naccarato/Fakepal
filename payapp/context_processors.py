@@ -1,10 +1,9 @@
 from django.shortcuts import get_object_or_404
 
-from payapp.models import Request, Account
+from payapp.models import Account, Notification
 
 
-
-def incoming_requests_count(request):
+def get_unread_notifications(request):
     """
     This function returns the number of incoming transactions for the logged-in user
     :param request: HttpRequest object
@@ -14,10 +13,10 @@ def incoming_requests_count(request):
 
     if request.user.is_authenticated:
         user_account = get_object_or_404(Account, user=request.user)
-        incoming_count = Request.objects.filter(receiver=user_account, status='pending').count()
-        return {'incoming_requests_count': incoming_count}
+        incoming_count = Notification.objects.filter(to_user=user_account, read=False).count()
+        return {'unread_notifications_count': incoming_count}
     else:
-        return {'incoming_requests_count': None}
+        return {'unread_notifications_count': None}
 
 def user_currency(request):
     """
