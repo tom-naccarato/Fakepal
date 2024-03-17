@@ -15,7 +15,8 @@
         </p>
     {% else %}
         <p>
-        Please <a href="{% url 'register:login' %}">login</a> to access the FakePal homepage.
+        Please <a href="{% url 'register:login' %}">login</a> to access the FakePal homepage or <a 
+                href="{% url "register:register" %}">register</a> if you don't have an account.
         </p>
     {% endif %}
     
