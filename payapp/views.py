@@ -282,7 +282,6 @@ def cancel_request(request, request_id):
             request=req,
         )
         notification.save()
-        print(notification)
         messages.success(request, "Request has been cancelled")
         return redirect('payapp:requests')
     # If the request does not exist, display an error message and redirect to the requests page
@@ -382,12 +381,15 @@ def notifications(request):
     # Render the notifications page with the context
     return render(request, 'payapp/notifications.html', {'notifications': notifications_list})
 
+
 @login_required_message
 def mark_notification_as_read(request, notification_id):
     try:
         notification = Notification.objects.get(id=notification_id, to_user=request.user.account)
-        notification.read = True
-        notification.save()
+        # Mark the notification as read if it is not a request sent notification
+        if notification.notification_type != 'request_sent':
+            notification.read = True
+            notification.save()
         # Redirect to the appropriate page based on the notification type
         if notification.notification_type == 'payment_sent':
             return redirect('payapp:transfers')
