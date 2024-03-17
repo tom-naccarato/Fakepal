@@ -72,7 +72,7 @@
 /*Footer*/
 footer {
     position: sticky;
-    bottom: -10vh; /* Negative value to pull it up */
+    bottom: -30vh; /* Negative value to pull it up */
     width: 100%;
     text-align: center;
 }
@@ -109,3 +109,13 @@ body {
     text-decoration: none !important;
 }
 
+@media (max-width: 991px) {
+.navbar-nav .nav-item .form-inline {
+    display: block;
+    text-align: center;
+}
+    .navbar-nav .nav-item .form-inline .btn {
+        width: 100%;
+    text-align: center;
+    }
+}
