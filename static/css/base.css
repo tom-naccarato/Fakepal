@@ -5,7 +5,7 @@
     border-radius: 0;
     margin-bottom: 0;
     min-height: 50px; /* Set to ensure the navbar is always at least 50px tall */
-    padding-bottom: 1vh;
+    padding-bottom: 2vh;
     position: relative;
     z-index: 1000; /* Sets z-index to 1000 to make sure it's on top of everything */
 }
@@ -76,11 +76,12 @@ footer {
     width: 100%;
     text-align: center;
 }
-
-html, body {
-    height: 100%;
+body, html {
     margin: 0;
+    padding: 0;
+    width: 100%;
 }
+
 body {
     display: flex;
     flex-direction: column;
