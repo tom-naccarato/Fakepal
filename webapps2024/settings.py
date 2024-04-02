@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     "custom_admin.apps.AdminConfig",
     "conversion",
-    "django_extensions"
+    "django_extensions",
+    "thrift_server.apps.ThriftServerConfig"
 ]
 
 MIDDLEWARE = [
