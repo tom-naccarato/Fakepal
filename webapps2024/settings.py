@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     "custom_admin.apps.AdminConfig",
     "conversion",
+    "django_extensions"
 ]
 
 MIDDLEWARE = [
