@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.db.models import Q
@@ -8,6 +10,7 @@ from payapp.forms import RequestForm, PaymentForm
 from payapp.models import Transfer, Account, Request, Notification
 from webapps2024 import settings
 from django.db import transaction
+from timestamp_server.timestamp_client import ThriftTimestampClient
 
 currency_symbols = {
     'USD': '$',
@@ -43,7 +46,12 @@ def home(request):
     :param request:
     :return:
     """
-    return render(request, 'payapp/home.html')
+    # Gets the current timestamp for the dashboard
+    timestamp = ThriftTimestampClient().get_current_timestamp()
+    # Converts the timestamp to a datetime object
+    timestamp = datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S')
+
+    return render(request, 'payapp/home.html', {'timestamp': timestamp})
 
 
 @login_required_message

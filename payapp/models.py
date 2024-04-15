@@ -9,34 +9,19 @@ from thrift.transport import TSocket
 from thrift.transport import TTransport
 from thrift.protocol import TBinaryProtocol
 from gen_py.timestamp_service import TimestampService
+from timestamp_server.timestamp_client import ThriftTimestampClient
 
 
 class ThriftTimestampField(models.DateTimeField):
     """Defines a custom field to store the current timestamp using a Thrift service."""
 
     def pre_save(self, model_instance, add):
-        # If the field is being added to the model instance and the field is empty, retrieve the current timestamp
         if add and not getattr(model_instance, self.attname):
-            # Connect to the Thrift server and retrieve the current timestamp
-            try:
-                # Create a Thrift client to connect to the Thrift server
-                transport = TSocket.TSocket('localhost', 9090)
-                transport = TTransport.TBufferedTransport(transport)
-                protocol = TBinaryProtocol.TBinaryProtocol(transport)
-                client = TimestampService.Client(protocol)
-                transport.open() # Open the connection to the Thrift server
+            client = ThriftTimestampClient()
+            timestamp = client.get_current_timestamp()
+            if timestamp is not None:
+                setattr(model_instance, self.attname, timestamp)
 
-                timestamp = client.getCurrentTimestamp() # Retrieve the current timestamp from the Thrift server
-                setattr(model_instance, self.attname, timestamp) # Set the field value to the retrieved timestamp
-
-                transport.close() # Close the connection to the Thrift server
-
-            # Handle any exceptions that occur when connecting to the Thrift server
-            except Exception as e:
-                # Log or handle the error as needed
-                print("An error occurred:", e)
-
-        # Call the parent class method to save the value to the database
         return super().pre_save(model_instance, add)
 
 

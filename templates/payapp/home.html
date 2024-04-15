@@ -11,7 +11,8 @@
     {% if user.is_authenticated %}
         <p>
             Welcome, <b>{{ user.username }}</b>, to the FakePal homepage!
-        You currently have {{ user.account.currency | currency_symbol}}{{ user.account.balance }}  in your account.
+        You currently have {{ user.account.currency | currency_symbol}}{{ user.account.balance }}  in your account.<br>
+        It is currently <b>{{ timestamp | time:"g:i:s a" }}</b> on the <b>{{ timestamp | date:"D,d F, Y" }}</b>.
         </p>
     {% else %}
         <p>
