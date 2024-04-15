@@ -21,6 +21,9 @@
     <orderEntry type="library" name="bootstrap" level="application" />
     <orderEntry type="library" name="bootstrap" level="application" />
   </component>
+  <component name="ReSTService">
+    <option name="DOC_DIR" value="D:\webapps2024" />
+  </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Django" />
     <option name="TEMPLATE_FOLDERS">
