@@ -29,7 +29,7 @@ def start_thrift_server():
     server = TServer.TSimpleServer(processor, transport, tfactory, pfactory)
     print("Starting the Thrift server...")
     while server_running:
-        server.handle()
+        server.serve()
 
 def stop_thrift_server():
     global server_running

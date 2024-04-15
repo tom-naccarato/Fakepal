@@ -1,31 +1,23 @@
 from threading import Thread
 from unittest.mock import patch
-
 from django.contrib.auth.models import User, Group
 from django.test import TestCase, Client
 from django.urls import reverse
-from payapp.models import Account, Transfer, Request
+from payapp.models import Account
 from register.forms import UserForm
 from timestamp_server import thrift_server
 
 
 class CustomAdminViewTests(TestCase):
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-        # Start the Thrift server in a separate thread
-        cls.thrift_server_thread = Thread(target=thrift_server.start_thrift_server)
-        cls.thrift_server_thread.daemon = True
-        cls.thrift_server_thread.start()
-
+    # Stops the Thrift server after all tests have run
     @classmethod
     def tearDownClass(cls):
         super().tearDownClass()
         # Stop the Thrift server
         thrift_server.stop_thrift_server()
+        print("Thrift server stopped")
 
     def setUp(self):
-        super().setUp()
         self.client = Client()
         # Create a user and an admin user
         self.user = User.objects.create_user(username='user', password='userpassword')
