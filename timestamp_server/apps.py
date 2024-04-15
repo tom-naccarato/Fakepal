@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class ThriftServerConfig(AppConfig):
+class TimestampServerConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'thrift_server'
+    name = 'timestamp_server'

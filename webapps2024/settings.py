@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     "custom_admin.apps.AdminConfig",
     "conversion",
     "django_extensions",
-    "thrift_server.apps.ThriftServerConfig"
+    "timestamp_server.apps.TimestampServerConfig"
 ]
 
 MIDDLEWARE = [
