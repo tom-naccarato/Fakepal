@@ -1,6 +1,6 @@
 from threading import Thread
 from unittest.mock import patch
-from django.test import TestCase
+from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth.models import User, Group
 from register.forms import UserForm, LoginForm
@@ -11,22 +11,14 @@ from timestamp_server import thrift_server
 class UserViewTests(TestCase):
 
     @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-        # Start the Thrift server in a separate thread
-        cls.thrift_server_thread = Thread(target=thrift_server.start_thrift_server)
-        cls.thrift_server_thread.daemon = True
-        cls.thrift_server_thread.start()
-
-    @classmethod
     def tearDownClass(cls):
         super().tearDownClass()
         # Stop the Thrift server
         thrift_server.stop_thrift_server()
+        print('Thrift server stopped.')
 
     def setUp(self):
-        super().setUp()
-        # Setup code for the tests, like creating a user or a group if needed
+        self.client = Client()
         # self.admin_group = Group.objects.create(name='AdminGroup')
         User.objects.create_user(username='testuser1',first_name='Test',last_name='User' ,password='testpassword123', email='test@example.com')
 
