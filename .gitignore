@@ -141,3 +141,5 @@ GitHub.sublime-settings
 docs/build
 /cert.pem
 /key.pem
+fakepal.crt
+fakepal.key

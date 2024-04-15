@@ -24,9 +24,11 @@ SECRET_KEY = 'django-insecure-v9ygbv%0o4onx&h@_xu8&19a94c-ecxy5v!1=t9zvhsxlu#-+r
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+RUNSERVERPLUS_SERVER_ADDRESS_PORT = '0.0.0.0:8000'
+
 ALLOWED_HOSTS = [
     '52.203.137.55',  # AWS
-    'localhost' # Localhost
+    'localhost'  # localhost
 ]
 
 # Application definition
