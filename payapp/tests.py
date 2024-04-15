@@ -1,11 +1,27 @@
+from threading import Thread
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth.models import User, Group
 from payapp.models import Account, Request, Notification
-
+from timestamp_server import thrift_server
 
 class PayAppViewTests(TestCase):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        # Start the Thrift server in a separate thread
+        cls.thrift_server_thread = Thread(target=thrift_server.start_thrift_server)
+        cls.thrift_server_thread.daemon = True
+        cls.thrift_server_thread.start()
+
+    @classmethod
+    def tearDownClass(cls):
+        super().tearDownClass()
+        # Stop the Thrift server
+        thrift_server.stop_thrift_server()
+
     def setUp(self):
+        super().setUp()
         self.client = Client()
         # Create a user and an admin user
         self.user = User.objects.create_user(username='user', password='userpassword')
