@@ -14,7 +14,7 @@ class UserViewTests(TestCase):
     def tearDownClass(cls):
         super().tearDownClass()
         # Stop the Thrift server
-        thrift_server.stop_thrift_server()
+        server.stop_thrift_server()
         print('Thrift server stopped.')
 
     def setUp(self):
