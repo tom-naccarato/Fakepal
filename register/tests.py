@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.contrib.auth.models import User, Group
 from register.forms import UserForm, LoginForm
 from payapp.utils import convert_currency
-from timestamp import thrift_server
+from thrift_timestamp import thrift_server
 
 
 class UserViewTests(TestCase):

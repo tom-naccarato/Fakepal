@@ -9,7 +9,7 @@ from thrift.transport import TSocket
 from thrift.transport import TTransport
 from thrift.protocol import TBinaryProtocol
 from gen_py.timestamp_service import TimestampService
-from timestamp.thrift_client import ThriftTimestampClient
+from thrift_timestamp.thrift_client import ThriftTimestampClient
 
 
 class ThriftTimestampField(models.DateTimeField):

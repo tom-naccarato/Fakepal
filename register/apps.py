@@ -3,7 +3,7 @@ from threading import Thread
 from django.apps import AppConfig
 from django.db.models.signals import post_migrate
 from register import create_admin_account
-from timestamp import thrift_server
+from thrift_timestamp import thrift_server
 
 
 class RegisterConfig(AppConfig):
