@@ -5,7 +5,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from payapp.models import Account
 from register.forms import UserForm
-from thrift_timestamp import thrift_server
+from thrift_timestamp import server
 
 
 class CustomAdminViewTests(TestCase):

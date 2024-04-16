@@ -10,7 +10,7 @@ from payapp.forms import RequestForm, PaymentForm
 from payapp.models import Transfer, Account, Request, Notification
 from webapps2024 import settings
 from django.db import transaction
-from thrift_timestamp.thrift_client import ThriftTimestampClient
+from thrift_timestamp.client import ThriftTimestampClient
 
 currency_symbols = {
     'USD': '$',
