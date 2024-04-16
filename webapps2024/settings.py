@@ -28,7 +28,7 @@ RUNSERVERPLUS_SERVER_ADDRESS_PORT = '0.0.0.0:8000'
 
 ALLOWED_HOSTS = [
     '52.203.137.55',  # AWS
-    'localhost'  # localhost
+    '127.0.0.1',  # localhost
 ]
 
 # Application definition
