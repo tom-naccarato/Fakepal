@@ -15,6 +15,7 @@ This documentation and project is built with (and requires) Python version |pyth
    payapp
    custom_admin
    conversion
+   thrift_timestamp
 
 
 Indices and tables
