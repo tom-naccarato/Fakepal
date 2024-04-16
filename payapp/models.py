@@ -1,14 +1,8 @@
-from decimal import Decimal
 from django.contrib.auth.models import User
-from django.db import models
 from payapp.custom_exceptions import InsufficientBalanceException
 from payapp.utils import convert_currency
 from django.db import transaction
 from django.db import models
-from thrift.transport import TSocket
-from thrift.transport import TTransport
-from thrift.protocol import TBinaryProtocol
-from gen_py.timestamp_service import TimestampService
 from thrift_timestamp.client import ThriftTimestampClient
 
 

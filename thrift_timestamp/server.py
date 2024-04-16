@@ -6,7 +6,7 @@ from thrift.server import TServer
 from thrift.transport import TSocket
 from thrift.transport import TTransport
 
-from gen_py.timestamp_service import TimestampService
+from thrift_timestamp.gen_py.timestamp_service import TimestampService
 
 # Global variable to hold the Thrift server instance
 server = None
