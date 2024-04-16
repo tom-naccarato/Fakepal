@@ -3,7 +3,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth.models import User, Group
 from payapp.models import Account, Request, Notification
-from timestamp_server import thrift_server
+from timestamp import thrift_server
 
 class PayAppViewTests(TestCase):
     @classmethod

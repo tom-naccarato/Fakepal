@@ -14,15 +14,20 @@ class ThriftTimestampClient:
     def get_current_timestamp(self):
         """Fetch the current timestamp from the Thrift server."""
         try:
+            # Create a Thrift client to connect to the server
             transport = TSocket.TSocket(self.host, self.port)
             transport = TTransport.TBufferedTransport(transport)
             protocol = TBinaryProtocol.TBinaryProtocol(transport)
             client = TimestampService.Client(protocol)
+            # Open the connection to the server
             transport.open()
+            # Fetch the current timestamp from the server
             timestamp = client.getCurrentTimestamp()
+            # Close the connection to the server
             transport.close()
             return timestamp
 
+        # Handle any exceptions that occur during the process
         except Exception as e:
             print("An error occurred while fetching the timestamp:", e)
             return None

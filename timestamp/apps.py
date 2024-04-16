@@ -3,4 +3,4 @@ from django.apps import AppConfig
 
 class TimestampServerConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'timestamp_server'
+    name = 'timestamp'

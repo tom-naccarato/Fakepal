@@ -15,23 +15,29 @@ server_running = True
 
 class TimestampHandler:
     def getCurrentTimestamp(self):
+        """Return the current timestamp in the format 'YYYY-MM-DD HH:MM:SS'"""
         return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 def start_thrift_server():
+    """Start the Thrift server and serve requests indefinitely."""
+    # Declare the global variables
     global server
     global server_running
+    # Create the Thrift server
     handler = TimestampHandler()
     processor = TimestampService.Processor(handler)
     transport = TSocket.TServerSocket(port=9090)
     tfactory = TTransport.TBufferedTransportFactory()
     pfactory = TBinaryProtocol.TBinaryProtocolFactory()
 
+    # Start the server loop
     server = TServer.TSimpleServer(processor, transport, tfactory, pfactory)
     print("Starting the Thrift server...")
     while server_running:
         server.serve()
 
 def stop_thrift_server():
+    """Stop the Thrift server."""
     global server_running
     server_running = False
 
