@@ -1,6 +1,6 @@
-from . import views
 from django.urls import path
+from .views import ConversionAPI
 
 urlpatterns = [
-    path('<str:currency1>/<str:currency2>/<str:amount_of_currency1>', views.conversion, name='conversion'),
+    path('<str:from_currency>/<str:to_currency>/<str:amount>/', ConversionAPI.as_view(), name='conversion'),
 ]

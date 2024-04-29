@@ -79,6 +79,7 @@ def register(request):
                 form.save()  # This will save the User and create an Account
             except CurrencyConversionError as e:
                 messages.error(request, "A currency conversion error occurred. Please try again.")
+                print(e)
                 context = {'form': form, 'admin': True}
                 return render(request, 'register/register.html', context)
             # Add the admin to the admin group

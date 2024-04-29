@@ -12,5 +12,6 @@ class CurrencyConversionError(Exception):
     """Exception raised for errors in the currency conversion process."""
 
     def __init__(self, message="Error in currency conversion, please try again"):
+        print(message)
         self.message = message
         super().__init__(self.message)
