@@ -46,6 +46,16 @@ class TestConversion(TestCase):
         data = json.loads(response.content)
         self.assertEqual(data['converted_amount'], 3.57)
 
+    def test_0_usd_to_usd_equals_0(self):
+        """
+        Test the conversion of 0 USD to USD
+        """
+        url = reverse('conversion:conversion', args=['USD', 'USD', 0])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.content)
+        self.assertEqual(data['converted_amount'], 0.0)
+
     def test_invalid_currency(self):
         """
         Test the conversion of an invalid currency

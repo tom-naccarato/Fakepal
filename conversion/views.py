@@ -28,6 +28,10 @@ class ConversionAPI(APIView):
             'amount': amount
         }
 
+        # If currencies are the same, return the amount
+        if from_currency == to_currency:
+            return Response({'converted_amount': amount})
+
         # Validation through serializer
         serializer = ConversionSerializer(data=data)
         if serializer.is_valid():

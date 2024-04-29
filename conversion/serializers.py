@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+
 class ConversionSerializer(serializers.Serializer):
     # Define the fields that are expected in the request for validation
     from_currency = serializers.CharField(max_length=3)
