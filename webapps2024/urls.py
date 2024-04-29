@@ -16,9 +16,10 @@ Including another URLconf
 """
 from django.urls import path, include
 import payapp.views
-
+from django.views.generic import RedirectView
 
 urlpatterns = [
+    path('', RedirectView.as_view(url='webapps2024/')),
     path('webapps2024/', include([
         path('', payapp.views.home, name='home'),
         path('register/', include(('register.urls', 'register'), namespace='register')),
