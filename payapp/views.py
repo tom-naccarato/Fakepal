@@ -388,8 +388,8 @@ def notifications(request):
 def mark_notification_as_read(request, notification_id):
     try:
         notification = Notification.objects.get(id=notification_id, to_user=request.user.account)
-        # Mark the notification as read if it is not a request sent notification
-        if notification.notification_type != 'request_sent':
+        # Mark the notification as read if it is not a request sent or is a cancelled transaction notification
+        if notification.notification_type != 'request_sent' or notification.request.status == 'cancelled':
             notification.mark_as_read()
         # Redirect to the appropriate page based on the notification type
         if notification.notification_type == 'payment_sent':
