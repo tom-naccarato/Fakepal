@@ -144,3 +144,4 @@ docs/build
 fakepal.crt
 fakepal.key
 /staticfiles
+*.key
