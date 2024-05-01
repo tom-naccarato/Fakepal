@@ -21,10 +21,10 @@ def convert_currency(currency1, currency2, amount_of_currency1):
         return Decimal(amount_of_currency1)
 
     # Build the URL for the RESTful service
-    url = f'http://localhost:8000/webapps2024/conversion/{currency1.upper()}/{currency2.upper()}/{amount_of_currency1}/'
+    url = f'https://localhost:8000/webapps2024/conversion/{currency1.upper()}/{currency2.upper()}/{amount_of_currency1}/'
     # Make a request to the RESTful service
     try:
-        response = requests.get(url)
+        response = requests.get(url, verify='./fakepal.crt')
 
     # If there is a connection error, raise an exception
     except requests.exceptions.ConnectionError:
