@@ -14,9 +14,9 @@ django.setup()
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'webapps2024'
-copyright = '2024, Candidate 276187'
-author = 'Candidate 276187'
+project = 'FakePal - An Online Payment System'
+copyright = '2024, Tom Naccarato'
+author = 'Tom Naccarato'
 python_version = f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}"
 
 # -- General configuration ---------------------------------------------------
