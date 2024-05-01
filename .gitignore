@@ -138,7 +138,6 @@ GitHub.sublime-settings
 
 .idea
 
-docs/build
 /cert.pem
 /key.pem
 fakepal.crt

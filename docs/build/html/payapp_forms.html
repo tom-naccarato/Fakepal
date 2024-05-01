@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PayApp Forms &mdash; webapps2024  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="PayApp Exceptions" href="payapp_exceptions.html" />
+    <link rel="prev" title="PayApp Views" href="payapp_views.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            webapps2024
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="register.html">Register App Documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="payapp.html">PayApp Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="payapp_models.html">PayApp Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="payapp_views.html">PayApp Views</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">PayApp Forms</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#payapp.forms.PaymentForm"><code class="docutils literal notranslate"><span class="pre">PaymentForm</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#payapp.forms.PaymentForm.Meta"><code class="docutils literal notranslate"><span class="pre">PaymentForm.Meta</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#payapp.forms.PaymentForm.base_fields"><code class="docutils literal notranslate"><span class="pre">PaymentForm.base_fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#payapp.forms.PaymentForm.clean_receiver"><code class="docutils literal notranslate"><span class="pre">PaymentForm.clean_receiver()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#payapp.forms.PaymentForm.declared_fields"><code class="docutils literal notranslate"><span class="pre">PaymentForm.declared_fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#payapp.forms.PaymentForm.media"><code class="docutils literal notranslate"><span class="pre">PaymentForm.media</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#payapp.forms.RequestForm"><code class="docutils literal notranslate"><span class="pre">RequestForm</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#payapp.forms.RequestForm.Meta"><code class="docutils literal notranslate"><span class="pre">RequestForm.Meta</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#payapp.forms.RequestForm.base_fields"><code class="docutils literal notranslate"><span class="pre">RequestForm.base_fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#payapp.forms.RequestForm.clean_receiver"><code class="docutils literal notranslate"><span class="pre">RequestForm.clean_receiver()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#payapp.forms.RequestForm.declared_fields"><code class="docutils literal notranslate"><span class="pre">RequestForm.declared_fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#payapp.forms.RequestForm.media"><code class="docutils literal notranslate"><span class="pre">RequestForm.media</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="payapp_exceptions.html">PayApp Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="payapp_context_processors.html">PayApp Context Processors</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="custom_admin.html">Custom Admin Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conversion.html">Conversion Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="thrift_timestamp.html">Thrift Timestamp Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">webapps2024</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="payapp.html">PayApp Documentation</a></li>
+      <li class="breadcrumb-item active">PayApp Forms</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/payapp_forms.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-payapp.forms">
+<span id="payapp-forms"></span><h1>PayApp Forms<a class="headerlink" href="#module-payapp.forms" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="payapp.forms.PaymentForm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">payapp.forms.</span></span><span class="sig-name descname"><span class="pre">PaymentForm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#payapp.forms.PaymentForm" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelForm</span></code></p>
+<p>Form to make a payment to another user</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="payapp.forms.PaymentForm.Meta">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#payapp.forms.PaymentForm.Meta" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Meta Class to specify the model and fields to be used in the form</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="payapp.forms.PaymentForm.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['receiver',</span> <span class="pre">'amount']</span></em><a class="headerlink" href="#payapp.forms.PaymentForm.Meta.fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="payapp.forms.PaymentForm.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#payapp.forms.PaymentForm.Meta.model" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="payapp_models.html#payapp.models.Transfer" title="payapp.models.Transfer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transfer</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="payapp.forms.PaymentForm.Meta.widgets">
+<span class="sig-name descname"><span class="pre">widgets</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'amount':</span> <span class="pre">&lt;django.forms.widgets.NumberInput</span> <span class="pre">object&gt;,</span> <span class="pre">'receiver':</span> <span class="pre">&lt;django.forms.widgets.TextInput</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#payapp.forms.PaymentForm.Meta.widgets" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="payapp.forms.PaymentForm.base_fields">
+<span class="sig-name descname"><span class="pre">base_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'amount':</span> <span class="pre">&lt;django.forms.fields.DecimalField</span> <span class="pre">object&gt;,</span> <span class="pre">'receiver':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#payapp.forms.PaymentForm.base_fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="payapp.forms.PaymentForm.clean_receiver">
+<span class="sig-name descname"><span class="pre">clean_receiver</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#payapp.forms.PaymentForm.clean_receiver" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="payapp.forms.PaymentForm.declared_fields">
+<span class="sig-name descname"><span class="pre">declared_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'receiver':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#payapp.forms.PaymentForm.declared_fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="payapp.forms.PaymentForm.media">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#payapp.forms.PaymentForm.media" title="Link to this definition"></a></dt>
+<dd><p>Return all media required to render the widgets on this form.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="payapp.forms.RequestForm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">payapp.forms.</span></span><span class="sig-name descname"><span class="pre">RequestForm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#payapp.forms.RequestForm" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelForm</span></code></p>
+<p>Form to request money from another user</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="payapp.forms.RequestForm.Meta">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#payapp.forms.RequestForm.Meta" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="payapp.forms.RequestForm.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['receiver',</span> <span class="pre">'amount']</span></em><a class="headerlink" href="#payapp.forms.RequestForm.Meta.fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="payapp.forms.RequestForm.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#payapp.forms.RequestForm.Meta.model" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="payapp_models.html#payapp.models.Request" title="payapp.models.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="payapp.forms.RequestForm.Meta.widgets">
+<span class="sig-name descname"><span class="pre">widgets</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'amount':</span> <span class="pre">&lt;django.forms.widgets.NumberInput</span> <span class="pre">object&gt;,</span> <span class="pre">'receiver':</span> <span class="pre">&lt;django.forms.widgets.TextInput</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#payapp.forms.RequestForm.Meta.widgets" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="payapp.forms.RequestForm.base_fields">
+<span class="sig-name descname"><span class="pre">base_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'amount':</span> <span class="pre">&lt;django.forms.fields.DecimalField</span> <span class="pre">object&gt;,</span> <span class="pre">'receiver':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#payapp.forms.RequestForm.base_fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="payapp.forms.RequestForm.clean_receiver">
+<span class="sig-name descname"><span class="pre">clean_receiver</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#payapp.forms.RequestForm.clean_receiver" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="payapp.forms.RequestForm.declared_fields">
+<span class="sig-name descname"><span class="pre">declared_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'receiver':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#payapp.forms.RequestForm.declared_fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="payapp.forms.RequestForm.media">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#payapp.forms.RequestForm.media" title="Link to this definition"></a></dt>
+<dd><p>Return all media required to render the widgets on this form.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="payapp_views.html" class="btn btn-neutral float-left" title="PayApp Views" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="payapp_exceptions.html" class="btn btn-neutral float-right" title="PayApp Exceptions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Candidate 276187.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
