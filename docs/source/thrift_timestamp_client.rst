@@ -1,7 +1,7 @@
 Thrift Timestamp Client
 =======================
 
-..automodule:: thrift_timestamp_client
+.. automodule:: thrift_timestamp.client
     :members:
     :undoc-members:
     :show-inheritance:

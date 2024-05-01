@@ -3,7 +3,7 @@ Thrift Timestamp Documentation
 
 Overview of the Thrift Timestamp application
 
-..toctree::
+.. toctree::
     :maxdepth: 2
 
     thrift_timestamp_client

@@ -7,3 +7,4 @@ Overview of the Conversion application.
    :maxdepth: 2
 
    conversion_views
+   conversion_serializers
