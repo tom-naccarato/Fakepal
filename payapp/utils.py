@@ -28,7 +28,7 @@ def convert_currency(currency1, currency2, amount_of_currency1):
     url = f'{base_url}/webapps2024/conversion/{currency1.upper()}/{currency2.upper()}/{amount_of_currency1}'
     # Make a request to the RESTful service
     try:
-        response = requests.get(url, verify=False)
+        response = requests.get(url, verify=False)  # Disable SSL verification as it's using a self-signed certificate
 
     # If there is a connection error, raise an exception
     except requests.exceptions.ConnectionError:
