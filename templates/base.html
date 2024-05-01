@@ -4,36 +4,36 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fakepal - {% block title %}{% endblock title %}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Fakepal - {% block title %}{% endblock title %}</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'css/base.css' %}">
 
-    {% block extra_css %}{% endblock %}
-</head>
-<body>
-<!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light static-top" id="customNavbar">
-    <div class="container-fluid">
-        <!-- logo from https://www.flaticon.com/free-icons/business-and-finance" -->
-        <a class="navbar-brand" href="{% url 'home' %}"><img class="brand-image" src="{% static 'images/brand.png' %}"
-                                                             alt="brand"> FakePal</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
-                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto align-items-center">
-                {% if user.is_authenticated %}
-                    <li style="color: white; margin-right: 2vh"> Welcome, {% if user|is_admin %}
-                        Administrator {% endif %}<b>{{ user.username }}</b>.<br>
-                        Your balance is:<b> {{ user_currency|upper | currency_symbol }}{{ user_balance }}</b></li>
-
-                    <!-- Requests dropdown -->
+        {% block extra_css %}{% endblock %}
+    </head>
+    <body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light static-top" id="customNavbar">
+        <div class="container-fluid">
+            <!-- logo from https://www.flaticon.com/free-icons/business-and-finance" -->
+            <a class="navbar-brand" href="{% url 'home' %}"><img class="brand-image" src="{% static 'images/brand.png' %}" 
+                                                                 alt="brand"> FakePal</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+                    aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto align-items-center">
+                    {% if user.is_authenticated %}
+                        <li style="color: white; margin-right: 2vh"> Welcome, {% if user|is_admin %} 
+                            Administrator {% endif %}<b>{{ user.username }}</b>.<br>
+                        Your balance is:<b> {{ user_currency|upper | currency_symbol}}{{ user_balance }}</b></li>
+                        
+                <!-- Requests dropdown -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="requestsDropdown" role="button"
+                        <a class="nav-link dropdown-toggle" href="#" id="requestsDropdown" role="button" 
                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Requests
                         </a>
@@ -43,7 +43,7 @@
                         </div>
                     </li>
 
-                    <!-- Transactions dropdown -->
+                <!-- Transactions dropdown -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="transfersDropdown" role="button"
                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -54,11 +54,11 @@
                             <a class="dropdown-item" href="{% url 'payapp:transfers' %}">Transfer History</a>
                         </div>
                     </li>
-
+                
                     <!-- Admin features dropdown -->
                     {% if user|is_admin %}
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button"
+                            <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" 
                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Admin Tools
                             </a>
@@ -70,71 +70,71 @@
                             </div>
                         </li>
                     {% endif %}
-                    </ul>
-
-                    <!-- User controls -->
-                    <ul class="navbar-nav ms-auto">
+                </ul>
+                
+                <!-- User controls -->
+                <ul class="navbar-nav ms-auto">
                     <li class="nav-item text-center">
                         <a class="nav-link" href="{% url 'payapp:notifications' %}" title="Notifications">
                             {% if unread_notifications_count %}
                                 <span class="badge bg-primary rounded-circle">{{ unread_notifications_count }}</span>
                             {% endif %}
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" 
                                  class="bi bi-bell" viewBox="0 0 16 16">
-                                <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0
+                            <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 
                             .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 
                             2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 
                             0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 
                             10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 
                             .88.32 4.2 1.22 6"></path>
-                            </svg>
+                        </svg>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <form action="{% url 'register:logout' %}?next=/webapps2024/" method="post" class="form-inline">
-                            {% csrf_token %}
-                            <button class="btn btn-link link-like-button nav-link " type="submit">Logout</button>
-                        </form>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'register:login' %}">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'register:register' %}">Register</a>
-                    </li>
-                {% endif %}
+                        <li class="nav-item">
+                            <form action="{% url 'register:logout' %}?next=/webapps2024/" method="post" class="form-inline">
+                                {% csrf_token %}
+                                <button class="btn btn-link link-like-button nav-link " type="submit">Logout</button>
+                            </form>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'register:login' %}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'register:register' %}">Register</a>
+                        </li>
+                    {% endif %}
                 </ul>
         </div>
     </div>
-</nav>
+    </nav>
+    
+    <!-- Handles messages -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+    <div class="container py-5">
+        {% block content %}{% endblock %}
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    {% block extra_js %}{% endblock %}
+    </body>
 
-<!-- Handles messages -->
-{% if messages %}
-    {% for message in messages %}
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    {% endfor %}
-{% endif %}
-<div class="container py-5">
-    {% block content %}{% endblock %}
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-
-{% block extra_js %}{% endblock %}
-</body>
-
-<footer>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <p>&copy; 2024 FakePal - This website is a fictional project created for educational purposes only
-                    and is not affiliated with PayPal.</p> <!-- No affiliation with PayPal -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <p>&copy; 2024 FakePal - This website is a fictional project created for educational purposes only 
+                        and is not affiliated with PayPal.</p> <!-- No affiliation with PayPal -->
+                </div>
             </div>
         </div>
-    </div>
-</footer>
+    </footer>
 </html>

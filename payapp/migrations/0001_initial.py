@@ -6,6 +6,7 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+
     initial = True
 
     dependencies = [
@@ -18,14 +19,10 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('balance', models.DecimalField(decimal_places=2, default=0.0, max_digits=10)),
-                ('currency', models.CharField(choices=[('gdp', 'GBP'), ('usd', 'USD'), ('eur', 'EUR')], default='gdp',
-                                              max_length=3)),
+                ('currency', models.CharField(choices=[('gdp', 'GBP'), ('usd', 'USD'), ('eur', 'EUR')], default='gdp', max_length=3)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('status',
-                 models.CharField(choices=[('active', 'Active'), ('inactive', 'Inactive'), ('suspended', 'Suspended')],
-                                  default='active', max_length=10)),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='account',
-                                              to=settings.AUTH_USER_MODEL)),
+                ('status', models.CharField(choices=[('active', 'Active'), ('inactive', 'Inactive'), ('suspended', 'Suspended')], default='active', max_length=10)),
+                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='account', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'verbose_name': 'Account',
@@ -39,14 +36,9 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('amount', models.DecimalField(decimal_places=2, default=0.0, max_digits=10)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('status',
-                 models.CharField(choices=[('pending', 'Pending'), ('accepted', 'Accepted'), ('declined', 'Declined')],
-                                  default='pending', max_length=10)),
-                ('receiver',
-                 models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='received_requests',
-                                   to='payapp.account')),
-                ('sender', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='sent_requests',
-                                             to='payapp.account')),
+                ('status', models.CharField(choices=[('pending', 'Pending'), ('accepted', 'Accepted'), ('declined', 'Declined')], default='pending', max_length=10)),
+                ('receiver', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='received_requests', to='payapp.account')),
+                ('sender', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='sent_requests', to='payapp.account')),
             ],
             options={
                 'verbose_name': 'Request',
@@ -60,12 +52,8 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('amount', models.DecimalField(decimal_places=2, default=0.0, max_digits=10)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('receiver',
-                 models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='received_transactions',
-                                   to='payapp.account')),
-                ('sender',
-                 models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='sent_transactions',
-                                   to='payapp.account')),
+                ('receiver', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='received_transactions', to='payapp.account')),
+                ('sender', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='sent_transactions', to='payapp.account')),
             ],
             options={
                 'verbose_name': 'Transaction',

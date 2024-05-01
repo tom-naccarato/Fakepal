@@ -23,3 +23,4 @@ class RegisterConfig(AppConfig):
 
         # Connect the post_migrate signal
         post_migrate.connect(create_admin_account.create_admin_group_and_account, sender=self)
+

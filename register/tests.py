@@ -20,8 +20,7 @@ class UserViewTests(TestCase):
     def setUp(self):
         self.client = Client()
         # self.admin_group = Group.objects.create(name='AdminGroup')
-        User.objects.create_user(username='testuser1', first_name='Test', last_name='User', password='testpassword123',
-                                 email='test@example.com')
+        User.objects.create_user(username='testuser1',first_name='Test',last_name='User' ,password='testpassword123', email='test@example.com')
 
     @patch('register.forms.convert_currency')
     def test_register_view_post_success(self, mock_convert):
@@ -41,7 +40,7 @@ class UserViewTests(TestCase):
         self.assertTrue(User.objects.filter(username='newuser').exists())
         self.assertTrue(self.client.login(username='newuser', password='newpassword123'))
 
-    @patch('register.forms.convert_currency')  # Mock the convert_currency function to return a fixed value
+    @patch('register.forms.convert_currency')   # Mock the convert_currency function to return a fixed value
     def test_register_view_post_invalid(self, mock_convert):
         mock_convert.return_value = 1000
         # Test registration with invalid data

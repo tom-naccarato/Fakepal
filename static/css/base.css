@@ -1,5 +1,5 @@
 /*Navbar*/
-#customNavbar {
+#customNavbar{
     background-color: #3e86ff !important;
     border-bottom: 1px solid #e5e5e5;
     border-radius: 0;
@@ -10,24 +10,23 @@
     z-index: 1000; /* Sets z-index to 1000 to make sure it's on top of everything */
 }
 
-.nav-link {
+.nav-link{
     color: white !important;
 }
 
 .nav,
-.nav-link:hover {
+.nav-link:hover{
     color: #cbcbcb !important;
 }
 
-.badge.bg-primary {
+.badge.bg-primary{
     background-color: #ff3e3e !important;
 }
-
-.nav-item.dropdown:hover {
+.nav-item.dropdown:hover{
     color: #cbcbcb !important;
 }
 
-.navbar-brand {
+.navbar-brand{
     color: white !important;
 }
 
@@ -60,14 +59,14 @@
     color: #212529;
 }
 
-.brand-image {
+.brand-image{
     width: 40px;
     height: 40px;
 }
 
 .content {
     flex: 1 0 auto;
-    padding-bottom: 60px;
+        padding-bottom: 60px;
 }
 
 /*Footer*/
@@ -77,7 +76,6 @@ footer {
     width: 100%;
     text-align: center;
 }
-
 body, html {
     margin: 0;
     padding: 0;
@@ -112,13 +110,12 @@ body {
 }
 
 @media (max-width: 991px) {
-    .navbar-nav .nav-item .form-inline {
-        display: block;
-        text-align: center;
-    }
-
+.navbar-nav .nav-item .form-inline {
+    display: block;
+    text-align: center;
+}
     .navbar-nav .nav-item .form-inline .btn {
         width: 100%;
-        text-align: center;
+    text-align: center;
     }
 }

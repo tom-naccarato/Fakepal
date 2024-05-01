@@ -18,7 +18,6 @@ def get_unread_notifications(request):
     else:
         return {'unread_notifications_count': None}
 
-
 def user_currency(request):
     """
     This function returns the currency of the logged-in user
@@ -31,7 +30,6 @@ def user_currency(request):
         return {'user_currency': currency}
     else:
         return {'user_currency': None}
-
 
 def user_balance(request):
     """

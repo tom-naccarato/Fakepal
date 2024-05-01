@@ -4,6 +4,7 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+
     dependencies = [
         ('payapp', '0003_alter_account_currency_alter_request_receiver_and_more'),
     ]
@@ -12,7 +13,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='transaction',
             name='type',
-            field=models.CharField(choices=[('request', 'Request'), ('transfer', 'Transfer')], default='transfer',
-                                   max_length=10),
+            field=models.CharField(choices=[('request', 'Request'), ('transfer', 'Transfer')], default='transfer', max_length=10),
         ),
     ]

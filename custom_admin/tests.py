@@ -86,7 +86,7 @@ class CustomAdminViewTests(TestCase):
             'password2': 'pwd2',  # Mismatching passwords
             'email': 'admin@email.com',
             'currency': 'gbp'
-        })
+})
         self.assertEqual(response.status_code, 200)
         self.assertFalse(User.objects.filter(username='adminuser1').exists())
 
@@ -139,3 +139,5 @@ class CustomAdminViewTests(TestCase):
         self.client.login(username='adminuser', password='adminpassword')
         response = self.client.get(reverse('custom_admin:all_users'))
         self.assertEqual(response.status_code, 200)
+
+

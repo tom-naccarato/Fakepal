@@ -2,42 +2,41 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
-<head>
-    {% block title %} Notifications{% endblock title %}
-    {% block extra_css %}
-        <link rel="stylesheet" href="{% static 'payapp/css/notifications.css' %}">{% endblock %}
+    <head>
+        {% block title %} Notifications{% endblock title %}
+        {% block extra_css %}<link rel="stylesheet" href="{% static 'payapp/css/notifications.css' %}">{% endblock %}
 
-</head>
-<body>
-{% block content %}
-    {% if notifications|length == 0 %}
-        <p>You have no unread notifications.</p>
-    {% else %}:
-        <h1>All Notifications</h1>
-        <div class="table-responsive">
-            <table class="table table-striped table-bordered table-hover table-sm">
+    </head>
+    <body>
+        {% block content %}
+        {% if notifications|length == 0 %}
+            <p>You have no unread notifications.</p>
+        {% else %}:
+            <h1>All Notifications</h1>
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover table-sm">
 
-                <thead class="text-center">
-                <tr>
-                    <th>Notification</th>
-                    <th>Time</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for notification in notifications %}
-                    <tr class="text-center">
+                    <thead  class="text-center">
+                        <tr>
+                            <th>Notification</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for notification in notifications %}
+                        <tr class="text-center">
 
-                        <td><a class=" notification_link"
-                               href="{% url 'payapp:mark_as_read' notification.id %}">
-                            {{ notification.message }}</a>
-                        </td>
-                        <td>{{ notification.created_at }}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
+                            <td><a class=" notification_link"  
+                                   href="{% url 'payapp:mark_as_read' notification.id %}">
+                                {{ notification.message }}</a>
+                            </td>
+                            <td>{{ notification.created_at }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
             </table>
         </div>
-    {% endif %}
-{% endblock content %}
-</body>
+        {% endif %}
+        {% endblock content %}
+    </body>
 </html>

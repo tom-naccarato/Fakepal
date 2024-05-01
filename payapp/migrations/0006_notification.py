@@ -5,6 +5,7 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+
     dependencies = [
         ('payapp', '0005_rename_transaction_transfer'),
     ]
@@ -14,18 +15,12 @@ class Migration(migrations.Migration):
             name='Notification',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('notification_type', models.CharField(
-                    choices=[(1, 'Payment Sent'), (2, 'Request Sent'), (3, 'Request Declined'),
-                             (4, 'Request Accepted')], default='payment_sent', max_length=10)),
+                ('notification_type', models.CharField(choices=[(1, 'Payment Sent'), (2, 'Request Sent'), (3, 'Request Declined'), (4, 'Request Accepted')], default='payment_sent', max_length=10)),
                 ('message', models.CharField(max_length=255)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('read', models.BooleanField(default=False)),
-                ('from_user',
-                 models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='sent_notification',
-                                   to='payapp.account')),
-                ('to_user',
-                 models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='received_notification',
-                                   to='payapp.account')),
+                ('from_user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='sent_notification', to='payapp.account')),
+                ('to_user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='received_notification', to='payapp.account')),
             ],
             options={
                 'verbose_name': 'Notification',

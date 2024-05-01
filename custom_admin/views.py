@@ -35,7 +35,6 @@ def admin_login_required_message(function):
     wrap.__name__ = function.__name__
     return wrap
 
-
 @admin_login_required_message
 def all_users(request):
     """

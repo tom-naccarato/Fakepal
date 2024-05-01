@@ -1,8 +1,6 @@
 import os
 import sys
-
 import django
-
 django_version = django.get_version()
 sys.path.insert(0, os.path.abspath('../../'))
 os.environ['DJANGO_SETTINGS_MODULE'] = 'webapps2024.settings'
@@ -28,6 +26,8 @@ extensions = ['sphinx.ext.autodoc']
 
 templates_path = ['_templates']
 exclude_patterns = []
+
+
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output

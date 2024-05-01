@@ -3,18 +3,18 @@
 {% load crispy_forms_tags %}
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <title>{% block title %} Request a Payment{% endblock title %}</title>
-</head>
-<body>
-{% block content %}
-    <h2>Make a Payment Request</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form |crispy }}
-        <input type="submit" value="Submit" class="btn btn-primary btn-block btn-lg">
-    </form>
-{% endblock content %}
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %} Request a Payment{% endblock title %}</title>
+    </head>
+    <body>
+        {% block content %}
+        <h2>Make a Payment Request</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{form |crispy }}
+            <input type="submit" value="Submit" class="btn btn-primary btn-block btn-lg">
+        </form>
+        {% endblock content %}
+    </body>
 </html>
