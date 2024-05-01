@@ -12,7 +12,8 @@ class RegisterConfig(AppConfig):
 
     def ready(self):
         """
-        Method to start the Thrift server and connect the post_migrate signal
+        Method to start the Thrift server and connect the post_migrate signal for creating the admin account when the
+        app is ready.
         :param self:
         :return:
         """
