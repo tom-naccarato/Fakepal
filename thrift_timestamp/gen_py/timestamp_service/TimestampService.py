@@ -15,6 +15,7 @@ import logging
 from .ttypes import *
 from thrift.Thrift import TProcessor
 from thrift.transport import TTransport
+
 all_structs = []
 
 
@@ -101,14 +102,15 @@ class Processor(Iface, TProcessor):
         oprot.writeMessageEnd()
         oprot.trans.flush()
 
+
 # HELPER FUNCTIONS AND STRUCTURES
 
 
 class getCurrentTimestamp_args(object):
 
-
     def read(self, iprot):
-        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
+        if iprot._fast_decode is not None and isinstance(iprot.trans,
+                                                         TTransport.CReadableTransport) and self.thrift_spec is not None:
             iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
             return
         iprot.readStructBegin()
@@ -142,6 +144,8 @@ class getCurrentTimestamp_args(object):
 
     def __ne__(self, other):
         return not (self == other)
+
+
 all_structs.append(getCurrentTimestamp_args)
 getCurrentTimestamp_args.thrift_spec = (
 )
@@ -154,12 +158,12 @@ class getCurrentTimestamp_result(object):
 
     """
 
-
-    def __init__(self, success=None,):
+    def __init__(self, success=None, ):
         self.success = success
 
     def read(self, iprot):
-        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
+        if iprot._fast_decode is not None and isinstance(iprot.trans,
+                                                         TTransport.CReadableTransport) and self.thrift_spec is not None:
             iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
             return
         iprot.readStructBegin()
@@ -169,7 +173,8 @@ class getCurrentTimestamp_result(object):
                 break
             if fid == 0:
                 if ftype == TType.STRING:
-                    self.success = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
+                    self.success = iprot.readString().decode('utf-8') if sys.version_info[
+                                                                             0] == 2 else iprot.readString()
                 else:
                     iprot.skip(ftype)
             else:
@@ -202,10 +207,11 @@ class getCurrentTimestamp_result(object):
 
     def __ne__(self, other):
         return not (self == other)
+
+
 all_structs.append(getCurrentTimestamp_result)
 getCurrentTimestamp_result.thrift_spec = (
-    (0, TType.STRING, 'success', 'UTF8', None, ),  # 0
+    (0, TType.STRING, 'success', 'UTF8', None,),  # 0
 )
 fix_spec(all_structs)
 del all_structs
-

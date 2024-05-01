@@ -13,6 +13,7 @@ from thrift.TRecursive import fix_spec
 import sys
 
 from thrift.transport import TTransport
+
 all_structs = []
 fix_spec(all_structs)
 del all_structs

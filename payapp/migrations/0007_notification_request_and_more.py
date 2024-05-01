@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('payapp', '0006_notification'),
     ]
@@ -14,11 +13,15 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='notification',
             name='request',
-            field=models.ForeignKey(blank=True, default=None, null=True, on_delete=django.db.models.deletion.CASCADE, to='payapp.request'),
+            field=models.ForeignKey(blank=True, default=None, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                    to='payapp.request'),
         ),
         migrations.AlterField(
             model_name='notification',
             name='notification_type',
-            field=models.CharField(choices=[('payment_sent', 'Payment Sent'), ('request_sent', 'Request Sent'), ('request_accepted', 'Request Accepted'), ('request_declined', 'Request Declined')], default='payment_sent', max_length=20),
+            field=models.CharField(choices=[('payment_sent', 'Payment Sent'), ('request_sent', 'Request Sent'),
+                                            ('request_accepted', 'Request Accepted'),
+                                            ('request_declined', 'Request Declined')], default='payment_sent',
+                                   max_length=20),
         ),
     ]

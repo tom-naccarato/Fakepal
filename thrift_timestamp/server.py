@@ -13,10 +13,12 @@ server = None
 # Global variable to control the server loop
 server_running = True
 
+
 class TimestampHandler:
     def getCurrentTimestamp(self):
         """Return the current timestamp in the format 'YYYY-MM-DD HH:MM:SS'"""
         return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
 
 def start_thrift_server():
     """Start the Thrift server and serve requests indefinitely."""
@@ -36,10 +38,12 @@ def start_thrift_server():
     while server_running:
         server.serve()
 
+
 def stop_thrift_server():
     """Stop the Thrift server."""
     global server_running
     server_running = False
+
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)

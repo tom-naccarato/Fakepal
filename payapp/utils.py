@@ -5,6 +5,7 @@ from decimal import Decimal
 
 from payapp.custom_exceptions import CurrencyConversionError
 
+
 def convert_currency(currency1, currency2, amount_of_currency1):
     """
     Utility function to convert an amount of currency1 to currency2 using the currency conversion RESTful service.

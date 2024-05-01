@@ -15,6 +15,7 @@ class ConversionAPI(APIView):
 
     The API returns the converted amount in the 'converted_amount' field of the response
     """
+
     def get(self, request, from_currency, to_currency, amount):
         # Data preparation for serialization
         try:

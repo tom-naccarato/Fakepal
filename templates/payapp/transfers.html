@@ -16,35 +16,36 @@
             transfer{{ transfers|length|pluralize }}.
         </p>
         <div class="table-responsive">
-                <table class="table table-striped table-bordered table-hover table-sm">
-                    <thead  class="text-center">
-                        <tr>
-                            <th>Transfer ID</th>
-                            <th>Amount</th>
-                            <th>From User</th>
-                            <th>To User</th>
-                            <th>Transaction Date</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-center">
-                        {% for transfer in transfers %}
-                            <tr>
-                                <td>{{ transfer.id }}</td>
-                                <td>{{ transfer.sender.currency|currency_symbol }}
-                                    {{ transfer.amount }}</td> <! -- currency filter -->
-                                <td>{{ transfer.sender.user.username }}</td>
-                                <td>{{ transfer.receiver.user.username }}</td>
-                                <td>{{ transfer.created_at | date:"D, d M Y H:i" }}</td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
+            <table class="table table-striped table-bordered table-hover table-sm">
+                <thead class="text-center">
+                <tr>
+                    <th>Transfer ID</th>
+                    <th>Amount</th>
+                    <th>From User</th>
+                    <th>To User</th>
+                    <th>Transaction Date</th>
+                </tr>
+                </thead>
+                <tbody class="text-center">
+                {% for transfer in transfers %}
+                    <tr>
+                        <td>{{ transfer.id }}</td>
+                        <td>{{ transfer.sender.currency|currency_symbol }}
+                            {{ transfer.amount }}</td>
+                        <! -- currency filter -->
+                        <td>{{ transfer.sender.user.username }}</td>
+                        <td>{{ transfer.receiver.user.username }}</td>
+                        <td>{{ transfer.created_at | date:"D, d M Y H:i" }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
             </table>
         </div>
-        
+
     {% else %}
         <p>You have no completed transactions.</p>
     {% endif %}
-    
+
 {% endblock %}
 </body>
 </html>

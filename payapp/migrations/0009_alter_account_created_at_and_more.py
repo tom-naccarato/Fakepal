@@ -5,7 +5,6 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('payapp', '0008_alter_notification_notification_type'),
     ]

@@ -5,6 +5,7 @@ from django.contrib.auth.models import User, Group
 from payapp.models import Account, Request, Notification
 from thrift_timestamp import server
 
+
 class PayAppViewTests(TestCase):
     @classmethod
     def tearDownClass(cls):
@@ -96,7 +97,6 @@ class PayAppViewTests(TestCase):
         request_sent_notification = Notification.objects.get(request=req, notification_type='request_sent')
         self.assertTrue(request_sent_notification.read)
 
-
     def test_accept_request_insufficient_funds(self):
         # Create a request to be accepted
         request_receiver = User.objects.create_user(username='receiver', password='receiverpassword')
@@ -131,7 +131,6 @@ class PayAppViewTests(TestCase):
         # Verify that a notification has been created for the sender
         self.assertTrue(Notification.objects.filter(to_user=req.sender, from_user=req.receiver,
                                                     notification_type='request_declined').exists())
-
 
     def test_cancel_request_view(self):
         """
@@ -180,7 +179,6 @@ class PayAppViewTests(TestCase):
         # Verify that a notification has been created for the receiver
         self.assertTrue(Notification.objects.filter(to_user=receiver_account, from_user=sender_account,
                                                     notification_type='payment_sent').exists())
-
 
     def test_send_payment_insufficient_funds(self):
         # Test for attempting to send a payment with insufficient funds
