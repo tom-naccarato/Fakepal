@@ -37,4 +37,5 @@ html_static_path = ['_static']
 
 rst_epilog = f"""
 .. |python_version| replace:: {python_version}
+.. |django_version| replace:: {django_version}
 """
