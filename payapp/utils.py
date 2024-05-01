@@ -1,4 +1,5 @@
 import decimal
+import os
 
 import requests
 from decimal import Decimal
@@ -20,11 +21,14 @@ def convert_currency(currency1, currency2, amount_of_currency1):
     if currency1 == currency2:
         return Decimal(amount_of_currency1)
 
+    # Get the base URL from the environment variable, default to localhost
+    base_url = os.getenv('BASE_URL', 'https://localhost:8000')
+
     # Build the URL for the RESTful service
-    url = f'https://localhost:8000/webapps2024/conversion/{currency1.upper()}/{currency2.upper()}/{amount_of_currency1}/'
+    url = f'{base_url}/webapps2024/conversion/{currency1.upper()}/{currency2.upper()}/{amount_of_currency1}'
     # Make a request to the RESTful service
     try:
-        response = requests.get(url, verify='./fakepal.crt')
+        response = requests.get(url, verify=False)
 
     # If there is a connection error, raise an exception
     except requests.exceptions.ConnectionError:
